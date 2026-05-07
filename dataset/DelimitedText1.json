@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "@endswith(item().name,'.csv')",
+				"fileName": "egy-sdm-20260320-20260320.csv",
 				"folderPath": "websdmfiles",
 				"container": "netidevadf"
 			},
