@@ -1,0 +1,21 @@
+{
+	"name": "SqlServer1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "LAPTOP-CO7ORNPR",
+			"database": "DBAREA",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "superuser",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwNmM3ODAzMS1iNDk0LTQ0OTktOTcyOS0yMjU1NTQ5ZDM0NTQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "surajIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
