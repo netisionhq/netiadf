@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "egy-sdm-20260320-20260320.csv",
 				"folderPath": "websdmfiles",
 				"container": "netidevadf"
 			},
