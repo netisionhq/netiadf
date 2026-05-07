@@ -1,0 +1,15 @@
+{
+	"name": "NetisionADF",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Enabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5baf9cee-58be-4deb-8e7b-c987ee0fcdbc",
+		"tenantId": "ea91c7ab-e2a5-43cc-8265-f8f18e80b83e"
+	}
+}
