@@ -107,6 +107,356 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "REF_DATE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "REF_DATE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "EVENT_NAME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "EVENT_NAME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "IDENTITY",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "IDENTITY",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_ID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_DATE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_DATE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "DELIVER_TIME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DELIVER_TIME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ACTUAL_SOS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ACTUAL_SOS",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CUST_PHONE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUST_PHONE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CUST_EMAIL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CUST_EMAIL",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "SRC_NAME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SRC_NAME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_STOREID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_STOREID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_STORENUM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_STORENUM",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_STORENAME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_STORENAME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CTY_NAME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CTY_NAME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_TOTAL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_TOTAL",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_SUBTOTAL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_SUBTOTAL",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_SERVICE_CHARGE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_SERVICE_CHARGE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_ORDERMODE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_ORDERMODE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "DISCOUNT_ID",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DISCOUNT_ID",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "DISCOUNT_AMOUNT",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DISCOUNT_AMOUNT",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "DISCOUNT_NAME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DISCOUNT_NAME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CON_NAME",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CON_NAME",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "CRT_DATE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "CRT_DATE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_DATEOFTRANS",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_DATEOFTRANS",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_CHECKNO",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_CHECKNO",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_STORE_DOB",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_STORE_DOB",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_DISCOUNTTOTAL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_DISCOUNTTOTAL",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ORDR_DATE_LOC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ORDR_DATE_LOC",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "DB_TIME_ZONE",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "DB_TIME_ZONE",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										}
+									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,
