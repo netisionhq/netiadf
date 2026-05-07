@@ -1,0 +1,133 @@
+{
+	"name": "ds_sqlserver",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServer1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "REF_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "EVENT_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "IDENTITY",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "DELIVER_TIME",
+				"type": "varchar"
+			},
+			{
+				"name": "ACTUAL_SOS",
+				"type": "varchar"
+			},
+			{
+				"name": "CUST_PHONE",
+				"type": "varchar"
+			},
+			{
+				"name": "CUST_EMAIL",
+				"type": "varchar"
+			},
+			{
+				"name": "SRC_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_STOREID",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_STORENUM",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_STORENAME",
+				"type": "varchar"
+			},
+			{
+				"name": "CTY_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_TOTAL",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_SUBTOTAL",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_SERVICE_CHARGE",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_ORDERMODE",
+				"type": "varchar"
+			},
+			{
+				"name": "DISCOUNT_ID",
+				"type": "varchar"
+			},
+			{
+				"name": "DISCOUNT_AMOUNT",
+				"type": "varchar"
+			},
+			{
+				"name": "DISCOUNT_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "CON_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "CRT_DATE",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_DATEOFTRANS",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_CHECKNO",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_STORE_DOB",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_DISCOUNTTOTAL",
+				"type": "varchar"
+			},
+			{
+				"name": "ORDR_DATE_LOC",
+				"type": "varchar"
+			},
+			{
+				"name": "DB_TIME_ZONE",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "test_websdm_file"
+		}
+	}
+}
