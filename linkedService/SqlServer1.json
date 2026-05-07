@@ -7,11 +7,11 @@
 		"typeProperties": {
 			"server": "LAPTOP-CO7ORNPR",
 			"database": "DBAREA",
-			"encrypt": "mandatory",
+			"encrypt": "optional",
 			"trustServerCertificate": false,
 			"authenticationType": "SQL",
 			"userName": "superuser",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwNmM3ODAzMS1iNDk0LTQ0OTktOTcyOS0yMjU1NTQ5ZDM0NTQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI2NGRmMDUxYS1lZjBlLTRmNGQtOGVmMy0yNzE4M2ViYmY4MWEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "surajIR",
