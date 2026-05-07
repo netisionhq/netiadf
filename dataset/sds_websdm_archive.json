@@ -1,0 +1,23 @@
+{
+	"name": "sds_websdm_archive",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "websdm_archive",
+				"container": "netidevadf"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
