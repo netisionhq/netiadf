@@ -7,6 +7,18 @@
 		},
 		"netiadfblobLS_connectionString": {
 			"value": ""
+		},
+		"SqlServer1_password": {
+			"value": ""
+		},
+		"SqlServer1_properties_typeProperties_server": {
+			"value": "LAPTOP-CO7ORNPR"
+		},
+		"SqlServer1_properties_typeProperties_database": {
+			"value": "DBAREA"
+		},
+		"SqlServer1_properties_typeProperties_userName": {
+			"value": "superuser"
 		}
 	}
 }

@@ -10,6 +10,22 @@
 		"netiadfblobLS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'netiadfblobLS'"
+		},
+		"SqlServer1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SqlServer1'"
+		},
+		"SqlServer1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "LAPTOP-CO7ORNPR"
+		},
+		"SqlServer1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "DBAREA"
+		},
+		"SqlServer1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "superuser"
 		}
 	},
 	"variables": {
@@ -39,6 +55,896 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/surajIR')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "netiadfblobLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "websdmfiles",
+						"container": "netidevadf"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_blob_parametrized')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "netiadfblobLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
+						"folderPath": "websdmfiles",
+						"container": "netidevadf"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "REF_DATE",
+						"type": "String"
+					},
+					{
+						"name": "EVENT_NAME",
+						"type": "String"
+					},
+					{
+						"name": "IDENTITY",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_ID",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DATE",
+						"type": "String"
+					},
+					{
+						"name": "DELIVER_TIME",
+						"type": "String"
+					},
+					{
+						"name": "ACTUAL_SOS",
+						"type": "String"
+					},
+					{
+						"name": "CUST_PHONE",
+						"type": "String"
+					},
+					{
+						"name": "CUST_EMAIL",
+						"type": "String"
+					},
+					{
+						"name": "SRC_NAME",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STOREID",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STORENUM",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STORENAME",
+						"type": "String"
+					},
+					{
+						"name": "CTY_NAME",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_TOTAL",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_SUBTOTAL",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_SERVICE_CHARGE",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_ORDERMODE",
+						"type": "String"
+					},
+					{
+						"name": "DISCOUNT_ID",
+						"type": "String"
+					},
+					{
+						"name": "DISCOUNT_AMOUNT",
+						"type": "String"
+					},
+					{
+						"name": "DISCOUNT_NAME",
+						"type": "String"
+					},
+					{
+						"name": "CON_NAME",
+						"type": "String"
+					},
+					{
+						"name": "CRT_DATE",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DATEOFTRANS",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_CHECKNO",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STORE_DOB",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DISCOUNTTOTAL",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DATE_LOC",
+						"type": "String"
+					},
+					{
+						"name": "DB_TIME_ZONE",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sds_websdm_archive')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "netiadfblobLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "websdm_archive",
+						"container": "netidevadf"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"server": "[parameters('SqlServer1_properties_typeProperties_server')]",
+					"database": "[parameters('SqlServer1_properties_typeProperties_database')]",
+					"encrypt": "optional",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('SqlServer1_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SqlServer1_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "surajIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/surajIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_sqlserver')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServer1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "REF_DATE",
+						"type": "varchar"
+					},
+					{
+						"name": "EVENT_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "IDENTITY",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_ID",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_DATE",
+						"type": "varchar"
+					},
+					{
+						"name": "DELIVER_TIME",
+						"type": "varchar"
+					},
+					{
+						"name": "ACTUAL_SOS",
+						"type": "varchar"
+					},
+					{
+						"name": "CUST_PHONE",
+						"type": "varchar"
+					},
+					{
+						"name": "CUST_EMAIL",
+						"type": "varchar"
+					},
+					{
+						"name": "SRC_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_STOREID",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_STORENUM",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_STORENAME",
+						"type": "varchar"
+					},
+					{
+						"name": "CTY_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_TOTAL",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_SUBTOTAL",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_SERVICE_CHARGE",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_ORDERMODE",
+						"type": "varchar"
+					},
+					{
+						"name": "DISCOUNT_ID",
+						"type": "varchar"
+					},
+					{
+						"name": "DISCOUNT_AMOUNT",
+						"type": "varchar"
+					},
+					{
+						"name": "DISCOUNT_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "CON_NAME",
+						"type": "varchar"
+					},
+					{
+						"name": "CRT_DATE",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_DATEOFTRANS",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_CHECKNO",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_STORE_DOB",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_DISCOUNTTOTAL",
+						"type": "varchar"
+					},
+					{
+						"name": "ORDR_DATE_LOC",
+						"type": "varchar"
+					},
+					{
+						"name": "DB_TIME_ZONE",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "test_websdm_file"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter1",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@endswith(item().name,'.csv')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Filter1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Filter1').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"enablePartitionDiscovery": false
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "REF_DATE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "REF_DATE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "EVENT_NAME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "EVENT_NAME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "IDENTITY",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "IDENTITY",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_ID",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_ID",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_DATE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_DATE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "DELIVER_TIME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "DELIVER_TIME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ACTUAL_SOS",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ACTUAL_SOS",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CUST_PHONE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "CUST_PHONE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CUST_EMAIL",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "CUST_EMAIL",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "SRC_NAME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "SRC_NAME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_STOREID",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_STOREID",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_STORENUM",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_STORENUM",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_STORENAME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_STORENAME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CTY_NAME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "CTY_NAME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_TOTAL",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_TOTAL",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_SUBTOTAL",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_SUBTOTAL",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_SERVICE_CHARGE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_SERVICE_CHARGE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_ORDERMODE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_ORDERMODE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "DISCOUNT_ID",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "DISCOUNT_ID",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "DISCOUNT_AMOUNT",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "DISCOUNT_AMOUNT",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "DISCOUNT_NAME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "DISCOUNT_NAME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CON_NAME",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "CON_NAME",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "CRT_DATE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "CRT_DATE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_DATEOFTRANS",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_DATEOFTRANS",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_CHECKNO",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_CHECKNO",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_STORE_DOB",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_STORE_DOB",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_DISCOUNTTOTAL",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_DISCOUNTTOTAL",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "ORDR_DATE_LOC",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "ORDR_DATE_LOC",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												},
+												{
+													"source": {
+														"name": "DB_TIME_ZONE",
+														"type": "String",
+														"physicalType": "String"
+													},
+													"sink": {
+														"name": "DB_TIME_ZONE",
+														"type": "String",
+														"physicalType": "varchar"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "ds_blob_parametrized",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "ds_sqlserver",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
+				"[concat(variables('factoryId'), '/datasets/ds_blob_parametrized')]",
+				"[concat(variables('factoryId'), '/datasets/ds_sqlserver')]"
+			]
 		}
 	]
 }
