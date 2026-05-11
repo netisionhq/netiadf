@@ -5,10 +5,10 @@
 		"factoryName": {
 			"value": "NetisionADF"
 		},
-		"netiadfblobLS_connectionString": {
+		"SqlServer1_password": {
 			"value": ""
 		},
-		"SqlServer1_password": {
+		"netiadfblobLS_connectionString": {
 			"value": ""
 		},
 		"SqlServer1_properties_typeProperties_server": {
@@ -19,6 +19,9 @@
 		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"value": "superuser"
+		},
+		"blob_eventbased_properties_typeProperties_scope": {
+			"value": "/subscriptions/0b62f40c-406b-4239-b8ec-a3410809c3ca/resourceGroups/netison-ai-project/providers/Microsoft.Storage/storageAccounts/netisionadfblob"
 		},
 		"containerUri": {
 			"value": ""
