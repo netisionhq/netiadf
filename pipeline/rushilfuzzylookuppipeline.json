@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "rushilfuzzylookuppipeline",
 	"properties": {
 		"activities": [
 			{
@@ -26,6 +26,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
