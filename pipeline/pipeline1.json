@@ -487,6 +487,14 @@
 				}
 			}
 		],
+		"parameters": {
+			"filename": {
+				"type": "string"
+			},
+			"folderpath": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
