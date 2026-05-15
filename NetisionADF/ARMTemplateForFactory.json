@@ -27,6 +27,14 @@
 			"type": "string",
 			"defaultValue": "superuser"
 		},
+		"blob_eventbased_properties_pipeline1_parameters_filename": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"blob_eventbased_properties_pipeline1_parameters_folderpath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
 		"blob_eventbased_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/0b62f40c-406b-4239-b8ec-a3410809c3ca/resourceGroups/netison-ai-project/providers/Microsoft.Storage/storageAccounts/netisionadfblob"
@@ -511,7 +519,7 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"filename": {
-													"value": "@item().name",
+													"value": "@pipeline().parameters.filename",
 													"type": "Expression"
 												}
 											}
@@ -531,6 +539,14 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					},
+					"folderpath": {
+						"type": "string"
+					}
 				},
 				"annotations": []
 			},
@@ -1343,7 +1359,10 @@
 							"referenceName": "pipeline1",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"filename": "[parameters('blob_eventbased_properties_pipeline1_parameters_filename')]",
+							"folderpath": "[parameters('blob_eventbased_properties_pipeline1_parameters_folderpath')]"
+						}
 					}
 				],
 				"type": "BlobEventsTrigger",

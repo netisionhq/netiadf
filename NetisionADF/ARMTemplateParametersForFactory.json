@@ -20,6 +20,12 @@
 		"SqlServer1_properties_typeProperties_userName": {
 			"value": "superuser"
 		},
+		"blob_eventbased_properties_pipeline1_parameters_filename": {
+			"value": "@triggerBody().fileName"
+		},
+		"blob_eventbased_properties_pipeline1_parameters_folderpath": {
+			"value": "@triggerBody().folderPath"
+		},
 		"blob_eventbased_properties_typeProperties_scope": {
 			"value": "/subscriptions/0b62f40c-406b-4239-b8ec-a3410809c3ca/resourceGroups/netison-ai-project/providers/Microsoft.Storage/storageAccounts/netisionadfblob"
 		}

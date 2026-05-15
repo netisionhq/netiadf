@@ -27,6 +27,14 @@
 			"type": "string",
 			"defaultValue": "superuser"
 		},
+		"blob_eventbased_properties_pipeline1_parameters_filename": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"blob_eventbased_properties_pipeline1_parameters_folderpath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
 		"blob_eventbased_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/0b62f40c-406b-4239-b8ec-a3410809c3ca/resourceGroups/netison-ai-project/providers/Microsoft.Storage/storageAccounts/netisionadfblob"
@@ -72,6 +80,12 @@
 					},
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
+					},
+					"blob_eventbased_properties_pipeline1_parameters_filename": {
+						"value": "[parameters('blob_eventbased_properties_pipeline1_parameters_filename')]"
+					},
+					"blob_eventbased_properties_pipeline1_parameters_folderpath": {
+						"value": "[parameters('blob_eventbased_properties_pipeline1_parameters_folderpath')]"
 					},
 					"blob_eventbased_properties_typeProperties_scope": {
 						"value": "[parameters('blob_eventbased_properties_typeProperties_scope')]"
