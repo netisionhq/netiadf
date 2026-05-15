@@ -13,7 +13,7 @@
 		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
-			"blobPathBeginsWith": "/netidevadf/blobs/websdmfiles/",
+			"blobPathBeginsWith": "/netidevadf/blobs/websdmfiles",
 			"blobPathEndsWith": ".csv",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/0b62f40c-406b-4239-b8ec-a3410809c3ca/resourceGroups/netison-ai-project/providers/Microsoft.Storage/storageAccounts/netisionadfblob",
