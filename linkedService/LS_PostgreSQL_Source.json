@@ -1,0 +1,21 @@
+{
+	"name": "LS_PostgreSQL_Source",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "PostgreSqlV2",
+		"typeProperties": {
+			"server": "192.168.5.16",
+			"port": 5432,
+			"database": "postgres",
+			"username": "postgres",
+			"sslMode": 0,
+			"authenticationType": "Basic",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiOTdkNjEzOC1hYWQxLTRkMDItYmYyNy1kNDJmZjIzNzNkNTQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "rushilVMIntegration",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
