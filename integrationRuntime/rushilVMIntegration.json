@@ -1,0 +1,6 @@
+{
+	"name": "rushilVMIntegration",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
