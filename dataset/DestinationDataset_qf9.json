@@ -19,6 +19,7 @@
 					"value": "@dataset().cw_fileName",
 					"type": "Expression"
 				},
+				"folderPath": "csvfiles",
 				"container": "postgresdata"
 			},
 			"columnDelimiter": ",",
