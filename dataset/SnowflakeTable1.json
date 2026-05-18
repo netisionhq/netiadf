@@ -15,7 +15,10 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "RAW_DATA",
-			"table": "@dataset().tableName"
+			"table": {
+				"value": "@toUpper(dataset().tableName)",
+				"type": "Expression"
+			}
 		}
 	}
 }
