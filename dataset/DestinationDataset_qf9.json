@@ -22,7 +22,7 @@
 				"container": "postgresdata"
 			},
 			"columnDelimiter": ",",
-			"rowDelimiter": "\\n",
+			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
