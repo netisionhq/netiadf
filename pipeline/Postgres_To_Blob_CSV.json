@@ -1,0 +1,295 @@
+{
+	"name": "Postgres_To_Blob_CSV",
+	"properties": {
+		"description": "Copy all tables from PostgreSQL to Blob as CSV",
+		"activities": [
+			{
+				"name": "ForEach_qf9",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_qf9",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "@{item().source.schema}.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "postgresdata//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "PostgreSqlV2Source"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".csv"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_qf9",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_schema": "@item().source.schema",
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_qf9",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"schema": "crm",
+							"table": "category"
+						},
+						"destination": {
+							"fileName": "crm.category.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "clv_table"
+						},
+						"destination": {
+							"fileName": "crm.clv_table.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "clv_table_old"
+						},
+						"destination": {
+							"fileName": "crm.clv_table_old.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "customer"
+						},
+						"destination": {
+							"fileName": "crm.customer.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "customer_shopping_data"
+						},
+						"destination": {
+							"fileName": "crm.customer_shopping_data.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "customer_shopping_dataq"
+						},
+						"destination": {
+							"fileName": "crm.customer_shopping_dataq.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "dim_date"
+						},
+						"destination": {
+							"fileName": "crm.dim_date.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "fact_pos_bill"
+						},
+						"destination": {
+							"fileName": "crm.fact_pos_bill.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "raw_customer_transactions"
+						},
+						"destination": {
+							"fileName": "crm.raw_customer_transactions.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "raw_customer_transactions_bkp"
+						},
+						"destination": {
+							"fileName": "crm.raw_customer_transactions_bkp.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "rfm_table"
+						},
+						"destination": {
+							"fileName": "crm.rfm_table.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "rfm_table_old"
+						},
+						"destination": {
+							"fileName": "crm.rfm_table_old.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "sku"
+						},
+						"destination": {
+							"fileName": "crm.sku.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "store"
+						},
+						"destination": {
+							"fileName": "crm.store.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "crm",
+							"table": "vw_customer_shopping_data"
+						},
+						"destination": {
+							"fileName": "crm.vw_customer_shopping_data.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "billing_data"
+						},
+						"destination": {
+							"fileName": "public.billing_data.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "cfg_category"
+						},
+						"destination": {
+							"fileName": "public.cfg_category.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "cfg_sku"
+						},
+						"destination": {
+							"fileName": "public.cfg_sku.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "cfg_store"
+						},
+						"destination": {
+							"fileName": "public.cfg_store.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "customer"
+						},
+						"destination": {
+							"fileName": "public.customer.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "customer_shopping_data"
+						},
+						"destination": {
+							"fileName": "public.customer_shopping_data.csv"
+						}
+					},
+					{
+						"source": {
+							"schema": "public",
+							"table": "fact_pos_bill"
+						},
+						"destination": {
+							"fileName": "public.fact_pos_bill.csv"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
