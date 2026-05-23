@@ -19,9 +19,12 @@
 		"type": "SnowflakeV2Table",
 		"schema": [],
 		"typeProperties": {
-			"schema": "RAW_DATA",
+			"schema": {
+				"value": "@dataset().p_schema",
+				"type": "Expression"
+			},
 			"table": {
-				"value": "@toUpper(dataset().tableName)",
+				"value": "@dataset().p_table",
 				"type": "Expression"
 			}
 		}
