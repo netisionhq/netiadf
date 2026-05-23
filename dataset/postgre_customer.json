@@ -5,6 +5,11 @@
 			"referenceName": "netiadfblobLS",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"p_fileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
