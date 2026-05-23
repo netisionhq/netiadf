@@ -167,21 +167,7 @@
 		"parameters": {
 			"items": {
 				"type": "array",
-				"defaultValue": [
-					{
-						"source": {
-							"table": "crm/customer"
-						},
-						"destination": {
-							"folder": "crm/customer",
-							"fileName": "customer.parquet"
-						},
-						"snowflake": {
-							"schema": "RAW_DATA",
-							"table": "CUSTOMER_V1"
-						}
-					}
-				]
+				"defaultValue": "[   {     \"source\": {       \"schema\": \"crm\",       \"table\": \"category\"     },     \"destination\": {       \"fileName\": \"crm.category.parquet\"     }   },    \"snowflake\": {       \"schema\": \"RAW\",       \"table\": \"CUSTOMER\"     }   ]"
 			}
 		},
 		"annotations": []
