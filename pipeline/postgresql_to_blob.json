@@ -178,7 +178,7 @@
 						},
 						"snowflake": {
 							"schema": "RAW_DATA",
-							"table": "CUSTOMER_V1"
+							"table": "CUSTOMER"
 						}
 					}
 				]
