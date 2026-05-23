@@ -1,0 +1,20 @@
+{
+	"name": "postgre_customer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "postgre_customer_data",
+				"container": "netidevadf"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

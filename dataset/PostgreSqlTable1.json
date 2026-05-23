@@ -1,0 +1,16 @@
+{
+	"name": "PostgreSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_PostgreSQL_Source",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "PostgreSqlV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "crm",
+			"table": "raw_customer_transactions"
+		}
+	}
+}
