@@ -64,8 +64,8 @@
 									"referenceName": "PostgreSqlTable1",
 									"type": "DatasetReference",
 									"parameters": {
-										"p_schema": "@dataset().p_schema",
-										"p_table": "@dataset().p_table"
+										"p_schema": "@item().source.schema",
+										"p_table": "@item().source.table"
 									}
 								}
 							],
