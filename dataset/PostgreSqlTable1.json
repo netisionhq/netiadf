@@ -7,12 +7,10 @@
 		},
 		"parameters": {
 			"p_schema": {
-				"type": "string",
-				"defaultValue": "@dataset().p_schema"
+				"type": "string"
 			},
 			"p_table": {
-				"type": "string",
-				"defaultValue": "@dataset().p_table"
+				"type": "string"
 			}
 		},
 		"annotations": [],
