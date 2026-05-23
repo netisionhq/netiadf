@@ -129,8 +129,7 @@
 									"importSettings": {
 										"type": "SnowflakeImportCopyCommand",
 										"additionalCopyOptions": {
-											"key": "MATCH_BY_COLUMN_NAME",
-											"value": "CASE_INSENSITIVE"
+											"MATCH_BY_COLUMN_NAME": "CASE_INSENSITIVE"
 										}
 									}
 								},
