@@ -182,7 +182,10 @@
 							"outputs": [
 								{
 									"referenceName": "postgre_customer",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"p_fileName": "@item().destination.fileName"
+									}
 								}
 							]
 						}
