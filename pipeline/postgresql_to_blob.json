@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "postgre_to_blob",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
