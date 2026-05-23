@@ -127,7 +127,11 @@
 								"sink": {
 									"type": "SnowflakeV2Sink",
 									"importSettings": {
-										"type": "SnowflakeImportCopyCommand"
+										"type": "SnowflakeImportCopyCommand",
+										"additionalCopyOptions": {
+											"key": "MATCH_BY_COLUMN_NAME",
+											"value": "CASE_INSENSITIVE"
+										}
 									}
 								},
 								"enableStaging": false,
