@@ -52,6 +52,116 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "invoice_id",
+												"type": "String",
+												"physicalType": "text"
+											},
+											"sink": {
+												"name": "invoice_id",
+												"type": "String",
+												"physicalType": "UTF8"
+											}
+										},
+										{
+											"source": {
+												"name": "invoice_date",
+												"type": "DateTime",
+												"physicalType": "timestamp without time zone"
+											},
+											"sink": {
+												"name": "invoice_date",
+												"type": "DateTime",
+												"physicalType": "INT_96"
+											}
+										},
+										{
+											"source": {
+												"name": "customer_id",
+												"type": "Int64",
+												"physicalType": "bigint"
+											},
+											"sink": {
+												"name": "customer_id",
+												"type": "Int64",
+												"physicalType": "INT_64"
+											}
+										},
+										{
+											"source": {
+												"name": "category",
+												"type": "Int64",
+												"physicalType": "bigint"
+											},
+											"sink": {
+												"name": "category",
+												"type": "Int64",
+												"physicalType": "INT_64"
+											}
+										},
+										{
+											"source": {
+												"name": "price",
+												"type": "Double",
+												"physicalType": "double precision"
+											},
+											"sink": {
+												"name": "price",
+												"type": "Double",
+												"physicalType": "DOUBLE"
+											}
+										},
+										{
+											"source": {
+												"name": "store_id",
+												"type": "Int64",
+												"physicalType": "bigint"
+											},
+											"sink": {
+												"name": "store_id",
+												"type": "Int64",
+												"physicalType": "INT_64"
+											}
+										},
+										{
+											"source": {
+												"name": "sku_id",
+												"type": "Int64",
+												"physicalType": "bigint"
+											},
+											"sink": {
+												"name": "sku_id",
+												"type": "Int64",
+												"physicalType": "INT_64"
+											}
+										},
+										{
+											"source": {
+												"name": "churn",
+												"type": "Double",
+												"physicalType": "double precision"
+											},
+											"sink": {
+												"name": "churn",
+												"type": "Double",
+												"physicalType": "DOUBLE"
+											}
+										},
+										{
+											"source": {
+												"name": "cust_cat_id",
+												"type": "String",
+												"physicalType": "text"
+											},
+											"sink": {
+												"name": "cust_cat_id",
+												"type": "String",
+												"physicalType": "UTF8"
+											}
+										}
+									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,
