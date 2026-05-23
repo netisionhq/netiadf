@@ -116,6 +116,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -170,7 +171,10 @@
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
 										"wildcardFolderPath": "csvfiles",
-										"wildcardFileName": "@item().name",
+										"wildcardFileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										},
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -245,6 +249,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -298,7 +303,10 @@
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
 										"wildcardFolderPath": "parquetfiles/",
-										"wildcardFileName": "@item().name",
+										"wildcardFileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										},
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -335,7 +343,8 @@
 									"referenceName": "SnowflakeTable1",
 									"type": "DatasetReference",
 									"parameters": {
-										"tableName": "@if(   startsWith(item().name, 'public.'),   concat('Public_', replace(replace(item().name,'public.',''),'.parquet','')),   replace(replace(item().name,'crm.',''),'.parquet','') )"
+										"p_schema": "@if(   startsWith(item().name, 'public.'),   concat('Public_', replace(replace(item().name,'public.',''),'.parquet','')),   replace(replace(item().name,'crm.',''),'.parquet','') )",
+										"p_table": "@dataset().p_table"
 									}
 								}
 							]
