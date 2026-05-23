@@ -5,6 +5,16 @@
 			"referenceName": "LS_PostgreSQL_Source",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"p_schema": {
+				"type": "string",
+				"defaultValue": "@dataset().p_schema"
+			},
+			"p_table": {
+				"type": "string",
+				"defaultValue": "@dataset().p_table"
+			}
+		},
 		"annotations": [],
 		"type": "PostgreSqlV2Table",
 		"schema": [],
