@@ -203,7 +203,7 @@
 							"table": "category"
 						},
 						"destination": {
-							"fileName": "crm.category.csv"
+							"fileName": "crm.category.parquet"
 						}
 					}
 				]
