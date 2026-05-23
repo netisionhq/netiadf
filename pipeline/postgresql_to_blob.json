@@ -167,7 +167,21 @@
 		"parameters": {
 			"items": {
 				"type": "array",
-				"defaultValue": "[   {     \"source\": {       \"schema\": \"crm\",       \"table\": \"category\"     },     \"destination\": {       \"fileName\": \"crm.category.parquet\"     }   },    \"snowflake\": {       \"schema\": \"RAW\",       \"table\": \"CUSTOMER\"     }   ]"
+				"defaultValue": [
+					{
+						"source": {
+							"schema": "crm",
+							"table": "category"
+						},
+						"destination": {
+							"fileName": "crm.category.parquet"
+						},
+						"snowflake": {
+							"schema": "RAW",
+							"table": "CUSTOMER"
+						}
+					}
+				]
 			}
 		},
 		"annotations": []
