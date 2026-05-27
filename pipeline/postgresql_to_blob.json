@@ -196,7 +196,7 @@
 					},
 					"url": "https://prod-01.northcentralus.logic.azure.com:443/workflows/c38afb7f2f4e4a78aaf38a212e689682/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=-o1kB99iEDZAy9tDSgncxcnllDc-NBu9vDfv6dOyaDg",
 					"body": {
-						"to": "surajkr7491@gmail.com",
+						"to": "rushilnanda04@gmail.com",
 						"subject": "Validation Failed",
 						"body": "20 records failed validation"
 					}
