@@ -82,7 +82,7 @@
 				}
 			},
 			{
-				"name": "Get Metadata1",
+				"name": "get_file_metadata",
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
@@ -99,7 +99,21 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Excel_files",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"columnCount",
+						"itemName"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					}
+				}
 			},
 			{
 				"name": "assign_batch_id",
