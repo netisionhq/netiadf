@@ -5,11 +5,41 @@
 		"factoryName": {
 			"value": "NetisionADF"
 		},
+		"LS_PostgreSQL_Source_password": {
+			"value": ""
+		},
+		"PostgreSql1_password": {
+			"value": ""
+		},
+		"Snowflake1_password": {
+			"value": ""
+		},
 		"SqlServer1_password": {
 			"value": ""
 		},
-		"netiadfblobLS_connectionString": {
-			"value": ""
+		"LS_PostgreSQL_Source_properties_typeProperties_server": {
+			"value": "192.168.5.16"
+		},
+		"LS_PostgreSQL_Source_properties_typeProperties_database": {
+			"value": "postgres"
+		},
+		"LS_PostgreSQL_Source_properties_typeProperties_username": {
+			"value": "postgres"
+		},
+		"PostgreSql1_properties_typeProperties_server": {
+			"value": "192.168.5.16"
+		},
+		"PostgreSql1_properties_typeProperties_database": {
+			"value": "acuvon"
+		},
+		"PostgreSql1_properties_typeProperties_username": {
+			"value": "postgres"
+		},
+		"Snowflake1_properties_typeProperties_database": {
+			"value": "POSTGRES_DB"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"value": "RRAGCXV-JR02399.snowflakecomputing.com"
 		},
 		"SqlServer1_properties_typeProperties_server": {
 			"value": "LAPTOP-CO7ORNPR"
@@ -19,6 +49,9 @@
 		},
 		"SqlServer1_properties_typeProperties_userName": {
 			"value": "superuser"
+		},
+		"netiadfblobLS_sasUri": {
+			"value": ""
 		},
 		"blob_eventbased_properties_pipeline1_parameters_filename": {
 			"value": "@triggerBody().fileName"

@@ -7,43 +7,153 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "NetisionADF"
 		},
-		"netiadfblobLS_connectionString": {
+		"Snowflake1_password": {
 			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'netiadfblobLS'"
+			"metadata": "Secure string for 'password' of 'Snowflake1'"
 		},
-		"SqlServer1_password": {
+		"Snowflake1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "POSTGRES_DB"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RRAGCXV-JR02399.snowflakecomputing.com"
+		},
+		"netiadfblobLS_sasUri": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'SqlServer1'"
-		},
-		"SqlServer1_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "LAPTOP-CO7ORNPR"
-		},
-		"SqlServer1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "DBAREA"
-		},
-		"SqlServer1_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "superuser"
-		},
-		"blob_eventbased_properties_pipeline1_parameters_filename": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
-		"blob_eventbased_properties_pipeline1_parameters_folderpath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
-		},
-		"blob_eventbased_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/0b62f40c-406b-4239-b8ec-a3410809c3ca/resourceGroups/netison-ai-project/providers/Microsoft.Storage/storageAccounts/netisionadfblob"
+			"metadata": "Secure string for 'sasUri' of 'netiadfblobLS'"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AcuvonDataPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "Filter1",
+						"type": "Filter",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@startsWith(item().name,'turbo_act_fy_')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"FileName": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/etl_turbo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Init_task",
+						"type": "Script",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"scripts": [],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "JR02399",
+					"user": "RUSHIL",
+					"database": "[parameters('Snowflake1_properties_typeProperties_database')]",
+					"warehouse": "DATA_WAREHOUSE",
+					"host": "[parameters('Snowflake1_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Snowflake1_password')]"
+					},
+					"useUtcTimestamps": false
+				},
+				"version": "1.1"
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/netiadfblobLS')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -53,13 +163,23 @@
 				"annotations": [],
 				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"connectionString": "[parameters('netiadfblobLS_connectionString')]"
+					"sasUri": "[parameters('netiadfblobLS_sasUri')]"
 				}
 			},
 			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/integrationRuntime1')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/rushilVMIntegration')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -250,6 +370,190 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText8')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "netiadfblobLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "egy-sdm-20260320-20260320.csv",
+						"folderPath": "websdm_archive",
+						"container": "netidevadf"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "REF_DATE",
+						"type": "String"
+					},
+					{
+						"name": "EVENT_NAME",
+						"type": "String"
+					},
+					{
+						"name": "IDENTITY",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_ID",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DATE",
+						"type": "String"
+					},
+					{
+						"name": "DELIVER_TIME",
+						"type": "String"
+					},
+					{
+						"name": "ACTUAL_SOS",
+						"type": "String"
+					},
+					{
+						"name": "CUST_PHONE",
+						"type": "String"
+					},
+					{
+						"name": "CUST_EMAIL",
+						"type": "String"
+					},
+					{
+						"name": "SRC_NAME",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STOREID",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STORENUM",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STORENAME",
+						"type": "String"
+					},
+					{
+						"name": "CTY_NAME",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_TOTAL",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_SUBTOTAL",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_SERVICE_CHARGE",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_ORDERMODE",
+						"type": "String"
+					},
+					{
+						"name": "DISCOUNT_ID",
+						"type": "String"
+					},
+					{
+						"name": "DISCOUNT_AMOUNT",
+						"type": "String"
+					},
+					{
+						"name": "DISCOUNT_NAME",
+						"type": "String"
+					},
+					{
+						"name": "CON_NAME",
+						"type": "String"
+					},
+					{
+						"name": "CRT_DATE",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DATEOFTRANS",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_CHECKNO",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_STORE_DOB",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DISCOUNTTOTAL",
+						"type": "String"
+					},
+					{
+						"name": "ORDR_DATE_LOC",
+						"type": "String"
+					},
+					{
+						"name": "DB_TIME_ZONE",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_qf9')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "netiadfblobLS",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"folderPath": "csvfiles",
+						"container": "postgresdata"
+					},
+					"columnDelimiter": ",",
+					"rowDelimiter": "\n",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ExcelData')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -395,6 +699,216 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Excel_files')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "netiadfblobLS",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "Sheet1",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "turbo_act_fy_20250101.xlsx",
+						"folderPath": "Atyab/Protein & Frozen",
+						"container": "agethia-ingestion-data"
+					}
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -420,161 +934,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_parametrized')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "netiadfblobLS",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": "websdmfiles",
-						"container": "netidevadf"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "REF_DATE",
-						"type": "String"
-					},
-					{
-						"name": "EVENT_NAME",
-						"type": "String"
-					},
-					{
-						"name": "IDENTITY",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_ID",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_DATE",
-						"type": "String"
-					},
-					{
-						"name": "DELIVER_TIME",
-						"type": "String"
-					},
-					{
-						"name": "ACTUAL_SOS",
-						"type": "String"
-					},
-					{
-						"name": "CUST_PHONE",
-						"type": "String"
-					},
-					{
-						"name": "CUST_EMAIL",
-						"type": "String"
-					},
-					{
-						"name": "SRC_NAME",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_STOREID",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_STORENUM",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_STORENAME",
-						"type": "String"
-					},
-					{
-						"name": "CTY_NAME",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_TOTAL",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_SUBTOTAL",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_SERVICE_CHARGE",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_ORDERMODE",
-						"type": "String"
-					},
-					{
-						"name": "DISCOUNT_ID",
-						"type": "String"
-					},
-					{
-						"name": "DISCOUNT_AMOUNT",
-						"type": "String"
-					},
-					{
-						"name": "DISCOUNT_NAME",
-						"type": "String"
-					},
-					{
-						"name": "CON_NAME",
-						"type": "String"
-					},
-					{
-						"name": "CRT_DATE",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_DATEOFTRANS",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_CHECKNO",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_STORE_DOB",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_DISCOUNTTOTAL",
-						"type": "String"
-					},
-					{
-						"name": "ORDR_DATE_LOC",
-						"type": "String"
-					},
-					{
-						"name": "DB_TIME_ZONE",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/sds_websdm_archive')]",
+			"name": "[concat(parameters('factoryName'), '/Parquet2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -583,17 +943,14 @@
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Parquet",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"folderPath": "websdm_archive",
-						"container": "netidevadf"
+						"folderPath": "parquetfiles",
+						"container": "postgresdata"
 					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+					"compressionCodec": "snappy"
 				},
 				"schema": []
 			},
@@ -602,1122 +959,40 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/SqlServer1')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "SqlServer",
-				"typeProperties": {
-					"server": "[parameters('SqlServer1_properties_typeProperties_server')]",
-					"database": "[parameters('SqlServer1_properties_typeProperties_database')]",
-					"encrypt": "optional",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('SqlServer1_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('SqlServer1_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "surajIR",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/surajIR')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/rushilparquetconvertingpipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "ExcelData",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter1",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@endswith(item().name,'.csv')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Filter1",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Filter1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": true,
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [
-										{
-											"name": "Source",
-											"value": "netidevadf/websdmfiles/"
-										},
-										{
-											"name": "Destination",
-											"value": "samplefile/inputdata/"
-										}
-									],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true,
-												"wildcardFolderPath": "websdmfiles",
-												"wildcardFileName": {
-													"value": "@item().name",
-													"type": "Expression"
-												},
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "ParquetSink",
-											"storeSettings": {
-												"type": "AzureBlobStorageWriteSettings",
-												"copyBehavior": "PreserveHierarchy",
-												"metadata": [
-													{
-														"name": "fileName",
-														"value": {
-															"value": "@replace(item().name, '.csv', '.parquet')",
-															"type": "Expression"
-														}
-													}
-												]
-											},
-											"formatSettings": {
-												"type": "ParquetWriteSettings"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ExcelData",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "Parquet1",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ExcelData')]",
-				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_sqlserver')]",
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "SqlServer1",
+					"referenceName": "Snowflake1",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
-				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "REF_DATE",
-						"type": "varchar"
-					},
-					{
-						"name": "EVENT_NAME",
-						"type": "varchar"
-					},
-					{
-						"name": "IDENTITY",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_ID",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_DATE",
-						"type": "varchar"
-					},
-					{
-						"name": "DELIVER_TIME",
-						"type": "varchar"
-					},
-					{
-						"name": "ACTUAL_SOS",
-						"type": "varchar"
-					},
-					{
-						"name": "CUST_PHONE",
-						"type": "varchar"
-					},
-					{
-						"name": "CUST_EMAIL",
-						"type": "varchar"
-					},
-					{
-						"name": "SRC_NAME",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_STOREID",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_STORENUM",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_STORENAME",
-						"type": "varchar"
-					},
-					{
-						"name": "CTY_NAME",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_TOTAL",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_SUBTOTAL",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_SERVICE_CHARGE",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_ORDERMODE",
-						"type": "varchar"
-					},
-					{
-						"name": "DISCOUNT_ID",
-						"type": "varchar"
-					},
-					{
-						"name": "DISCOUNT_AMOUNT",
-						"type": "varchar"
-					},
-					{
-						"name": "DISCOUNT_NAME",
-						"type": "varchar"
-					},
-					{
-						"name": "CON_NAME",
-						"type": "varchar"
-					},
-					{
-						"name": "CRT_DATE",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_DATEOFTRANS",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_CHECKNO",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_STORE_DOB",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_DISCOUNTTOTAL",
-						"type": "varchar"
-					},
-					{
-						"name": "ORDR_DATE_LOC",
-						"type": "varchar"
-					},
-					{
-						"name": "DB_TIME_ZONE",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "test_websdm_file"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SqlServer1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText3",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						},
-						{
-							"dataset": {
-								"referenceName": "DelimitedText5",
-								"type": "DatasetReference"
-							},
-							"name": "source2"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText6",
-								"type": "DatasetReference"
-							},
-							"name": "sink1",
-							"rejectedDataLinkedService": {
-								"referenceName": "netiadfblobLS",
-								"type": "LinkedServiceReference"
-							}
-						},
-						{
-							"dataset": {
-								"referenceName": "DelimitedText7",
-								"type": "DatasetReference"
-							},
-							"name": "sink2",
-							"rejectedDataLinkedService": {
-								"referenceName": "netiadfblobLS",
-								"type": "LinkedServiceReference"
-							}
-						}
-					],
-					"transformations": [
-						{
-							"name": "join1"
-						},
-						{
-							"name": "AddMatchPercent"
-						},
-						{
-							"name": "derivedColumn1"
-						},
-						{
-							"name": "SplitByScore"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          CustomerID as string,",
-						"          CustomerName as string,",
-						"          DateOfBirth as date,",
-						"          City as string,",
-						"          AccountType as string,",
-						"          PAN as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source(output(",
-						"          CustomerID as string,",
-						"          CustomerName as string,",
-						"          DateOfBirth as date,",
-						"          City as string,",
-						"          AccountType as string,",
-						"          PAN as string,",
-						"          CreditScore as short,",
-						"          AnnualIncomeLakh as double,",
-						"          KYCStatus as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source2",
-						"source1, source2 join(source1@CustomerName == source2@CustomerName,",
-						"     joinType:'inner',",
-						"     matchType:'exact',",
-						"     ignoreSpaces: false,",
-						"     broadcast: 'auto')~> join1",
-						"source1, source2 join(fuzzyCompare(source1@CustomerName, source2@CustomerName, 90.00),",
-						"     joinType:'inner',",
-						"     matchType:'fuzzy',",
-						"     ignoreSpaces: false,",
-						"     scoreColumn:'match_score',",
-						"     broadcast: 'off')~> AddMatchPercent",
-						"AddMatchPercent derive(match_percentage = match_score) ~> derivedColumn1",
-						"derivedColumn1 split(match_score >= 91,",
-						"     disjoint: false) ~> SplitByScore@(ValidMatches, InvalidMatches)",
-						"SplitByScore@ValidMatches sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1",
-						"SplitByScore@InvalidMatches sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink2"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText5')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText6')]",
-				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText7')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DelimitedText1",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter1",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@endswith(item().name,'.csv')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Filter1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Filter1').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"batchCount": 1,
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "SqlServerSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"mappings": [
-												{
-													"source": {
-														"name": "REF_DATE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "REF_DATE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "EVENT_NAME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "EVENT_NAME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "IDENTITY",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "IDENTITY",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_ID",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_ID",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_DATE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_DATE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "DELIVER_TIME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "DELIVER_TIME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ACTUAL_SOS",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ACTUAL_SOS",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "CUST_PHONE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "CUST_PHONE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "CUST_EMAIL",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "CUST_EMAIL",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "SRC_NAME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "SRC_NAME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_STOREID",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_STOREID",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_STORENUM",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_STORENUM",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_STORENAME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_STORENAME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "CTY_NAME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "CTY_NAME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_TOTAL",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_TOTAL",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_SUBTOTAL",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_SUBTOTAL",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_SERVICE_CHARGE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_SERVICE_CHARGE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_ORDERMODE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_ORDERMODE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "DISCOUNT_ID",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "DISCOUNT_ID",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "DISCOUNT_AMOUNT",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "DISCOUNT_AMOUNT",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "DISCOUNT_NAME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "DISCOUNT_NAME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "CON_NAME",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "CON_NAME",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "CRT_DATE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "CRT_DATE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_DATEOFTRANS",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_DATEOFTRANS",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_CHECKNO",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_CHECKNO",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_STORE_DOB",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_STORE_DOB",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_DISCOUNTTOTAL",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_DISCOUNTTOTAL",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "ORDR_DATE_LOC",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "ORDR_DATE_LOC",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												},
-												{
-													"source": {
-														"name": "DB_TIME_ZONE",
-														"type": "String",
-														"physicalType": "String"
-													},
-													"sink": {
-														"name": "DB_TIME_ZONE",
-														"type": "String",
-														"physicalType": "varchar"
-													}
-												}
-											],
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "ds_blob_parametrized",
-											"type": "DatasetReference",
-											"parameters": {
-												"filename": {
-													"value": "@pipeline().parameters.filename",
-													"type": "Expression"
-												}
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "ds_sqlserver",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
 				"parameters": {
-					"filename": {
-						"type": "string"
+					"p_schema": {
+						"type": "string",
+						"defaultValue": "@dataset().p_schema"
 					},
-					"folderpath": {
-						"type": "string"
+					"p_table": {
+						"type": "string",
+						"defaultValue": "@dataset().p_table"
 					}
 				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]",
-				"[concat(variables('factoryId'), '/datasets/ds_blob_parametrized')]",
-				"[concat(variables('factoryId'), '/datasets/ds_sqlserver')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/rushilfuzzylookuppipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "DelimitedText2",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems",
-								"exists",
-								"lastModified"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter1",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@endswith(item().name, '.csv')",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Data flow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [
-							{
-								"activity": "Filter1",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow1",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"source1": {},
-									"source2": {},
-									"sink1": {},
-									"sink2": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText2')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/blob_eventbased')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "pipeline1",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"filename": "[parameters('blob_eventbased_properties_pipeline1_parameters_filename')]",
-							"folderpath": "[parameters('blob_eventbased_properties_pipeline1_parameters_folderpath')]"
-						}
-					}
-				],
-				"type": "BlobEventsTrigger",
+				"type": "SnowflakeV2Table",
+				"schema": [],
 				"typeProperties": {
-					"blobPathBeginsWith": "/netidevadf/blobs/websdmfiles",
-					"blobPathEndsWith": ".csv",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('blob_eventbased_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
-					]
+					"schema": {
+						"value": "@dataset().p_schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().p_table",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipeline1')]"
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake1')]"
 			]
 		}
 	]
