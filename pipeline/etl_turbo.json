@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "PostgreSqlV2Source",
-						"query": "select dbo.fn_log_etl_start ('etl_turbo')",
+						"query": "select dbo.fn_log_etl_start('etl_turbo') AS log_id;",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
@@ -27,6 +27,11 @@
 				}
 			}
 		],
+		"variables": {
+			"v_log_id": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
