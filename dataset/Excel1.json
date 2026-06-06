@@ -1,0 +1,19 @@
+{
+	"name": "Excel1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Atyab/Protein & Frozen",
+				"container": "agethia-ingestion-data"
+			}
+		},
+		"schema": []
+	}
+}
