@@ -143,8 +143,6 @@
 			{
 				"name": "load_to_stagging",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "assign_batch_id",
@@ -180,8 +178,9 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "Month",
 									"type": "String",
-									"ordinal": 1
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Month",
@@ -190,8 +189,9 @@
 							},
 							{
 								"source": {
+									"name": "Qtr",
 									"type": "String",
-									"ordinal": 2
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Qtr",
@@ -200,8 +200,9 @@
 							},
 							{
 								"source": {
+									"name": "Year",
 									"type": "String",
-									"ordinal": 3
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Year",
@@ -210,8 +211,9 @@
 							},
 							{
 								"source": {
+									"name": "Date",
 									"type": "String",
-									"ordinal": 4
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Date",
@@ -220,8 +222,9 @@
 							},
 							{
 								"source": {
+									"name": "Code",
 									"type": "String",
-									"ordinal": 5
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Code",
@@ -230,8 +233,9 @@
 							},
 							{
 								"source": {
+									"name": "Desc",
 									"type": "String",
-									"ordinal": 6
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Desc",
@@ -240,8 +244,9 @@
 							},
 							{
 								"source": {
+									"name": "Channel",
 									"type": "String",
-									"ordinal": 7
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Channel",
@@ -250,8 +255,9 @@
 							},
 							{
 								"source": {
+									"name": "Region",
 									"type": "String",
-									"ordinal": 8
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Region",
@@ -260,8 +266,9 @@
 							},
 							{
 								"source": {
+									"name": "Sales Qty",
 									"type": "String",
-									"ordinal": 9
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Sales Qty",
@@ -270,8 +277,9 @@
 							},
 							{
 								"source": {
+									"name": "Gross Sales",
 									"type": "String",
-									"ordinal": 10
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Gross Sales",
@@ -280,8 +288,9 @@
 							},
 							{
 								"source": {
+									"name": "Normal Discount",
 									"type": "String",
-									"ordinal": 11
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Normal Discount",
@@ -290,8 +299,9 @@
 							},
 							{
 								"source": {
+									"name": "Brand",
 									"type": "String",
-									"ordinal": 12
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Brand",
@@ -300,8 +310,9 @@
 							},
 							{
 								"source": {
+									"name": "Category",
 									"type": "String",
-									"ordinal": 13
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Category",
@@ -310,8 +321,9 @@
 							},
 							{
 								"source": {
+									"name": "Sub Category",
 									"type": "String",
-									"ordinal": 14
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Sub Category",
@@ -320,8 +332,9 @@
 							},
 							{
 								"source": {
+									"name": "Channel Group",
 									"type": "String",
-									"ordinal": 15
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Channel Group",
@@ -330,8 +343,9 @@
 							},
 							{
 								"source": {
+									"name": "Sales Category",
 									"type": "String",
-									"ordinal": 16
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Sales Category",
@@ -340,8 +354,9 @@
 							},
 							{
 								"source": {
+									"name": "Factory",
 									"type": "String",
-									"ordinal": 17
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Factory",
@@ -350,8 +365,9 @@
 							},
 							{
 								"source": {
+									"name": "Brand Group",
 									"type": "String",
-									"ordinal": 18
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Brand Group",
@@ -360,8 +376,9 @@
 							},
 							{
 								"source": {
+									"name": "Qty Ton",
 									"type": "String",
-									"ordinal": 19
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Qty Ton",
@@ -370,8 +387,9 @@
 							},
 							{
 								"source": {
+									"name": "Gross Rebates",
 									"type": "String",
-									"ordinal": 20
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Gross Rebates",
@@ -380,8 +398,9 @@
 							},
 							{
 								"source": {
+									"name": "Net Rebates",
 									"type": "String",
-									"ordinal": 21
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Net Rebates",
@@ -390,8 +409,9 @@
 							},
 							{
 								"source": {
+									"name": "Total Rebates",
 									"type": "String",
-									"ordinal": 22
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Total Rebates",
@@ -400,8 +420,9 @@
 							},
 							{
 								"source": {
+									"name": "Total Discount",
 									"type": "String",
-									"ordinal": 23
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Total Discount",
@@ -410,8 +431,9 @@
 							},
 							{
 								"source": {
+									"name": "Provision Sales Return",
 									"type": "String",
-									"ordinal": 24
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Provision Sales Return",
@@ -420,8 +442,9 @@
 							},
 							{
 								"source": {
+									"name": "FOC",
 									"type": "String",
-									"ordinal": 25
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "FOC",
@@ -430,8 +453,9 @@
 							},
 							{
 								"source": {
+									"name": "NSV",
 									"type": "String",
-									"ordinal": 26
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "NSV",
@@ -440,8 +464,9 @@
 							},
 							{
 								"source": {
+									"name": "RM",
 									"type": "String",
-									"ordinal": 27
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "RM",
@@ -450,8 +475,9 @@
 							},
 							{
 								"source": {
+									"name": "PK",
 									"type": "String",
-									"ordinal": 28
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "PK",
@@ -460,8 +486,9 @@
 							},
 							{
 								"source": {
+									"name": "Other RM",
 									"type": "String",
-									"ordinal": 29
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Other RM",
@@ -470,8 +497,9 @@
 							},
 							{
 								"source": {
+									"name": "Other",
 									"type": "String",
-									"ordinal": 30
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Other",
@@ -480,8 +508,9 @@
 							},
 							{
 								"source": {
+									"name": "Material",
 									"type": "String",
-									"ordinal": 31
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Material",
@@ -490,8 +519,9 @@
 							},
 							{
 								"source": {
+									"name": "COGS Prod",
 									"type": "String",
-									"ordinal": 32
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "COGS Prod",
@@ -500,8 +530,9 @@
 							},
 							{
 								"source": {
+									"name": "DL",
 									"type": "String",
-									"ordinal": 33
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "DL",
@@ -510,8 +541,9 @@
 							},
 							{
 								"source": {
+									"name": "MOH",
 									"type": "String",
-									"ordinal": 34
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "MOH",
@@ -520,8 +552,9 @@
 							},
 							{
 								"source": {
+									"name": "SC",
 									"type": "String",
-									"ordinal": 35
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "SC",
@@ -530,8 +563,9 @@
 							},
 							{
 								"source": {
+									"name": "MOH Total",
 									"type": "String",
-									"ordinal": 36
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "MOH Total",
@@ -540,8 +574,9 @@
 							},
 							{
 								"source": {
+									"name": "GP",
 									"type": "String",
-									"ordinal": 37
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "GP",
@@ -550,8 +585,9 @@
 							},
 							{
 								"source": {
+									"name": "Sales",
 									"type": "String",
-									"ordinal": 38
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Sales",
@@ -560,8 +596,9 @@
 							},
 							{
 								"source": {
+									"name": "Distribution",
 									"type": "String",
-									"ordinal": 39
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Distribution",
@@ -570,8 +607,9 @@
 							},
 							{
 								"source": {
+									"name": "G&A",
 									"type": "String",
-									"ordinal": 40
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "G&A",
@@ -580,8 +618,9 @@
 							},
 							{
 								"source": {
+									"name": "HO Allocation",
 									"type": "String",
-									"ordinal": 41
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "HO Allocation",
@@ -590,8 +629,9 @@
 							},
 							{
 								"source": {
+									"name": "R&D",
 									"type": "String",
-									"ordinal": 42
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "R&D",
@@ -600,8 +640,9 @@
 							},
 							{
 								"source": {
+									"name": "Export",
 									"type": "String",
-									"ordinal": 43
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Export",
@@ -610,8 +651,9 @@
 							},
 							{
 								"source": {
+									"name": "A&P",
 									"type": "String",
-									"ordinal": 44
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "A&P",
@@ -620,8 +662,9 @@
 							},
 							{
 								"source": {
+									"name": "Sales Promotion",
 									"type": "String",
-									"ordinal": 45
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Sales Promotion",
@@ -630,8 +673,9 @@
 							},
 							{
 								"source": {
+									"name": "Deferred Tax",
 									"type": "String",
-									"ordinal": 46
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Deferred Tax",
@@ -640,8 +684,9 @@
 							},
 							{
 								"source": {
+									"name": "Income Tax",
 									"type": "String",
-									"ordinal": 47
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Income Tax",
@@ -650,8 +695,9 @@
 							},
 							{
 								"source": {
+									"name": "Interest",
 									"type": "String",
-									"ordinal": 48
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Interest",
@@ -660,8 +706,9 @@
 							},
 							{
 								"source": {
+									"name": "Provision",
 									"type": "String",
-									"ordinal": 49
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Provision",
@@ -670,8 +717,9 @@
 							},
 							{
 								"source": {
+									"name": "Other Gain",
 									"type": "String",
-									"ordinal": 50
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Other Gain",
@@ -680,8 +728,9 @@
 							},
 							{
 								"source": {
+									"name": "Sales Bouns",
 									"type": "String",
-									"ordinal": 51
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Sales Bouns",
@@ -690,8 +739,9 @@
 							},
 							{
 								"source": {
+									"name": "G&A Bouns",
 									"type": "String",
-									"ordinal": 52
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "G&A Bouns",
@@ -700,8 +750,9 @@
 							},
 							{
 								"source": {
+									"name": "R&D Bonus",
 									"type": "String",
-									"ordinal": 53
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "R&D Bonus",
@@ -710,8 +761,9 @@
 							},
 							{
 								"source": {
+									"name": "Export Bonus",
 									"type": "String",
-									"ordinal": 54
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Export Bonus",
@@ -720,8 +772,9 @@
 							},
 							{
 								"source": {
+									"name": "Distribution Bouns",
 									"type": "String",
-									"ordinal": 55
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Distribution Bouns",
@@ -730,8 +783,9 @@
 							},
 							{
 								"source": {
+									"name": "DL Bouns",
 									"type": "String",
-									"ordinal": 56
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "DL Bouns",
@@ -740,8 +794,9 @@
 							},
 							{
 								"source": {
+									"name": "SC Bouns",
 									"type": "String",
-									"ordinal": 57
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "SC Bouns",
@@ -750,8 +805,9 @@
 							},
 							{
 								"source": {
+									"name": "Market/IC",
 									"type": "String",
-									"ordinal": 58
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "Market/IC",
@@ -760,8 +816,9 @@
 							},
 							{
 								"source": {
+									"name": "YTD/YTG",
 									"type": "String",
-									"ordinal": 59
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "YTD/YTG",
@@ -770,8 +827,9 @@
 							},
 							{
 								"source": {
+									"name": "GP Valu",
 									"type": "String",
-									"ordinal": 60
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "GP Valu",
@@ -780,8 +838,9 @@
 							},
 							{
 								"source": {
+									"name": "GP%",
 									"type": "String",
-									"ordinal": 61
+									"physicalType": "String"
 								},
 								"sink": {
 									"name": "GP%",
