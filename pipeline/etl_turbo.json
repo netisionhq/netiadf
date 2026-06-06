@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "init_etl_log",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
