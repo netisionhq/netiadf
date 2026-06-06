@@ -80,10 +80,57 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "Init_batch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			},
+			{
+				"name": "assign_batch_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Init_batch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_batch_id",
+					"value": {
+						"value": "@string(activity('Init_batch').output.firstRow.log_id)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
 			"v_log_id": {
+				"type": "String"
+			},
+			"v_batch_id": {
 				"type": "String"
 			}
 		},
