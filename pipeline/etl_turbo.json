@@ -29,7 +29,8 @@
 		],
 		"variables": {
 			"v_log_id": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "@string(activity('init_etl_log').output.firstRow.log_id)"
 			}
 		},
 		"annotations": []
