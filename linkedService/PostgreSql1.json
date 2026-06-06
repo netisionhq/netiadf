@@ -11,10 +11,10 @@
 			"username": "postgres",
 			"sslMode": 0,
 			"authenticationType": "Basic",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0Y2Y1MmEwMS1lYjFjLTRlZGYtOGJkZC00YjNiMWQwNDYxNTgiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3ODI1MzVhOS0yOTBlLTQyMDItOTQ3NC1kYmQzM2VhMWNlZDEiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
-			"referenceName": "rushilVMIntegration",
+			"referenceName": "surajIR",
 			"type": "IntegrationRuntimeReference"
 		}
 	}
