@@ -46,6 +46,40 @@
 					"variableName": "v_log_id",
 					"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
 				}
+			},
+			{
+				"name": "Init_batch",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "assign_log_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "PostgreSqlV2Source",
+						"query": {
+							"value": "@select dbo.fn_init_batch_ingestion(variables('v_log_id')) as batch_id;",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "PostgreSqlTable2",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"variables": {
