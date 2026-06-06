@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer1'"
 		},
+		"Odbc_postgresql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Odbc_postgresql'"
+		},
 		"LS_PostgreSQL_Source_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "192.168.5.16"
@@ -929,10 +933,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Init_task",
-						"type": "Script",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
+						"name": "init_etl_log",
+						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -943,17 +945,168 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"scripts": [],
-							"scriptBlockExecutionTimeout": "02:00:00"
+							"source": {
+								"type": "PostgreSqlV2Source",
+								"query": "select dbo.fn_log_etl_start('etl_turbo') AS log_id;",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "PostgreSqlTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "assign_log_id",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "init_etl_log",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_log_id",
+							"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
+						}
+					},
+					{
+						"name": "Init_batch",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "get_file_metadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "PostgreSqlV2Source",
+								"query": {
+									"value": "SELECT dbo.fn_init_batch_ingestion(\n    @{variables('v_log_id')}   ,\n    '@{activity('get_file_metadata').output.itemName}'\n) AS batch_id;",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "PostgreSqlTable2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "get_file_metadata",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "assign_log_id",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Excel_files",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"columnCount",
+								"itemName",
+								"structure"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "assign_batch_id",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Init_batch",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "v_batch_id",
+							"value": {
+								"value": "@string(activity('Init_batch').output.firstRow.batch_id)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"enableStaging": false
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"variables": {
+					"v_log_id": {
+						"type": "String"
+					},
+					"v_batch_id": {
+						"type": "String"
+					}
+				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/PostgreSqlTable2')]",
+				"[concat(variables('factoryId'), '/datasets/Excel_files')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
@@ -3267,12 +3420,12 @@
 					"authenticationType": "Basic"
 				},
 				"connectVia": {
-					"referenceName": "rushilVMIntegration",
+					"referenceName": "surajIR",
 					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/rushilVMIntegration')]"
+				"[concat(variables('factoryId'), '/integrationRuntimes/surajIR')]"
 			]
 		},
 		{
@@ -3523,6 +3676,47 @@
 				"[concat(variables('factoryId'), '/datasets/DelimitedText6')]",
 				"[concat(variables('factoryId'), '/linkedServices/netiadfblobLS')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText7')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSqlTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "PostgreSql1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "PostgreSqlV2Table",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/PostgreSql1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Odbc_postgresql')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "Odbc",
+				"typeProperties": {
+					"connectionString": {
+						"type": "SecureString",
+						"value": "[parameters('Odbc_postgresql_connectionString')]"
+					},
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "surajIR",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/surajIR')]"
 			]
 		}
 	]

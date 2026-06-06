@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer1'"
 		},
+		"Odbc_postgresql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Odbc_postgresql'"
+		},
 		"LS_PostgreSQL_Source_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "192.168.5.16"
@@ -148,6 +152,9 @@
 					},
 					"SqlServer1_password": {
 						"value": "[parameters('SqlServer1_password')]"
+					},
+					"Odbc_postgresql_connectionString": {
+						"value": "[parameters('Odbc_postgresql_connectionString')]"
 					},
 					"LS_PostgreSQL_Source_properties_typeProperties_server": {
 						"value": "[parameters('LS_PostgreSQL_Source_properties_typeProperties_server')]"
