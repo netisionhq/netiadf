@@ -70,7 +70,7 @@
 					"source": {
 						"type": "PostgreSqlV2Source",
 						"query": {
-							"value": "SELECT dbo.fn_init_batch_ingestion(\n    @{variables('v_log_id')}   ,\n    activity('get_file_metadata').output.itemName\n) AS batch_id;",
+							"value": "SELECT dbo.fn_init_batch_ingestion(\n    @{variables('v_log_id')}   ,\n    '@{activity('get_file_metadata').output.itemName}'\n) AS batch_id;",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00"
