@@ -17,10 +17,6 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"dataset": {
-						"referenceName": "Excel1",
-						"type": "DatasetReference"
-					},
 					"fieldList": [
 						"childItems"
 					],
