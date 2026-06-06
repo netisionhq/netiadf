@@ -25,12 +25,32 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "assign_log_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "init_etl_log",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_log_id",
+					"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
+				}
 			}
 		],
 		"variables": {
 			"v_log_id": {
-				"type": "String",
-				"defaultValue": "@string(activity('init_etl_log').output.firstRow.log_id)"
+				"type": "String"
 			}
 		},
 		"annotations": []
