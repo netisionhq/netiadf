@@ -1,0 +1,15 @@
+{
+	"name": "odbc_postgresql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Odbc_postgresql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OdbcTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "\"dbo\".\"stg_turbo_act_fy\""
+		}
+	}
+}
