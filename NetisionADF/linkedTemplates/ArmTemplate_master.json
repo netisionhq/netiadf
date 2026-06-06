@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'LS_PostgreSQL_Source'"
 		},
+		"Odbc_postgresql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Odbc_postgresql'"
+		},
 		"PostgreSql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'PostgreSql1'"
@@ -22,10 +26,6 @@
 		"SqlServer1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer1'"
-		},
-		"Odbc_postgresql_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'Odbc_postgresql'"
 		},
 		"LS_PostgreSQL_Source_properties_typeProperties_server": {
 			"type": "string",
@@ -147,14 +147,14 @@
 					"LS_PostgreSQL_Source_password": {
 						"value": "[parameters('LS_PostgreSQL_Source_password')]"
 					},
+					"Odbc_postgresql_connectionString": {
+						"value": "[parameters('Odbc_postgresql_connectionString')]"
+					},
 					"PostgreSql1_password": {
 						"value": "[parameters('PostgreSql1_password')]"
 					},
 					"SqlServer1_password": {
 						"value": "[parameters('SqlServer1_password')]"
-					},
-					"Odbc_postgresql_connectionString": {
-						"value": "[parameters('Odbc_postgresql_connectionString')]"
 					},
 					"LS_PostgreSQL_Source_properties_typeProperties_server": {
 						"value": "[parameters('LS_PostgreSQL_Source_properties_typeProperties_server')]"

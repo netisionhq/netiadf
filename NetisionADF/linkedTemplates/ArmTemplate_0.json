@@ -683,190 +683,252 @@
 						"fileName": "turbo_act_fy_20250101.xlsx",
 						"folderPath": "Atyab/Protein & Frozen",
 						"container": "agethia-ingestion-data"
-					}
+					},
+					"firstRowAsHeader": true
 				},
 				"schema": [
 					{
+						"name": "Month",
 						"type": "String"
 					},
 					{
+						"name": "Qtr",
 						"type": "String"
 					},
 					{
+						"name": "Year",
 						"type": "String"
 					},
 					{
+						"name": "Date",
 						"type": "String"
 					},
 					{
+						"name": "Code",
 						"type": "String"
 					},
 					{
+						"name": "Desc",
 						"type": "String"
 					},
 					{
+						"name": "Channel",
 						"type": "String"
 					},
 					{
+						"name": "Region",
 						"type": "String"
 					},
 					{
+						"name": "Sales Qty",
 						"type": "String"
 					},
 					{
+						"name": "Gross Sales",
 						"type": "String"
 					},
 					{
+						"name": "Normal Discount",
 						"type": "String"
 					},
 					{
+						"name": "Brand",
 						"type": "String"
 					},
 					{
+						"name": "Category",
 						"type": "String"
 					},
 					{
+						"name": "Sub Category",
 						"type": "String"
 					},
 					{
+						"name": "Channel Group",
 						"type": "String"
 					},
 					{
+						"name": "Sales Category",
 						"type": "String"
 					},
 					{
+						"name": "Factory",
 						"type": "String"
 					},
 					{
+						"name": "Brand Group",
 						"type": "String"
 					},
 					{
+						"name": "Qty Ton",
 						"type": "String"
 					},
 					{
+						"name": "Gross Rebates",
 						"type": "String"
 					},
 					{
+						"name": "Net Rebates",
 						"type": "String"
 					},
 					{
+						"name": "Total Rebates",
 						"type": "String"
 					},
 					{
+						"name": "Total Discount",
 						"type": "String"
 					},
 					{
+						"name": "Provision Sales Return",
 						"type": "String"
 					},
 					{
+						"name": "FOC",
 						"type": "String"
 					},
 					{
+						"name": "NSV",
 						"type": "String"
 					},
 					{
+						"name": "RM",
 						"type": "String"
 					},
 					{
+						"name": "PK",
 						"type": "String"
 					},
 					{
+						"name": "Other RM",
 						"type": "String"
 					},
 					{
+						"name": "Other",
 						"type": "String"
 					},
 					{
+						"name": "Material",
 						"type": "String"
 					},
 					{
+						"name": "COGS Prod",
 						"type": "String"
 					},
 					{
+						"name": "DL",
 						"type": "String"
 					},
 					{
+						"name": "MOH",
 						"type": "String"
 					},
 					{
+						"name": "SC",
 						"type": "String"
 					},
 					{
+						"name": "MOH Total",
 						"type": "String"
 					},
 					{
+						"name": "GP",
 						"type": "String"
 					},
 					{
+						"name": "Sales",
 						"type": "String"
 					},
 					{
+						"name": "Distribution",
 						"type": "String"
 					},
 					{
+						"name": "G&A",
 						"type": "String"
 					},
 					{
+						"name": "HO Allocation",
 						"type": "String"
 					},
 					{
+						"name": "R&D",
 						"type": "String"
 					},
 					{
+						"name": "Export",
 						"type": "String"
 					},
 					{
+						"name": "A&P",
 						"type": "String"
 					},
 					{
+						"name": "Sales Promotion",
 						"type": "String"
 					},
 					{
+						"name": "Deferred Tax",
 						"type": "String"
 					},
 					{
+						"name": "Income Tax",
 						"type": "String"
 					},
 					{
+						"name": "Interest",
 						"type": "String"
 					},
 					{
+						"name": "Provision",
 						"type": "String"
 					},
 					{
+						"name": "Other Gain",
 						"type": "String"
 					},
 					{
+						"name": "Sales Bouns",
 						"type": "String"
 					},
 					{
+						"name": "G&A Bouns",
 						"type": "String"
 					},
 					{
+						"name": "R&D Bonus",
 						"type": "String"
 					},
 					{
+						"name": "Export Bonus",
 						"type": "String"
 					},
 					{
+						"name": "Distribution Bouns",
 						"type": "String"
 					},
 					{
+						"name": "DL Bouns",
 						"type": "String"
 					},
 					{
+						"name": "SC Bouns",
 						"type": "String"
 					},
 					{
+						"name": "Market/IC",
 						"type": "String"
 					},
 					{
+						"name": "YTD/YTG",
 						"type": "String"
 					},
 					{
+						"name": "GP Valu",
 						"type": "String"
 					},
 					{
+						"name": "GP%",
 						"type": "String"
 					}
 				]
