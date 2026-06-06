@@ -238,7 +238,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Desc",
+									"name": "Description",
 									"type": "String"
 								}
 							},
@@ -810,7 +810,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Market/IC",
+									"name": "Market_IC",
 									"type": "String"
 								}
 							},
@@ -821,7 +821,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "YTD/YTG",
+									"name": "YTD_YTG",
 									"type": "String"
 								}
 							},
@@ -843,7 +843,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "GP%",
+									"name": "GP percentage",
 									"type": "String"
 								}
 							}
