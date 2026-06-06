@@ -14,7 +14,8 @@
 				"fileName": "turbo_act_fy_20250101.xlsx",
 				"folderPath": "Atyab/Protein & Frozen",
 				"container": "agethia-ingestion-data"
-			}
+			},
+			"firstRowAsHeader": true
 		},
 		"schema": [
 			{
