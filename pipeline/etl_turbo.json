@@ -3,10 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Init_task",
-				"type": "Script",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
+				"name": "Lookup1",
+				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -17,8 +15,15 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"scripts": [],
-					"scriptBlockExecutionTimeout": "02:00:00"
+					"source": {
+						"type": "PostgreSqlV2Source",
+						"query": "select dbo.fn_log_etl_start ('etl_turbo')",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "PostgreSqlTable2",
+						"type": "DatasetReference"
+					}
 				}
 			}
 		],
