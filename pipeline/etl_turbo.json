@@ -183,7 +183,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Month",
+									"name": "month",
 									"type": "String"
 								}
 							},
@@ -194,7 +194,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Qtr",
+									"name": "qtr",
 									"type": "String"
 								}
 							},
@@ -205,7 +205,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Year",
+									"name": "year",
 									"type": "String"
 								}
 							},
@@ -216,7 +216,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Date",
+									"name": "date",
 									"type": "String"
 								}
 							},
@@ -227,7 +227,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Code",
+									"name": "code",
 									"type": "String"
 								}
 							},
@@ -238,7 +238,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Description",
+									"name": "description",
 									"type": "String"
 								}
 							},
@@ -249,7 +249,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Channel",
+									"name": "channel",
 									"type": "String"
 								}
 							},
@@ -260,7 +260,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Region",
+									"name": "region",
 									"type": "String"
 								}
 							},
@@ -271,7 +271,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sales Qty",
+									"name": "sales_qty",
 									"type": "String"
 								}
 							},
@@ -282,7 +282,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Gross Sales",
+									"name": "gross_sales",
 									"type": "String"
 								}
 							},
@@ -293,7 +293,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Normal Discount",
+									"name": "normal_discount",
 									"type": "String"
 								}
 							},
@@ -304,7 +304,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Brand",
+									"name": "brand",
 									"type": "String"
 								}
 							},
@@ -315,7 +315,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Category",
+									"name": "category",
 									"type": "String"
 								}
 							},
@@ -326,7 +326,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sub Category",
+									"name": "sub_category",
 									"type": "String"
 								}
 							},
@@ -337,7 +337,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Channel Group",
+									"name": "channel_group",
 									"type": "String"
 								}
 							},
@@ -348,7 +348,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sales Category",
+									"name": "sales_category",
 									"type": "String"
 								}
 							},
@@ -359,7 +359,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Factory",
+									"name": "factory",
 									"type": "String"
 								}
 							},
@@ -370,7 +370,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Brand Group",
+									"name": "brand_group",
 									"type": "String"
 								}
 							},
@@ -381,7 +381,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Qty Ton",
+									"name": "qty_ton",
 									"type": "String"
 								}
 							},
@@ -392,7 +392,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Gross Rebates",
+									"name": "gross_rebates",
 									"type": "String"
 								}
 							},
@@ -403,7 +403,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Net Rebates",
+									"name": "net_rebates",
 									"type": "String"
 								}
 							},
@@ -414,7 +414,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Total Rebates",
+									"name": "total_rebates",
 									"type": "String"
 								}
 							},
@@ -425,7 +425,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Total Discount",
+									"name": "total_discount",
 									"type": "String"
 								}
 							},
@@ -436,7 +436,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Provision Sales Return",
+									"name": "provision_sales_return",
 									"type": "String"
 								}
 							},
@@ -447,7 +447,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "FOC",
+									"name": "foc",
 									"type": "String"
 								}
 							},
@@ -458,7 +458,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "NSV",
+									"name": "nsv",
 									"type": "String"
 								}
 							},
@@ -469,7 +469,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RM",
+									"name": "rm",
 									"type": "String"
 								}
 							},
@@ -480,7 +480,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PK",
+									"name": "pk",
 									"type": "String"
 								}
 							},
@@ -491,7 +491,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Other RM",
+									"name": "other_rm",
 									"type": "String"
 								}
 							},
@@ -502,7 +502,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Other",
+									"name": "other",
 									"type": "String"
 								}
 							},
@@ -513,7 +513,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Material",
+									"name": "material",
 									"type": "String"
 								}
 							},
@@ -524,7 +524,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "COGS Prod",
+									"name": "cogs_prod",
 									"type": "String"
 								}
 							},
@@ -535,7 +535,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "DL",
+									"name": "dl",
 									"type": "String"
 								}
 							},
@@ -546,7 +546,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MOH",
+									"name": "moh",
 									"type": "String"
 								}
 							},
@@ -557,7 +557,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "SC",
+									"name": "sc",
 									"type": "String"
 								}
 							},
@@ -568,7 +568,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MOH Total",
+									"name": "moh_total",
 									"type": "String"
 								}
 							},
@@ -579,7 +579,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "GP",
+									"name": "gp",
 									"type": "String"
 								}
 							},
@@ -590,7 +590,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sales",
+									"name": "sales",
 									"type": "String"
 								}
 							},
@@ -601,7 +601,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Distribution",
+									"name": "distribution",
 									"type": "String"
 								}
 							},
@@ -612,7 +612,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "G&A",
+									"name": "g_a",
 									"type": "String"
 								}
 							},
@@ -623,7 +623,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "HO Allocation",
+									"name": "ho_allocation",
 									"type": "String"
 								}
 							},
@@ -634,7 +634,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "R&D",
+									"name": "r_d",
 									"type": "String"
 								}
 							},
@@ -645,7 +645,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Export",
+									"name": "export",
 									"type": "String"
 								}
 							},
@@ -656,7 +656,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "A&P",
+									"name": "a_p",
 									"type": "String"
 								}
 							},
@@ -667,7 +667,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sales Promotion",
+									"name": "sales_promotion",
 									"type": "String"
 								}
 							},
@@ -678,7 +678,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Deferred Tax",
+									"name": "deferred_tax",
 									"type": "String"
 								}
 							},
@@ -689,7 +689,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Income Tax",
+									"name": "income_tax",
 									"type": "String"
 								}
 							},
@@ -700,7 +700,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Interest",
+									"name": "interest",
 									"type": "String"
 								}
 							},
@@ -711,7 +711,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Provision",
+									"name": "provision",
 									"type": "String"
 								}
 							},
@@ -722,7 +722,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Other Gain",
+									"name": "other_gain",
 									"type": "String"
 								}
 							},
@@ -733,7 +733,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Sales Bouns",
+									"name": "sales_bouns",
 									"type": "String"
 								}
 							},
@@ -744,7 +744,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "G&A Bouns",
+									"name": "g_a_bouns",
 									"type": "String"
 								}
 							},
@@ -755,7 +755,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "R&D Bonus",
+									"name": "r_d_bonus",
 									"type": "String"
 								}
 							},
@@ -766,7 +766,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Export Bonus",
+									"name": "export_bonus",
 									"type": "String"
 								}
 							},
@@ -777,7 +777,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Distribution Bouns",
+									"name": "distribution_bouns",
 									"type": "String"
 								}
 							},
@@ -788,7 +788,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "DL Bouns",
+									"name": "dl_bouns",
 									"type": "String"
 								}
 							},
@@ -799,7 +799,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "SC Bouns",
+									"name": "sc_bouns",
 									"type": "String"
 								}
 							},
@@ -810,7 +810,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Market_IC",
+									"name": "market_ic",
 									"type": "String"
 								}
 							},
@@ -821,7 +821,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "YTD_YTG",
+									"name": "ytd_ytg",
 									"type": "String"
 								}
 							},
@@ -832,7 +832,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "GP Valu",
+									"name": "gp_value",
 									"type": "String"
 								}
 							},
@@ -843,7 +843,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "GP percentage",
+									"name": "gp_percent",
 									"type": "String"
 								}
 							}
