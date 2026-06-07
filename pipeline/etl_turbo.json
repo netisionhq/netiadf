@@ -44,7 +44,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "v_log_id",
-					"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
+					"value": {
+						"value": "@string(activity('init_etl_log').output.firstRow.log_id)",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -112,6 +115,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					}
 				}
@@ -867,6 +871,40 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "load_to_stagging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "CALL dbo.sp_run_validations\n(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo_act_fy'\n);",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"variables": {
