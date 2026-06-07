@@ -875,7 +875,7 @@
 				]
 			},
 			{
-				"name": "Lookup1",
+				"name": "bronze_validation_layer",
 				"type": "Lookup",
 				"dependsOn": [
 					{
