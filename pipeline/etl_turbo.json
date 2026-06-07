@@ -913,6 +913,40 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Load_to_history",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "bronze_validation_layer",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "call dbo.sp_move_to_history (\n@{variables('v_batch_id')},\n'dbo.stg_turbo_act_fy',\n'dbo.turbo_act_fy_valid_hist',\n'dbo.turbo_act_fy_invalid_hist'\n)\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"variables": {
