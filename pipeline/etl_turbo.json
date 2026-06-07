@@ -147,6 +147,8 @@
 			{
 				"name": "load_to_stagging",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "assign_batch_id",
@@ -878,6 +880,12 @@
 				"dependsOn": [
 					{
 						"activity": "load_to_stagging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "assign_batch_id",
 						"dependencyConditions": [
 							"Succeeded"
 						]
