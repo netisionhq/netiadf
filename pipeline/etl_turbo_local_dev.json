@@ -61,7 +61,7 @@
 				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "get_file_metadata",
+						"activity": "get_blob_file_list",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -152,14 +152,7 @@
 				"type": "Copy",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "assign_batch_id",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -880,17 +873,9 @@
 			{
 				"name": "bronze_validation_layer",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "load_to_stagging",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "assign_batch_id",
+						"activity": "loop_all_turbo_files",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -944,7 +929,7 @@
 					"source": {
 						"type": "OdbcSource",
 						"query": {
-							"value": "call dbo.sp_move_to_history (\n@{variables('v_batch_id')},\n'dbo.stg_turbo_act_fy',\n'dbo.turbo_act_fy_valid_hist',\n'dbo.turbo_act_fy_invalid_hist'\n)\n",
+							"value": "call dbo.sp_move_to_history (\n@{variables('v_batch_id')},\n'dbo.stg_turbo',\n'dbo.turbo_valid_hist',\n'dbo.turbo_invalid_hist'\n)\n",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00"
@@ -994,7 +979,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "get_blob_file_list",
+						"activity": "assign_batch_id",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1819,14 +1804,7 @@
 			{
 				"name": "Clean_stg_tables",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "get_blob_file_list",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
