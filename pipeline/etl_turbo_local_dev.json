@@ -51,50 +51,9 @@
 				}
 			},
 			{
-				"name": "bronze_validation_layer",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "loop_all_turbo_files",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "OdbcSource",
-						"query": {
-							"value": "CALL dbo.sp_run_validations\n(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo_act_fy'\n);",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00"
-					},
-					"dataset": {
-						"referenceName": "odbc_postgresql",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
 				"name": "Load_to_history",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "bronze_validation_layer",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -1049,6 +1008,40 @@
 								"value": {
 									"value": "@string(activity('Init_batch').output.firstRow.batch_id)",
 									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "bronze_validation_layer",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "load_stagging_data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": {
+										"value": "CALL dbo.sp_run_validations\n(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo'\n);",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
 								}
 							}
 						}
