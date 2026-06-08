@@ -1084,6 +1084,715 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "load_stagging_data",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ExcelSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "OdbcSink",
+									"writeBatchSize": 0
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "Month",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "month",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Qtr",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "qtr",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Year",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "year",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Date",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "date",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Code",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "code",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Desc",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "description",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Channel",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "channel",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Region",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "region",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Sales Qty",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_qty",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Gross Sales",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "gross_sales",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Normal Discount",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "normal_discount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Brand",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "brand",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Category",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "category",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Sub Category",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sub_category",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Channel Group",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "channel_group",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Sales Category",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_category",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Factory",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "factory",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Brand Group",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "brand_group",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Qty Ton",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "qty_ton",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Gross Rebates",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "gross_rebates",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Net Rebates",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "net_rebates",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Total Rebates",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "total_rebates",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Total Discount",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "total_discount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Provision Sales Return",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "provision_sales_return",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "FOC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "foc",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "NSV",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "nsv",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "RM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "rm",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "PK",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "pk",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Other RM",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "other_rm",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Other",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "other",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Material",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "material",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "COGS Prod",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "cogs_prod",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DL",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "dl",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MOH",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "moh",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sc",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "MOH Total",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "moh_total",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "GP",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "gp",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Sales",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Distribution",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "distribution",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "G&A",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "g_a",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "HO Allocation",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ho_allocation",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "R&D",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "r_d",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Export",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "export",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "A&P",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "a_p",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Sales Promotion",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_promotion",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Deferred Tax",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "deferred_tax",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Income Tax",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "income_tax",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Interest",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "interest",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Provision",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "provision",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Other Gain",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "other_gain",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Sales Bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "G&A Bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "g_a_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "R&D Bonus",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "r_d_bonus",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Export Bonus",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "export_bonus",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Distribution Bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "distribution_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "DL Bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "dl_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "SC Bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sc_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "Market/IC",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "market_ic",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "YTD/YTG",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ytd_ytg",
+												"type": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "acuvon_excel2",
+									"type": "DatasetReference",
+									"parameters": {
+										"pFileName": "@item().name"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							]
 						}
 					]
 				}
