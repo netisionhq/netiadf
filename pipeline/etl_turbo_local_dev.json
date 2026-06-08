@@ -1016,6 +1016,15 @@
 												"name": "filetype",
 												"type": "String"
 											}
+										},
+										{
+											"source": {
+												"name": "batch_id"
+											},
+											"sink": {
+												"name": "batch_id",
+												"type": "Int64"
+											}
 										}
 									],
 									"typeConversion": true,
