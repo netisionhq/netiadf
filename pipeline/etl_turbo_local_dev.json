@@ -51,61 +51,6 @@
 				}
 			},
 			{
-				"name": "Init_batch",
-				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "PostgreSqlV2Source",
-						"query": {
-							"value": "SELECT dbo.fn_init_batch_ingestion(\n    @{variables('v_log_id')}   ,\n    '@{activity('get_file_metadata').output.itemName}'\n) AS batch_id;",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00"
-					},
-					"dataset": {
-						"referenceName": "PostgreSqlTable2",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
-				"name": "assign_batch_id",
-				"type": "SetVariable",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "Init_batch",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "v_batch_id",
-					"value": {
-						"value": "@string(activity('Init_batch').output.firstRow.batch_id)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "bronze_validation_layer",
 				"type": "Lookup",
 				"dependsOn": [
@@ -308,7 +253,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "assign_batch_id_copy1",
+									"activity": "assign_batch_id",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1049,7 +994,7 @@
 							]
 						},
 						{
-							"name": "Init_batch_copy",
+							"name": "Init_batch",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -1083,11 +1028,11 @@
 							}
 						},
 						{
-							"name": "assign_batch_id_copy1",
+							"name": "assign_batch_id",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Init_batch_copy",
+									"activity": "Init_batch",
 									"dependencyConditions": [
 										"Succeeded"
 									]
