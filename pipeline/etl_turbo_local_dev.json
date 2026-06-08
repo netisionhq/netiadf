@@ -1041,7 +1041,7 @@
 								"source": {
 									"type": "OdbcSource",
 									"query": {
-										"value": "call dbo.sp_move_to_history (\n@{variables('v_batch_id')},\n'dbo.stg_turbo',\n'dbo.turbo_valid_hist',\n'dbo.turbo_invalid_hist'\n)\n",
+										"value": "SELECT *\nFROM dbo.fn_move_to_history(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo',\n    'dbo.turbo_valid_hist',\n    'dbo.turbo_invalid_hist'\n);",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00"
