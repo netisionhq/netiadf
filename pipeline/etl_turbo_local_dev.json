@@ -95,14 +95,7 @@
 				"type": "GetMetadata",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "assign_log_id",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -965,7 +958,14 @@
 			{
 				"name": "get_blob_file_list",
 				"type": "GetMetadata",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "assign_log_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -985,6 +985,29 @@
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "filter_turbo_files",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "get_blob_file_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_blob_file_list').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@startsWith(item().name,'turbo')",
+						"type": "Expression"
 					}
 				}
 			}
