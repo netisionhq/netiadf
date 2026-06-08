@@ -1041,7 +1041,7 @@
 								"source": {
 									"type": "OdbcSource",
 									"query": {
-										"value": "CALL dbo.sp_run_validations\n(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo'\n);",
+										"value": "CALL dbo.sp_run_validations\n(\n    @{variables('v_batch_id')},\n    'stg_turbo'\n);",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00"
