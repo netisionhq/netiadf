@@ -1,0 +1,22 @@
+{
+	"name": "acuvon_excel2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "Sheet1",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "turbo_bud_20260301.xlsx",
+				"folderPath": "Atyab/Protein & Frozen",
+				"container": "agethia-ingestion-data"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	}
+}

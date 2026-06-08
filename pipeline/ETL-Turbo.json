@@ -16,12 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "OdbcSource",
+						"type": "PostgreSqlV2Source",
 						"query": "select dbo.fn_log_etl_start('etl_turbo') AS log_id;",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
-						"referenceName": "odbc_postgresql",
+						"referenceName": "PostgreSqlTable2",
 						"type": "DatasetReference"
 					}
 				}
@@ -43,8 +43,8 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "",
-					"value": ""
+					"variableName": "v_log_id",
+					"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
 				}
 			},
 			{
@@ -81,8 +81,8 @@
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "Filter1",
+				"type": "Filter",
 				"dependsOn": [
 					{
 						"activity": "Get Metadata1",
@@ -93,12 +93,55 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@startsWith(item().name, 'turbo_')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
 					"activities": [
 						{
-							"name": "Filter1",
-							"type": "Filter",
+							"name": "Get Metadata2",
+							"type": "GetMetadata",
 							"dependsOn": [],
-							"userProperties": []
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "acuvon_excel2",
+									"type": "DatasetReference"
+								},
+								"fieldList": [
+									"columnCount"
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"enablePartitionDiscovery": false
+								}
+							}
 						}
 					]
 				}
