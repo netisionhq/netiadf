@@ -9,7 +9,7 @@
 		"type": "OdbcTable",
 		"schema": [],
 		"typeProperties": {
-			"tableName": "\"dbo\".\"stg_turbo_act_fy\""
+			"tableName": "\"dbo\".\"stg_turbo\""
 		}
 	}
 }
