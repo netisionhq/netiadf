@@ -2,11 +2,15 @@
 	"name": "PostgreSqlTable2",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "PostgreSql1",
+			"referenceName": "surajIR_local_postgresql",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "PostgreSqlV2Table",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "log_etl"
+		}
 	}
 }
