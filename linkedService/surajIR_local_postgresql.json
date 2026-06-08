@@ -1,0 +1,21 @@
+{
+	"name": "surajIR_local_postgresql",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "PostgreSqlV2",
+		"typeProperties": {
+			"server": "192.168.29.58",
+			"port": 5432,
+			"database": "acuvon",
+			"username": "postgres",
+			"sslMode": 0,
+			"authenticationType": "Basic",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4NzNmZjAwMy02YTMzLTQxODQtODI5NC1mMjI3MmQ1Y2ExNzAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "surajIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
