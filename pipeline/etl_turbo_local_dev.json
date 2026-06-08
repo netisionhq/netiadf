@@ -1778,6 +1778,16 @@
 												"name": "ytd_ytg",
 												"type": "String"
 											}
+										},
+										{
+											"source": {
+												"name": "filetype",
+												"type": "String"
+											},
+											"sink": {
+												"name": "filetype",
+												"type": "String"
+											}
 										}
 									],
 									"typeConversion": true,
