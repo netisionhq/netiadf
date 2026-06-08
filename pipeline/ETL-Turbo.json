@@ -44,7 +44,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "v_log_id",
-					"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
+					"value": {
+						"value": "@string(activity('init_etl_log').output.firstRow.log_id)",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -76,6 +79,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					}
 				}
@@ -139,6 +143,7 @@
 								],
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								}
 							}
