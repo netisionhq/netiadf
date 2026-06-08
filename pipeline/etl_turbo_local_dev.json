@@ -55,14 +55,7 @@
 				"type": "Lookup",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [
-					{
-						"activity": "get_blob_file_list",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -89,6 +82,8 @@
 			{
 				"name": "assign_batch_id",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Init_batch",
@@ -217,7 +212,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "assign_batch_id",
+						"activity": "get_blob_file_list",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1054,7 +1049,7 @@
 							]
 						},
 						{
-							"name": "Init_batch_copy1",
+							"name": "Init_batch_copy",
 							"type": "Lookup",
 							"dependsOn": [
 								{
@@ -1092,7 +1087,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Init_batch_copy1",
+									"activity": "Init_batch_copy",
 									"dependencyConditions": [
 										"Succeeded"
 									]
