@@ -1815,6 +1815,37 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Clean_stg_tables",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "get_blob_file_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": "Truncate table dbo.stg_turbo",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"variables": {
