@@ -53,6 +53,8 @@
 			{
 				"name": "Init_batch",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "get_blob_file_list",
@@ -311,7 +313,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Init_batch_copy1",
+									"activity": "assign_batch_id_copy1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1082,6 +1084,30 @@
 								"dataset": {
 									"referenceName": "PostgreSqlTable2",
 									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "assign_batch_id_copy1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Init_batch_copy1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_batch_id",
+								"value": {
+									"value": "@string(activity('Init_batch').output.firstRow.batch_id)",
+									"type": "Expression"
 								}
 							}
 						}
