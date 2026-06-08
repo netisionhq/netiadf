@@ -1009,21 +1009,22 @@
 										},
 										{
 											"source": {
-												"name": "filetype",
+												"name": "batch_id",
 												"type": "String"
-											},
-											"sink": {
-												"name": "filetype",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"name": "batch_id"
 											},
 											"sink": {
 												"name": "batch_id",
 												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "filetype",
+												"type": "String"
+											},
+											"sink": {
+												"name": "filetype",
+												"type": "String"
 											}
 										}
 									],
