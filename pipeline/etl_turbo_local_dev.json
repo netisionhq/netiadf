@@ -5,6 +5,8 @@
 			{
 				"name": "init_etl_log",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -29,6 +31,8 @@
 			{
 				"name": "assign_log_id",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "init_etl_log",
@@ -53,6 +57,8 @@
 			{
 				"name": "Init_batch",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "get_file_metadata",
@@ -87,6 +93,8 @@
 			{
 				"name": "get_file_metadata",
 				"type": "GetMetadata",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "assign_log_id",
@@ -123,6 +131,8 @@
 			{
 				"name": "assign_batch_id",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Init_batch",
@@ -877,6 +887,8 @@
 			{
 				"name": "bronze_validation_layer",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "load_to_stagging",
@@ -917,6 +929,8 @@
 			{
 				"name": "Load_to_history",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "bronze_validation_layer",
@@ -945,6 +959,32 @@
 					"dataset": {
 						"referenceName": "odbc_postgresql",
 						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "get_blob_file_list",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "acuvon_excel",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
 					}
 				}
 			}
