@@ -1838,7 +1838,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "OdbcSource",
-						"query": "Truncate table dbo.stg_turbo",
+						"query": "Truncate table dbo.stg_turbo;\nSELECT 1;",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
