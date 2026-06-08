@@ -1107,6 +1107,15 @@
 							"typeProperties": {
 								"source": {
 									"type": "ExcelSource",
+									"additionalColumns": [
+										{
+											"name": "filetype",
+											"value": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										}
+									],
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
