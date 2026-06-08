@@ -5,8 +5,6 @@
 			{
 				"name": "init_etl_log",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -31,8 +29,6 @@
 			{
 				"name": "assign_log_id",
 				"type": "SetVariable",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "init_etl_log",
@@ -57,8 +53,6 @@
 			{
 				"name": "get_blob_file_list",
 				"type": "GetMetadata",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "assign_log_id",
@@ -93,8 +87,6 @@
 			{
 				"name": "filter_turbo_files",
 				"type": "Filter",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "get_blob_file_list",
@@ -118,8 +110,6 @@
 			{
 				"name": "loop_all_turbo_files",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "filter_turbo_files",
@@ -1068,8 +1058,6 @@
 			{
 				"name": "Clean_stg_tables",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "init_etl_log",
