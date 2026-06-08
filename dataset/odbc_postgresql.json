@@ -2,14 +2,14 @@
 	"name": "odbc_postgresql",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "Odbc_postgresql",
+			"referenceName": "surajIR_local_postgre_odbc",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "OdbcTable",
 		"schema": [],
 		"typeProperties": {
-			"tableName": "\"dbo\".\"stg_turbo\""
+			"tableName": "dbo.stg_turbo"
 		}
 	}
 }
