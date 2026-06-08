@@ -8,8 +8,11 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "Sheet1",
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Atyab/Protein & Frozen",
+				"container": "agethia-ingestion-data"
 			}
 		},
 		"schema": []
