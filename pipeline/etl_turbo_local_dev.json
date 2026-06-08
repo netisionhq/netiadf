@@ -1025,7 +1025,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Filter Turbo Files').output.value",
+						"value": "@activity('filter_turbo_files').output.value\n",
 						"type": "Expression"
 					},
 					"isSequential": true,
