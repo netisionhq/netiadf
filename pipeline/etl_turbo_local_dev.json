@@ -1046,7 +1046,10 @@
 							"typeProperties": {
 								"dataset": {
 									"referenceName": "acuvon_excel2",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"pFileName": "@item().name"
+									}
 								},
 								"fieldList": [
 									"columnCount"
