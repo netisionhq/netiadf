@@ -5,6 +5,11 @@
 			"referenceName": "netiadfblobLS",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"pFileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
