@@ -984,6 +984,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					}
 				}
@@ -1045,10 +1046,7 @@
 							"typeProperties": {
 								"dataset": {
 									"referenceName": "acuvon_excel2",
-									"type": "DatasetReference",
-									"parameters": {
-										"pFileName": "@dataset().pFileName"
-									}
+									"type": "DatasetReference"
 								},
 								"fieldList": [
 									"columnCount"
