@@ -311,7 +311,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Set variable1",
+									"activity": "Init_batch_copy1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1050,6 +1050,40 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "Init_batch_copy1",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "PostgreSqlV2Source",
+									"query": {
+										"value": "SELECT dbo.fn_init_batch_ingestion(\n    @{variables('v_log_id')}   ,\n    '@{activity('get_file_info').output.itemName}'\n) AS batch_id;",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "PostgreSqlTable2",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					]
 				}
