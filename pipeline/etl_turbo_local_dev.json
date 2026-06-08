@@ -1010,6 +1010,60 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "loop_all_turbo_files",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "filter_turbo_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter Turbo Files').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "get_file_info",
+							"type": "GetMetadata",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "acuvon_excel2",
+									"type": "DatasetReference",
+									"parameters": {
+										"pFileName": "@dataset().pFileName"
+									}
+								},
+								"fieldList": [
+									"columnCount"
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
