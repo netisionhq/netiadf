@@ -44,14 +44,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "v_log_id",
-					"value": {
-						"value": "@string(activity('init_etl_log').output.firstRow.log_id)",
-						"type": "Expression"
-					}
+					"value": "@string(activity('init_etl_log').output.firstRow.log_id)"
 				}
 			},
 			{
-				"name": "Get Metadata1",
+				"name": "Get_folder_files",
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
@@ -79,7 +76,6 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
 						"enablePartitionDiscovery": false
 					}
 				}
@@ -89,7 +85,7 @@
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "Get Metadata1",
+						"activity": "Get_folder_files",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -98,7 +94,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata1').output.childItems",
+						"value": "@activity('Get_folder_files').output.childItems",
 						"type": "Expression"
 					},
 					"condition": {
@@ -108,8 +104,8 @@
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
+				"name": "Set variable2",
+				"type": "SetVariable",
 				"dependsOn": [
 					{
 						"activity": "Filter1",
@@ -118,37 +114,17 @@
 						]
 					}
 				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"activities": [
-						{
-							"name": "Get Metadata2",
-							"type": "GetMetadata",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "acuvon_excel2",
-									"type": "DatasetReference"
-								},
-								"fieldList": [
-									"columnCount"
-								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								}
-							}
-						}
-					]
+					"variableName": "FileName",
+					"value": {
+						"value": "@activity('Get_folder_files').output.itemName",
+						"type": "Expression"
+					}
 				}
 			}
 		],

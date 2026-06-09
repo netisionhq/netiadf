@@ -13,8 +13,7 @@
 				"type": "AzureBlobStorageLocation",
 				"folderPath": "Atyab/Protein & Frozen",
 				"container": "agethia-ingestion-data"
-			},
-			"firstRowAsHeader": true
+			}
 		},
 		"schema": [
 			{
