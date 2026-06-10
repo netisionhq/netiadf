@@ -1057,7 +1057,7 @@
 								"source": {
 									"type": "OdbcSource",
 									"query": {
-										"value": "SELECT *\nFROM dbo.fn_move_to_history(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo',\n    'dbo.turbo_valid_hist',\n    'dbo.turbo_invalid_hist',\n    'date',\n    'act',\n    '@{variables('var_start_date')}',\n    '@{variables('var_end_date')}'\n);",
+										"value": "@concat(\n'SELECT * FROM dbo.fn_move_to_history(',\nvariables('v_batch_id'),\n',''dbo.stg_turbo'',\n''dbo.turbo_valid_hist'',\n''dbo.turbo_invalid_hist'',\n''date'',\n''', pipeline().parameters.filetype, ''',\n''', variables('var_start_date'), ''',\n''', variables('var_end_date'), '''\n);'\n)",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00"
