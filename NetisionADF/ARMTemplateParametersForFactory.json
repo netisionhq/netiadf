@@ -20,6 +20,15 @@
 		"SqlServer1_password": {
 			"value": ""
 		},
+		"surajIR_local_postgre_odbc_connectionString": {
+			"value": ""
+		},
+		"surajIR_local_postgre_odbc_password": {
+			"value": ""
+		},
+		"surajIR_local_postgresql_password": {
+			"value": ""
+		},
 		"LS_PostgreSQL_Source_properties_typeProperties_server": {
 			"value": "192.168.5.16"
 		},
@@ -55,6 +64,18 @@
 		},
 		"netiadfblobLS_sasUri": {
 			"value": ""
+		},
+		"surajIR_local_postgre_odbc_properties_typeProperties_userName": {
+			"value": "postgres"
+		},
+		"surajIR_local_postgresql_properties_typeProperties_server": {
+			"value": "192.168.29.58"
+		},
+		"surajIR_local_postgresql_properties_typeProperties_database": {
+			"value": "acuvon"
+		},
+		"surajIR_local_postgresql_properties_typeProperties_username": {
+			"value": "postgres"
 		},
 		"blob_eventbased_properties_pipeline1_parameters_filename": {
 			"value": "@triggerBody().fileName"

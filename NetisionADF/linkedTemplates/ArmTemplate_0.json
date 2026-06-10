@@ -1025,7 +1025,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_parametrized')]",
+			"name": "[concat(parameters('factoryName'), '/acuvon_excel')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1033,143 +1033,207 @@
 					"referenceName": "netiadfblobLS",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "Excel",
 				"typeProperties": {
+					"sheetName": "Sheet1",
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": "websdmfiles",
-						"container": "netidevadf"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
+						"folderPath": "Atyab/Protein & Frozen",
+						"container": "agethia-ingestion-data"
+					}
 				},
 				"schema": [
 					{
-						"name": "REF_DATE",
 						"type": "String"
 					},
 					{
-						"name": "EVENT_NAME",
 						"type": "String"
 					},
 					{
-						"name": "IDENTITY",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_ID",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_DATE",
 						"type": "String"
 					},
 					{
-						"name": "DELIVER_TIME",
 						"type": "String"
 					},
 					{
-						"name": "ACTUAL_SOS",
 						"type": "String"
 					},
 					{
-						"name": "CUST_PHONE",
 						"type": "String"
 					},
 					{
-						"name": "CUST_EMAIL",
 						"type": "String"
 					},
 					{
-						"name": "SRC_NAME",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_STOREID",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_STORENUM",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_STORENAME",
 						"type": "String"
 					},
 					{
-						"name": "CTY_NAME",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_TOTAL",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_SUBTOTAL",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_SERVICE_CHARGE",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_ORDERMODE",
 						"type": "String"
 					},
 					{
-						"name": "DISCOUNT_ID",
 						"type": "String"
 					},
 					{
-						"name": "DISCOUNT_AMOUNT",
 						"type": "String"
 					},
 					{
-						"name": "DISCOUNT_NAME",
 						"type": "String"
 					},
 					{
-						"name": "CON_NAME",
 						"type": "String"
 					},
 					{
-						"name": "CRT_DATE",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_DATEOFTRANS",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_CHECKNO",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_STORE_DOB",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_DISCOUNTTOTAL",
 						"type": "String"
 					},
 					{
-						"name": "ORDR_DATE_LOC",
 						"type": "String"
 					},
 					{
-						"name": "DB_TIME_ZONE",
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
 						"type": "String"
 					}
 				]

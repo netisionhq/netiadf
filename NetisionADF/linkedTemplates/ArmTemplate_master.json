@@ -27,6 +27,18 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'SqlServer1'"
 		},
+		"surajIR_local_postgre_odbc_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'surajIR_local_postgre_odbc'"
+		},
+		"surajIR_local_postgre_odbc_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'surajIR_local_postgre_odbc'"
+		},
+		"surajIR_local_postgresql_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'surajIR_local_postgresql'"
+		},
 		"LS_PostgreSQL_Source_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "192.168.5.16"
@@ -74,6 +86,22 @@
 		"netiadfblobLS_sasUri": {
 			"type": "secureString",
 			"metadata": "Secure string for 'sasUri' of 'netiadfblobLS'"
+		},
+		"surajIR_local_postgre_odbc_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"surajIR_local_postgresql_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "192.168.29.58"
+		},
+		"surajIR_local_postgresql_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "acuvon"
+		},
+		"surajIR_local_postgresql_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
 		},
 		"blob_eventbased_properties_pipeline1_parameters_filename": {
 			"type": "string",
@@ -156,6 +184,15 @@
 					"SqlServer1_password": {
 						"value": "[parameters('SqlServer1_password')]"
 					},
+					"surajIR_local_postgre_odbc_connectionString": {
+						"value": "[parameters('surajIR_local_postgre_odbc_connectionString')]"
+					},
+					"surajIR_local_postgre_odbc_password": {
+						"value": "[parameters('surajIR_local_postgre_odbc_password')]"
+					},
+					"surajIR_local_postgresql_password": {
+						"value": "[parameters('surajIR_local_postgresql_password')]"
+					},
 					"LS_PostgreSQL_Source_properties_typeProperties_server": {
 						"value": "[parameters('LS_PostgreSQL_Source_properties_typeProperties_server')]"
 					},
@@ -183,6 +220,38 @@
 					"SqlServer1_properties_typeProperties_userName": {
 						"value": "[parameters('SqlServer1_properties_typeProperties_userName')]"
 					},
+					"surajIR_local_postgre_odbc_properties_typeProperties_userName": {
+						"value": "[parameters('surajIR_local_postgre_odbc_properties_typeProperties_userName')]"
+					},
+					"surajIR_local_postgresql_properties_typeProperties_server": {
+						"value": "[parameters('surajIR_local_postgresql_properties_typeProperties_server')]"
+					},
+					"surajIR_local_postgresql_properties_typeProperties_database": {
+						"value": "[parameters('surajIR_local_postgresql_properties_typeProperties_database')]"
+					},
+					"surajIR_local_postgresql_properties_typeProperties_username": {
+						"value": "[parameters('surajIR_local_postgresql_properties_typeProperties_username')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'NetisionADF_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "NetisionADF_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
 					"blob_eventbased_properties_pipeline1_parameters_filename": {
 						"value": "[parameters('blob_eventbased_properties_pipeline1_parameters_filename')]"
 					},
@@ -195,7 +264,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'NetisionADF_ArmTemplate_0')]"
+				"[resourceId('Microsoft.Resources/deployments', 'NetisionADF_ArmTemplate_1')]"
 			]
 		}
 	]
