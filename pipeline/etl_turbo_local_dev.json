@@ -7,7 +7,20 @@
 				"type": "Lookup",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "setvar_pipeline_name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "setvar_pipline_enddate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -1099,7 +1112,7 @@
 				}
 			},
 			{
-				"name": "init_etl_config",
+				"name": "Lookup_ETL_Config",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -1113,13 +1126,76 @@
 				"typeProperties": {
 					"source": {
 						"type": "OdbcSource",
-						"query": "select Pipeline_name,start_date,end_date from dbo.etl_configuration where isdeleted=0",
+						"query": "select Pipeline_name,start_date,end_date + INTERVAL '1 day' as end_date from dbo.etl_configuration where isdeleted=0\n",
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
 						"referenceName": "odbc_postgresql",
 						"type": "DatasetReference"
 					}
+				}
+			},
+			{
+				"name": "setvar_pipeline_name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_pipeline_name",
+					"value": "@activity('Lookup_ETL_Config').output.firstRow.pipeline_name"
+				}
+			},
+			{
+				"name": "setvar_pipeline_startdate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_start_date",
+					"value": "@activity('Lookup_ETL_Config').output.firstRow.start_date"
+				}
+			},
+			{
+				"name": "setvar_pipline_enddate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setvar_pipeline_startdate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_end_date",
+					"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date"
 				}
 			}
 		],
@@ -1131,6 +1207,15 @@
 				"type": "String"
 			},
 			"current_file": {
+				"type": "String"
+			},
+			"var_pipeline_name": {
+				"type": "String"
+			},
+			"var_start_date": {
+				"type": "String"
+			},
+			"var_end_date": {
 				"type": "String"
 			}
 		},
