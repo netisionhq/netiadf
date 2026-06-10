@@ -1188,6 +1188,40 @@
 					"variableName": "var_end_date",
 					"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date"
 				}
+			},
+			{
+				"name": "load_dimension",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "loop_all_turbo_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "SELECT dbo.fn_load_dimensions() AS status;",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"parameters": {
