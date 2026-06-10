@@ -5,6 +5,8 @@
 			{
 				"name": "init_etl_log",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "setvar_pipeline_name",
@@ -45,6 +47,8 @@
 			{
 				"name": "assign_log_id",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "init_etl_log",
@@ -69,6 +73,8 @@
 			{
 				"name": "get_blob_file_list",
 				"type": "GetMetadata",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "assign_log_id",
@@ -103,6 +109,8 @@
 			{
 				"name": "filter_turbo_files",
 				"type": "Filter",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "get_blob_file_list",
@@ -126,6 +134,8 @@
 			{
 				"name": "loop_all_turbo_files",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "filter_turbo_files",
@@ -1074,6 +1084,8 @@
 			{
 				"name": "Clean_stg_tables",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "init_etl_log",
@@ -1105,6 +1117,8 @@
 			{
 				"name": "Lookup_ETL_Config",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -1129,6 +1143,8 @@
 			{
 				"name": "setvar_pipeline_name",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "servar_business_unit",
@@ -1150,6 +1166,8 @@
 			{
 				"name": "setvar_pipeline_startdate",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_ETL_Config",
@@ -1171,6 +1189,8 @@
 			{
 				"name": "setvar_pipline_enddate",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "setvar_pipeline_startdate",
@@ -1192,6 +1212,8 @@
 			{
 				"name": "load_dimension",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "loop_all_turbo_files",
@@ -1246,7 +1268,7 @@
 					"source": {
 						"type": "OdbcSource",
 						"query": {
-							"value": "select dbo.sp_load_fact_sales() as fact_sales;",
+							"value": "select dbo.fn_load_fact_sales() as factsales;",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00"
@@ -1260,6 +1282,8 @@
 			{
 				"name": "setvar_company_id",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Lookup_ETL_Config",
@@ -1284,6 +1308,8 @@
 			{
 				"name": "servar_business_unit",
 				"type": "SetVariable",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "setvar_company_id",
