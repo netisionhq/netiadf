@@ -1262,6 +1262,14 @@
 			"filetype": {
 				"type": "string",
 				"defaultValue": "turbo_act"
+			},
+			"company": {
+				"type": "string",
+				"defaultValue": "Atyab"
+			},
+			"business_unit": {
+				"type": "string",
+				"defaultValue": "Protein & Frozen"
 			}
 		},
 		"variables": {
