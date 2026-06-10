@@ -32,7 +32,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "PostgreSqlV2Source",
-						"query": "select dbo.fn_log_etl_start('etl_turbo') AS log_id;",
+						"query": {
+							"value": "@concat(\n'select dbo.fn_log_etl_start(''',\nvariables('var_pipeline_name'),\n''') AS log_id;'\n)",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
@@ -1064,7 +1067,7 @@
 								"source": {
 									"type": "OdbcSource",
 									"query": {
-										"value": "SELECT *\nFROM dbo.fn_move_to_history(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo',\n    'dbo.turbo_valid_hist',\n    'dbo.turbo_invalid_hist'\n);",
+										"value": "SELECT *\nFROM dbo.fn_move_to_history(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo',\n    'dbo.turbo_valid_hist',\n    'dbo.turbo_invalid_hist',\n    'date',\n    'act',\n    '@{variables('var_start_date')}',\n    '@{variables('var_end_date')}'\n);",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00"
