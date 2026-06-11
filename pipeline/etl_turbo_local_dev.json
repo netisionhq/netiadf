@@ -1144,7 +1144,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_pipeline_name",
-					"value": "@activity('Lookup_ETL_Config').output.firstRow.pipeline_name"
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.pipeline_name",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -1165,7 +1168,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_start_date",
-					"value": "@activity('Lookup_ETL_Config').output.firstRow.start_date"
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.start_date",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -1186,7 +1192,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_end_date",
-					"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date"
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -1309,7 +1318,7 @@
 		"parameters": {
 			"filetype": {
 				"type": "string",
-				"defaultValue": "turbo_act"
+				"defaultValue": "turbo"
 			},
 			"company": {
 				"type": "string",
