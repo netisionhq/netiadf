@@ -5,13 +5,13 @@
 		"annotations": [],
 		"type": "PostgreSqlV2",
 		"typeProperties": {
-			"server": "192.168.29.58",
+			"server": "127.0.0.1",
 			"port": 5432,
 			"database": "acuvon",
 			"username": "postgres",
 			"sslMode": 0,
 			"authenticationType": "Basic",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI4NzNmZjAwMy02YTMzLTQxODQtODI5NC1mMjI3MmQ1Y2ExNzAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI1OWM0ZGE1OC01NjZiLTQ1YTctYjQyNC1hMThlZGRmMzQzMjIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "surajIR",
