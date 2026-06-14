@@ -6,8 +6,7 @@
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"sasUri": "https://netisionadfblob.blob.core.windows.net/",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEJGRDFERDMyLTA3QTktNDQ4OC04ODY2LTgxMzA5RTU5RDAyRF8yNmViNWY4ZS04MWMxLTRlNmUtOWVkYS0wODk2NjQ1NzMyZDMiDQp9"
+			"sasUri": "https://netisionadfblob.blob.core.windows.net/agethia-ingestion-data?sp=racwd&st=2026-06-14T02:40:37Z&se=2028-06-14T10:55:37Z&sv=2026-02-06&sr=c&sig=dl1fmPrOADdutdJjktfZruh1LBVGs7ZzBw3JjSMVBfI%3D?sp=racwd&st=2026-06-14T02:40:37Z&se=2028-06-14T10:55:37Z&sv=2026-02-06&sr=c&sig=dl1fmPrOADdutdJjktfZruh1LBVGs7ZzBw3JjSMVBfI%3D"
 		}
 	}
 }
