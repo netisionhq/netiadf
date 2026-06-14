@@ -7,10 +7,6 @@
 		"type": "AzureBlobStorage",
 		"typeProperties": {
 			"sasUri": "https://netisionadfblob.blob.core.windows.net/"
-		},
-		"connectVia": {
-			"referenceName": "surajIR",
-			"type": "IntegrationRuntimeReference"
 		}
 	}
 }
