@@ -13,7 +13,7 @@
 				"folderPath": "Atyab/Protein & Frozen/clean_files",
 				"container": "agethia-ingestion-data"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "\t",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
