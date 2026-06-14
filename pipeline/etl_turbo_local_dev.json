@@ -1006,8 +1006,6 @@
 						{
 							"name": "bronze_validation_layer",
 							"type": "Lookup",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_stagging_data",
@@ -1042,8 +1040,6 @@
 						{
 							"name": "Load_to_history",
 							"type": "Lookup",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "bronze_validation_layer",
