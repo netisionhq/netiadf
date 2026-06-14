@@ -1,5 +1,5 @@
 {
-	"name": "dataflow2",
+	"name": "clean_file",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -103,6 +103,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     partitionFileNames:[($filename)],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sinkcleanfile"
 			]
