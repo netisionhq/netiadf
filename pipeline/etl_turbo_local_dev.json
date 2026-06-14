@@ -932,7 +932,10 @@
 							"inputs": [
 								{
 									"referenceName": "source_to_sink_parquet",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"pFilename": "@item().name"
+									}
 								}
 							],
 							"outputs": [
