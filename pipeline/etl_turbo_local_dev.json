@@ -1398,6 +1398,37 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "mark_etl_failed",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "loop_all_turbo_files",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": "select  dbo.fn_log_etl_end(1,\n'FAILED'\n)\n",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"parameters": {
