@@ -1103,20 +1103,13 @@
 									"type": "DataFlowReference",
 									"parameters": {
 										"filename": {
-											"value": "'@{variables('var_pipeline_name')}'",
+											"value": "'@{item().name}'",
 											"type": "Expression"
 										}
 									},
 									"datasetParameters": {
 										"source1": {
 											"pFileName": "turbo_bud_20260301.xlsx"
-										}
-									},
-									"linkedServiceParameters": {
-										"source1": {
-											"schemaLinkedService": {
-												"pFileName": "turbo_bud_20260301.xlsx"
-											}
 										}
 									}
 								},
