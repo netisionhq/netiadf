@@ -1152,6 +1152,40 @@
 									"type": "DatasetReference"
 								}
 							}
+						},
+						{
+							"name": "mark_batch_success",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Load_to_history",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": {
+										"value": "@concat(\r\n'SELECT dbo.fn_update_batch_status(',\r\nvariables('v_batch_id'),\r\n',''dbo.turbo_valid_hist''',\r\n',''dbo.turbo_invalid_hist''',\r\n',''SUCCESS''',\r\n','''');'\r\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
 						}
 					]
 				}
@@ -1421,7 +1455,41 @@
 				"typeProperties": {
 					"source": {
 						"type": "OdbcSource",
-						"query": "select  dbo.fn_log_etl_end(1,\n'FAILED'\n)\n",
+						"query": "select  dbo.fn_log_etl_end( \n    @{variables('v_log_id')}  ,\n'FAILED'\n)\n",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "mark_etl_success",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "load_fact_sales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "select  dbo.fn_log_etl_end( \n    @{variables('v_log_id')}  ,\n'SUCCESS'\n)\n",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
