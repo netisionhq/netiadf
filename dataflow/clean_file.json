@@ -44,7 +44,8 @@
 				"     format: 'parquet',",
 				"     partitionFileNames:[($filename)],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sinkcleanfile"
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinkcleanfile"
 			]
 		}
 	}
