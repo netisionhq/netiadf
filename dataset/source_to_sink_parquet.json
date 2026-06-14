@@ -5,12 +5,17 @@
 			"referenceName": "netiadfblobLS",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"pFilename": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "turbo_act_ytd_20260410.xlsx",
+				"fileName": "@dataset().pFileName",
 				"folderPath": "Atyab/Protein & Frozen/clean_files",
 				"container": "agethia-ingestion-data"
 			},
