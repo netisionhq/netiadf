@@ -18,7 +18,7 @@
 						"referenceName": "clean_excel_files",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sinkfile"
 				}
 			],
 			"transformations": [
@@ -101,7 +101,7 @@
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sinkfile"
 			]
 		}
 	}
