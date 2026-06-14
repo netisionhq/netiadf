@@ -1,0 +1,21 @@
+{
+	"name": "clean_xls_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "replace(replace($filename,'.xlsx','.parquet'),'.xls','.parquet')",
+				"folderPath": "Atyab/Protein & Frozen/clean_files",
+				"container": "agethia-ingestion-data"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
