@@ -8,7 +8,7 @@
 		"parameters": {
 			"pFileName": {
 				"type": "string",
-				"defaultValue": "turbo_bud_20260301.xlsx"
+				"defaultValue": "$filename"
 			}
 		},
 		"annotations": [],
