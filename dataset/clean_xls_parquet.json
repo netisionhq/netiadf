@@ -8,7 +8,7 @@
 		"parameters": {
 			"clean_file_name": {
 				"type": "string",
-				"defaultValue": "replace(replace($filename,'.xlsx','.parquet'),         '.xls','.parquet')"
+				"defaultValue": "$filename"
 			}
 		},
 		"annotations": [],
