@@ -1259,8 +1259,6 @@
 			{
 				"name": "load_dimension",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "loop_all_turbo_files",
@@ -1295,8 +1293,6 @@
 			{
 				"name": "load_fact_sales",
 				"type": "Lookup",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "load_dimension",
