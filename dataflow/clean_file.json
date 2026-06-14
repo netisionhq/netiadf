@@ -52,7 +52,7 @@
 				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'parquet',",
-				"     partitionFileNames:[($filename)],",
+				"     partitionFileNames:[(replace(replace($filename,'.xlsx','.parquet'),         '.xls','.parquet'))],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     partitionBy('hash', 1)) ~> sinkcleanfile"
