@@ -200,6 +200,8 @@
 						{
 							"name": "load_stagging_data",
 							"type": "Copy",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "assign_batch_id",
@@ -945,6 +947,8 @@
 						{
 							"name": "Init_batch",
 							"type": "Lookup",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "clean_move_file",
@@ -979,6 +983,8 @@
 						{
 							"name": "assign_batch_id",
 							"type": "SetVariable",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Init_batch",
@@ -1003,6 +1009,8 @@
 						{
 							"name": "bronze_validation_layer",
 							"type": "Lookup",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_stagging_data",
@@ -1037,6 +1045,8 @@
 						{
 							"name": "Load_to_history",
 							"type": "Lookup",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "bronze_validation_layer",
@@ -1088,6 +1098,28 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"dataflow": {
+									"referenceName": "clean_file",
+									"type": "DataFlowReference",
+									"parameters": {
+										"filename": {
+											"value": "'@{variables('var_pipeline_name')}'",
+											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"source1": {
+											"pFileName": "turbo_bud_20260301.xlsx"
+										}
+									},
+									"linkedServiceParameters": {
+										"source1": {
+											"schemaLinkedService": {
+												"pFileName": "turbo_bud_20260301.xlsx"
+											}
+										}
+									}
+								},
 								"compute": {
 									"coreCount": 8,
 									"computeType": "General"
@@ -1228,6 +1260,8 @@
 			{
 				"name": "load_dimension",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "loop_all_turbo_files",
@@ -1262,6 +1296,8 @@
 			{
 				"name": "load_fact_sales",
 				"type": "Lookup",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "load_dimension",
