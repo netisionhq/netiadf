@@ -18,7 +18,7 @@
 						"referenceName": "clean_excel_files",
 						"type": "DatasetReference"
 					},
-					"name": "sinkfile"
+					"name": "sinkcleanfile"
 				}
 			],
 			"transformations": [
@@ -27,6 +27,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     filename as string",
+				"}",
 				"source(output(",
 				"          Month as string,",
 				"          Qtr as string,",
@@ -98,10 +101,10 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"source1 sink(allowSchemaDrift: true,",
+				"select1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sinkfile"
+				"     skipDuplicateMapOutputs: true) ~> sinkcleanfile"
 			]
 		}
 	}
