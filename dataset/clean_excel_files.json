@@ -15,6 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().clean_file_name",
+					"type": "Expression"
+				},
 				"folderPath": "Atyab/Protein & Frozen/clean_files",
 				"container": "agethia-ingestion-data"
 			},
