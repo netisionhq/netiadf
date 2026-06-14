@@ -1008,7 +1008,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "fix_date_format",
+									"activity": "clean_numeric_fields",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1213,6 +1213,37 @@
 										"value": "@concat(\n'SELECT dbo.fn_update_batch_status(',\nvariables('v_batch_id'),\n',''dbo.turbo_valid_hist''',\n',''dbo.turbo_invalid_hist''',\n',''FAILED''',\n','''');'\n)",
 										"type": "Expression"
 									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "clean_numeric_fields",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "fix_date_format",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": "select dbo.fn_clean_turbo_numeric_columns()",
 									"queryTimeout": "02:00:00"
 								},
 								"dataset": {
@@ -1489,7 +1520,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "OdbcSource",
-						"query": "select  dbo.fn_log_etl_end( \n    @{variables('v_log_id')}  ,\n'FAILED'\n)\n",
+						"query": {
+							"value": "select  dbo.fn_log_etl_end( \n    @{variables('v_log_id')}  ,\n'FAILED'\n)\n",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00"
 					},
 					"dataset": {
