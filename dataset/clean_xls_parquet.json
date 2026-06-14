@@ -5,12 +5,17 @@
 			"referenceName": "netiadfblobLS",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"clean_file_name": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "replace(replace($filename,'.xlsx','.parquet'),'.xls','.parquet')",
+				"fileName": "@dataset().clean_file_name",
 				"folderPath": "Atyab/Protein & Frozen/clean_files",
 				"container": "agethia-ingestion-data"
 			},
