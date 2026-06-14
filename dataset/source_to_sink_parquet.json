@@ -1,0 +1,258 @@
+{
+	"name": "source_to_sink_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "turbo_act_ytd_20260410.xlsx",
+				"folderPath": "Atyab/Protein & Frozen/clean_files",
+				"container": "agethia-ingestion-data"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "month",
+				"type": "UTF8"
+			},
+			{
+				"name": "qtr",
+				"type": "UTF8"
+			},
+			{
+				"name": "year",
+				"type": "UTF8"
+			},
+			{
+				"name": "date",
+				"type": "UTF8"
+			},
+			{
+				"name": "code",
+				"type": "UTF8"
+			},
+			{
+				"name": "desc",
+				"type": "UTF8"
+			},
+			{
+				"name": "channel",
+				"type": "UTF8"
+			},
+			{
+				"name": "region",
+				"type": "UTF8"
+			},
+			{
+				"name": "sales_qty",
+				"type": "UTF8"
+			},
+			{
+				"name": "gross_sales",
+				"type": "UTF8"
+			},
+			{
+				"name": "normal_discount",
+				"type": "UTF8"
+			},
+			{
+				"name": "brand",
+				"type": "UTF8"
+			},
+			{
+				"name": "category",
+				"type": "UTF8"
+			},
+			{
+				"name": "sub_category",
+				"type": "UTF8"
+			},
+			{
+				"name": "channel_group",
+				"type": "UTF8"
+			},
+			{
+				"name": "sales_category",
+				"type": "UTF8"
+			},
+			{
+				"name": "factory",
+				"type": "UTF8"
+			},
+			{
+				"name": "brand_group",
+				"type": "UTF8"
+			},
+			{
+				"name": "qty_ton",
+				"type": "UTF8"
+			},
+			{
+				"name": "gross_rebates",
+				"type": "UTF8"
+			},
+			{
+				"name": "net_rebates",
+				"type": "UTF8"
+			},
+			{
+				"name": "total_rebates",
+				"type": "UTF8"
+			},
+			{
+				"name": "total_discount",
+				"type": "UTF8"
+			},
+			{
+				"name": "provision_sales_return",
+				"type": "UTF8"
+			},
+			{
+				"name": "foc",
+				"type": "UTF8"
+			},
+			{
+				"name": "nsv",
+				"type": "UTF8"
+			},
+			{
+				"name": "rm",
+				"type": "UTF8"
+			},
+			{
+				"name": "pk",
+				"type": "UTF8"
+			},
+			{
+				"name": "other_rm",
+				"type": "UTF8"
+			},
+			{
+				"name": "other",
+				"type": "UTF8"
+			},
+			{
+				"name": "material",
+				"type": "UTF8"
+			},
+			{
+				"name": "cogs_prod",
+				"type": "UTF8"
+			},
+			{
+				"name": "dl",
+				"type": "UTF8"
+			},
+			{
+				"name": "moh",
+				"type": "UTF8"
+			},
+			{
+				"name": "sc",
+				"type": "UTF8"
+			},
+			{
+				"name": "moh_total",
+				"type": "UTF8"
+			},
+			{
+				"name": "gp",
+				"type": "UTF8"
+			},
+			{
+				"name": "sales",
+				"type": "UTF8"
+			},
+			{
+				"name": "distribution",
+				"type": "UTF8"
+			},
+			{
+				"name": "ganda",
+				"type": "UTF8"
+			},
+			{
+				"name": "ho_allocation",
+				"type": "UTF8"
+			},
+			{
+				"name": "randd",
+				"type": "UTF8"
+			},
+			{
+				"name": "export",
+				"type": "UTF8"
+			},
+			{
+				"name": "aandp",
+				"type": "UTF8"
+			},
+			{
+				"name": "sales_promotion",
+				"type": "UTF8"
+			},
+			{
+				"name": "deferred_tax",
+				"type": "UTF8"
+			},
+			{
+				"name": "income_tax",
+				"type": "UTF8"
+			},
+			{
+				"name": "interest",
+				"type": "UTF8"
+			},
+			{
+				"name": "provision",
+				"type": "UTF8"
+			},
+			{
+				"name": "other_gain",
+				"type": "UTF8"
+			},
+			{
+				"name": "sales_bouns",
+				"type": "UTF8"
+			},
+			{
+				"name": "ganda_bouns",
+				"type": "UTF8"
+			},
+			{
+				"name": "randd_bonus",
+				"type": "UTF8"
+			},
+			{
+				"name": "export_bonus",
+				"type": "UTF8"
+			},
+			{
+				"name": "distribution_bouns",
+				"type": "UTF8"
+			},
+			{
+				"name": "dl_bouns",
+				"type": "UTF8"
+			},
+			{
+				"name": "sc_bouns",
+				"type": "UTF8"
+			},
+			{
+				"name": "market/ic",
+				"type": "UTF8"
+			},
+			{
+				"name": "ytd/ytg",
+				"type": "UTF8"
+			}
+		]
+	}
+}
