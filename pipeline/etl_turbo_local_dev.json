@@ -1107,6 +1107,9 @@
 									"datasetParameters": {
 										"source1": {
 											"pFileName": "$filename"
+										},
+										"sinkcleanfile": {
+											"clean_file_name": "$filename"
 										}
 									}
 								},
