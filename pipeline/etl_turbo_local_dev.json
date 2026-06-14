@@ -1008,7 +1008,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "load_stagging_data",
+									"activity": "fix_date_format",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1120,6 +1120,37 @@
 									"computeType": "General"
 								},
 								"traceLevel": "Fine"
+							}
+						},
+						{
+							"name": "fix_date_format",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "load_stagging_data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": "select dbo.fn_update_month_end_date(\n'dbo.stg_turbo',\n'month',\n'year',\n'date'\n)",
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
 							}
 						}
 					]
