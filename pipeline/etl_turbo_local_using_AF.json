@@ -1,0 +1,1612 @@
+{
+	"name": "etl_turbo_local_using_AF",
+	"properties": {
+		"activities": [
+			{
+				"name": "init_etl_log",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "setvar_pipeline_name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "setvar_pipline_enddate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "PostgreSqlV2Source",
+						"query": {
+							"value": "@concat(\n'select dbo.fn_log_etl_start(''',\nvariables('var_pipeline_name'),\n''') AS log_id;'\n)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "PostgreSqlTable2",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "assign_log_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "init_etl_log",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_log_id",
+					"value": {
+						"value": "@string(activity('init_etl_log').output.firstRow.log_id)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "get_blob_file_list",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "assign_log_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "acuvon_excel",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "filter_turbo_files",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "get_blob_file_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_blob_file_list').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(item().name,pipeline().parameters.filetype)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "loop_all_turbo_files",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "filter_turbo_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('filter_turbo_files').output.value\n",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "get_file_info",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "acuvon_excel2",
+									"type": "DatasetReference",
+									"parameters": {
+										"pFileName": "@item().name"
+									}
+								},
+								"fieldList": [
+									"columnCount",
+									"itemName"
+								],
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "get_file_info",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "current_file",
+								"value": {
+									"value": "@concat(\n    'File=',\n    item().name,\n    ', Columns=',\n    string(activity('get_file_info').output.columnCount)\n)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "load_stagging_data",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "assign_batch_id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"additionalColumns": [
+										{
+											"name": "filetype",
+											"value": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "batch_id",
+											"value": {
+												"value": "@variables('v_batch_id')",
+												"type": "Expression"
+											}
+										}
+									],
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "ParquetReadSettings"
+									}
+								},
+								"sink": {
+									"type": "OdbcSink",
+									"writeBatchSize": 0
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "month",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "month",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "qtr",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "qtr",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "year",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "year",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "date",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "date",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "code",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "code",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "desc",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "description",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "channel",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "channel",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "region",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "region",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_qty",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sales_qty",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "gross_sales",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "gross_sales",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "normal_discount",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "normal_discount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "brand",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "brand",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "category",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "category",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sub_category",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sub_category",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "channel_group",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "channel_group",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_category",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sales_category",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "factory",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "factory",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "brand_group",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "brand_group",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "qty_ton",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "qty_ton",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "gross_rebates",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "gross_rebates",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "net_rebates",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "net_rebates",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "total_rebates",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "total_rebates",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "total_discount",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "total_discount",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "provision_sales_return",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "provision_sales_return",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "foc",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "foc",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "nsv",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "nsv",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "rm",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "rm",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "pk",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "pk",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "other_rm",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "other_rm",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "other",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "other",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "material",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "material",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "cogs_prod",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "cogs_prod",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "dl",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "dl",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "moh",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "moh",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sc",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sc",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "moh_total",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "moh_total",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "gp",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "gp",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sales",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sales",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "distribution",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "distribution",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ganda",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "g_a",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ho_allocation",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "ho_allocation",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "randd",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "r_d",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "export",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "export",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "aandp",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "a_p",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_promotion",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sales_promotion",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "deferred_tax",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "deferred_tax",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "income_tax",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "income_tax",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "interest",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "interest",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "provision",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "provision",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "other_gain",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "other_gain",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_bouns",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sales_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ganda_bouns",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "g_a_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "randd_bonus",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "r_d_bonus",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "export_bonus",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "export_bonus",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "distribution_bouns",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "distribution_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "dl_bouns",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "dl_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "sc_bouns",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "sc_bouns",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "market/ic",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "market_ic",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "ytd/ytg",
+												"type": "String",
+												"physicalType": "UTF8"
+											},
+											"sink": {
+												"name": "ytd_ytg",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "String"
+											},
+											"sink": {
+												"name": "batch_id",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"name": "filetype",
+												"type": "String"
+											},
+											"sink": {
+												"name": "filetype",
+												"type": "String"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "source_to_sink_parquet",
+									"type": "DatasetReference",
+									"parameters": {
+										"pFilename": "@item().name"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Init_batch",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "clean_move_file",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "PostgreSqlV2Source",
+									"query": {
+										"value": "SELECT dbo.fn_init_batch_ingestion(\n    @{variables('v_log_id')}   ,\n    '@{activity('get_file_info').output.itemName}'\n) AS batch_id;",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "PostgreSqlTable2",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "assign_batch_id",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Init_batch",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_batch_id",
+								"value": {
+									"value": "@string(activity('Init_batch').output.firstRow.batch_id)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "bronze_validation_layer",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "clean_numeric_fields",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": {
+										"value": "SELECT *\nFROM dbo.fn_run_validations(\n    @{variables('v_batch_id')},\n    'dbo.stg_turbo'\n);",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Load_to_history",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "bronze_validation_layer",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": {
+										"value": "@concat(\n'SELECT * FROM dbo.fn_move_to_history(',\nvariables('v_batch_id'),\n',''dbo.stg_turbo'',\n''dbo.turbo_valid_hist'',\n''dbo.turbo_invalid_hist'',\n''date'',\n''', item().name, ''',\n''', variables('var_start_date'), ''',\n''', variables('var_end_date'), ''',\n',\nvariables('v_company_id'),\n',\n',\nvariables('v_business_unit_id'),\n');'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "clean_move_file",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "clean_file",
+									"type": "DataFlowReference",
+									"parameters": {
+										"filename": {
+											"value": "'@{item().name}'",
+											"type": "Expression"
+										}
+									},
+									"datasetParameters": {
+										"source1": {
+											"pFileName": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										},
+										"sinkcleanfile": {
+											"clean_file_name": {
+												"value": "@item().name",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
+						},
+						{
+							"name": "fix_date_format",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "load_stagging_data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": "select dbo.fn_update_month_end_date(\n'dbo.stg_turbo',\n'month',\n'year',\n'date'\n)",
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "mark_batch_success",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Load_to_history",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": {
+										"value": "@concat(\r\n'SELECT dbo.fn_update_batch_status(',\r\nvariables('v_batch_id'),\r\n',''dbo.turbo_valid_hist''',\r\n',''dbo.turbo_invalid_hist''',\r\n',''SUCCESS''',\r\n','''');'\r\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "mark_batch_failed",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "load_stagging_data",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": {
+										"value": "@concat(\n'SELECT dbo.fn_update_batch_status(',\nvariables('v_batch_id'),\n',''dbo.turbo_valid_hist''',\n',''dbo.turbo_invalid_hist''',\n',''FAILED''',\n','''');'\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "clean_numeric_fields",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "fix_date_format",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "OdbcSource",
+									"query": "select dbo.fn_clean_turbo_numeric_columns()",
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "odbc_postgresql",
+									"type": "DatasetReference"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "Clean_stg_tables",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "init_etl_log",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": "Truncate table dbo.stg_turbo;\nSELECT 1;",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Lookup_ETL_Config",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": "select Pipeline_name,start_date,end_date + INTERVAL '1 day' as end_date from dbo.etl_configuration where isdeleted=0\n",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "setvar_pipeline_name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "servar_business_unit",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_pipeline_name",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.pipeline_name",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setvar_pipeline_startdate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_start_date",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.start_date",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setvar_pipline_enddate",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setvar_pipeline_startdate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_end_date",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "load_dimension",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "loop_all_turbo_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "SELECT dbo.fn_load_dimensions() AS status;",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "load_fact_sales",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "load_dimension",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "select dbo.fn_load_fact_sales() as factsales;",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "setvar_company_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_company_id",
+					"value": {
+						"value": "@pipeline().parameters.company",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "servar_business_unit",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "setvar_company_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_business_unit_id",
+					"value": {
+						"value": "@pipeline().parameters.business_unit",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "mark_etl_failed",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "loop_all_turbo_files",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "select  dbo.fn_log_etl_end( \n    @{variables('v_log_id')}  ,\n'FAILED'\n)\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "mark_etl_success",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "load_fact_sales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "OdbcSource",
+						"query": {
+							"value": "select  dbo.fn_log_etl_end( \n    @{variables('v_log_id')}  ,\n'SUCCESS'\n)\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "odbc_postgresql",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"filetype": {
+				"type": "string",
+				"defaultValue": "turbo"
+			},
+			"company": {
+				"type": "string",
+				"defaultValue": "7001"
+			},
+			"business_unit": {
+				"type": "string",
+				"defaultValue": "9001"
+			}
+		},
+		"variables": {
+			"v_log_id": {
+				"type": "String"
+			},
+			"v_batch_id": {
+				"type": "String"
+			},
+			"current_file": {
+				"type": "String"
+			},
+			"var_pipeline_name": {
+				"type": "String"
+			},
+			"var_start_date": {
+				"type": "String"
+			},
+			"var_end_date": {
+				"type": "String"
+			},
+			"v_company_id": {
+				"type": "String"
+			},
+			"v_business_unit_id": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
