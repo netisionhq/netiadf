@@ -26,6 +26,10 @@
 						"Content-Type": "application/json"
 					},
 					"method": "POST"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureFunction1",
+					"type": "LinkedServiceReference"
 				}
 			},
 			{
