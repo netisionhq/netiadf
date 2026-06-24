@@ -1,0 +1,74 @@
+{
+	"name": "Run_Agethia_Ingestion",
+	"properties": {
+		"description": "Triggers the Agethia Excel ingestion pipeline via Azure Function Linked Service.",
+		"activities": [
+			{
+				"name": "Run_Agethia_Pipeline",
+				"description": "Calls the Azure Function which scans blob storage, processes Excel files and uploads CSVs to clean_files",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "01:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "run_pipeline",
+					"body": {
+						"value": "{}",
+						"type": "Expression"
+					},
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"method": "POST"
+				}
+			},
+			{
+				"name": "Check_Pipeline_Status",
+				"description": "Fails ADF run if any files failed processing",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Run_Agethia_Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Run_Agethia_Pipeline').output.summary.failed, 0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Fail_On_Errors",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "@concat('Pipeline completed with ', string(activity('Run_Agethia_Pipeline').output.summary.failed), ' failed file(s). Check Function logs for details.')",
+									"type": "Expression"
+								},
+								"errorCode": "PIPELINE_FAILED"
+							}
+						}
+					]
+				}
+			}
+		],
+		"concurrency": 1,
+		"annotations": [
+			"agethia",
+			"ingestion",
+			"excel-to-csv"
+		]
+	}
+}
