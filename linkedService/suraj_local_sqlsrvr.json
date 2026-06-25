@@ -1,0 +1,21 @@
+{
+	"name": "suraj_local_sqlsrvr",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"server": "LAPTOP-CO7ORNPR",
+			"database": "acuvon",
+			"encrypt": "optional",
+			"trustServerCertificate": false,
+			"authenticationType": "SQL",
+			"userName": "superuser",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIzY2M0MjU5Yi0zZmQ2LTQ4N2EtOGRkMi00NjUzZjBmNGU0YzciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "surajIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
