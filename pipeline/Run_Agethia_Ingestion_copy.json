@@ -1,0 +1,102 @@
+{
+	"name": "Run_Agethia_Ingestion_copy",
+	"properties": {
+		"description": "Triggers the Agethia Excel ingestion pipeline via Azure Function. Scans raw_files, processes tabular and unstructured Excel files, outputs CSV to clean_files.",
+		"activities": [
+			{
+				"name": "Run_Agethia_Pipeline",
+				"description": "Calls the Azure Function which scans blob storage, processes Excel files and uploads CSVs to clean_files",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "01:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "run_pipeline",
+					"body": {
+						"value": "{}",
+						"type": "Expression"
+					},
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"method": "POST"
+				},
+				"linkedServiceName": {
+					"referenceName": "AgethiaAzureLinkFunction",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Check_Pipeline_Status",
+				"description": "Reads the Function JSON response — fails ADF run if any files failed processing",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Run_Agethia_Pipeline",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Run_Agethia_Pipeline').output.summary.failed, 0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Fail_On_Errors",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "@concat('FAILED: ', string(activity('Run_Agethia_Pipeline').output.summary.failed), ' file(s) failed. ', string(activity('Run_Agethia_Pipeline').output.summary.success), ' succeeded, ', string(activity('Run_Agethia_Pipeline').output.summary.skipped), ' skipped. Run at: ', activity('Run_Agethia_Pipeline').output.run_at)",
+									"type": "Expression"
+								},
+								"errorCode": "PIPELINE_FAILED"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Log_Success",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pipeline_status",
+								"value": {
+									"value": "@concat('SUCCESS: ', string(activity('Run_Agethia_Pipeline').output.summary.success), ' files processed, ', string(activity('Run_Agethia_Pipeline').output.summary.skipped), ' skipped. Run at: ', activity('Run_Agethia_Pipeline').output.run_at)",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"concurrency": 1,
+		"variables": {
+			"pipeline_status": {
+				"type": "String"
+			}
+		},
+		"annotations": [
+			"agethia",
+			"ingestion",
+			"excel-to-csv"
+		]
+	}
+}
