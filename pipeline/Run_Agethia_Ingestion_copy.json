@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"functionName": "run_pipeline",
 					"body": {
-						"value": "{}",
+						"value": "{\n    \"folder_name\": \"@{pipeline().parameters.FolderName}\"\n}",
 						"type": "Expression"
 					},
 					"headers": {
@@ -88,6 +88,11 @@
 			}
 		],
 		"concurrency": 1,
+		"parameters": {
+			"FolderName": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"pipeline_status": {
 				"type": "String"
