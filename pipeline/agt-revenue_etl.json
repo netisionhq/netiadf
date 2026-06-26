@@ -56,7 +56,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup_ETL_Config",
+						"activity": "set_v_start_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -80,19 +80,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "set_v_start_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "set_v_end_date",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "set_v_domain",
+						"activity": "set_v_pipeline_name",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -128,7 +116,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup_ETL_Config",
+						"activity": "set_v_end_date",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -152,7 +140,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup_ETL_Config",
+						"activity": "set_v_domain",
 						"dependencyConditions": [
 							"Succeeded"
 						]
