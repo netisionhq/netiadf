@@ -91,6 +91,9 @@
 		"parameters": {
 			"FolderName": {
 				"type": "string"
+			},
+			"BaseFolder": {
+				"type": "string"
 			}
 		},
 		"variables": {
