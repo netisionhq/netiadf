@@ -337,8 +337,6 @@
 						{
 							"name": "load_turbo_data_stg",
 							"type": "Copy",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "set_v_batch_id",
