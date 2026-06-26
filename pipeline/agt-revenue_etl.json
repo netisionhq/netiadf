@@ -296,7 +296,7 @@
 									},
 									"@source_file": {
 										"value": {
-											"value": "@item().name",
+											"value": "null",
 											"type": "Expression"
 										},
 										"type": "String"
