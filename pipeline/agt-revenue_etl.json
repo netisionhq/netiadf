@@ -103,7 +103,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "@concat(\n'EXEC audit.sp_log_etl_start\n @pipeline_name=''', variables('v_pipeline_name'),\n''',\n @domain=''', variables('v_domain'),\n''',\n @company_id=', variables('v_company_id'),\n',\n @business_unit_id=', variables('v_business_unit_id'),\n';')",
+								"value": "@concat(\n'EXEC audit.sp_log_etl_start\n pipeline_name=''', variables('v_pipeline_name'),\n''',\n domain=''', variables('v_domain'),\n''',\n company_id=', pipeline().parameters.company,\n',\n business_unit_id=', pipeline().parameters.business_unit,\n';')",
 								"type": "Expression"
 							}
 						}
