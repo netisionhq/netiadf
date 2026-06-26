@@ -264,7 +264,14 @@
 						{
 							"name": "init_batch",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "get_file_name",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -296,7 +303,7 @@
 									},
 									"@source_file": {
 										"value": {
-											"value": "@item().name",
+											"value": "@variables('v_file_name')",
 											"type": "Expression"
 										},
 										"type": "String"
@@ -317,6 +324,20 @@
 							"linkedServiceName": {
 								"referenceName": "suraj_local_sqlsrvr",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "get_file_name",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_file_name",
+								"value": "item().name"
 							}
 						}
 					]
@@ -356,6 +377,9 @@
 				"type": "String"
 			},
 			"v_domain": {
+				"type": "String"
+			},
+			"v_file_name": {
 				"type": "String"
 			}
 		},
