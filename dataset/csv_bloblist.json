@@ -1,0 +1,236 @@
+{
+	"name": "csv_bloblist",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "Protein & Frozen/Atyab/Clean Files/Revenue",
+				"container": "agethia-ingestion-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "source_filename",
+				"type": "String"
+			},
+			{
+				"name": "source_sheet",
+				"type": "String"
+			},
+			{
+				"name": "month",
+				"type": "String"
+			},
+			{
+				"name": "qtr",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "date",
+				"type": "String"
+			},
+			{
+				"name": "code",
+				"type": "String"
+			},
+			{
+				"name": "desc",
+				"type": "String"
+			},
+			{
+				"name": "channel",
+				"type": "String"
+			},
+			{
+				"name": "sales_qty",
+				"type": "String"
+			},
+			{
+				"name": "gross_sales",
+				"type": "String"
+			},
+			{
+				"name": "normal_discount",
+				"type": "String"
+			},
+			{
+				"name": "brand",
+				"type": "String"
+			},
+			{
+				"name": "category",
+				"type": "String"
+			},
+			{
+				"name": "sub_category",
+				"type": "String"
+			},
+			{
+				"name": "channel_group",
+				"type": "String"
+			},
+			{
+				"name": "sales_category",
+				"type": "String"
+			},
+			{
+				"name": "factory",
+				"type": "String"
+			},
+			{
+				"name": "brand_group",
+				"type": "String"
+			},
+			{
+				"name": "qty_ton",
+				"type": "String"
+			},
+			{
+				"name": "gross_rebates",
+				"type": "String"
+			},
+			{
+				"name": "net_rebates",
+				"type": "String"
+			},
+			{
+				"name": "total_rebates",
+				"type": "String"
+			},
+			{
+				"name": "total_discount",
+				"type": "String"
+			},
+			{
+				"name": "nsv",
+				"type": "String"
+			},
+			{
+				"name": "rm",
+				"type": "String"
+			},
+			{
+				"name": "pk",
+				"type": "String"
+			},
+			{
+				"name": "other_rm",
+				"type": "String"
+			},
+			{
+				"name": "other",
+				"type": "String"
+			},
+			{
+				"name": "material",
+				"type": "String"
+			},
+			{
+				"name": "dl",
+				"type": "String"
+			},
+			{
+				"name": "moh",
+				"type": "String"
+			},
+			{
+				"name": "sc",
+				"type": "String"
+			},
+			{
+				"name": "moh_total",
+				"type": "String"
+			},
+			{
+				"name": "gp",
+				"type": "String"
+			},
+			{
+				"name": "sales",
+				"type": "String"
+			},
+			{
+				"name": "distribution",
+				"type": "String"
+			},
+			{
+				"name": "g_and_a",
+				"type": "String"
+			},
+			{
+				"name": "r_and_d",
+				"type": "String"
+			},
+			{
+				"name": "export",
+				"type": "String"
+			},
+			{
+				"name": "a_and_p",
+				"type": "String"
+			},
+			{
+				"name": "sales_promotion",
+				"type": "String"
+			},
+			{
+				"name": "interest",
+				"type": "String"
+			},
+			{
+				"name": "provision",
+				"type": "String"
+			},
+			{
+				"name": "other_gain",
+				"type": "String"
+			},
+			{
+				"name": "sales_bouns",
+				"type": "String"
+			},
+			{
+				"name": "g_and_a_bouns",
+				"type": "String"
+			},
+			{
+				"name": "r_and_d_bonus",
+				"type": "String"
+			},
+			{
+				"name": "export_bonus",
+				"type": "String"
+			},
+			{
+				"name": "distribution_bouns",
+				"type": "String"
+			},
+			{
+				"name": "dl_bouns",
+				"type": "String"
+			},
+			{
+				"name": "sc_bouns",
+				"type": "String"
+			},
+			{
+				"name": "ytd_ytg",
+				"type": "String"
+			}
+		]
+	}
+}
