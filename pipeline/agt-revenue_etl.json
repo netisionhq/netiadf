@@ -1,0 +1,16 @@
+{
+	"name": "agt-revenue_etl",
+	"properties": {
+		"parameters": {
+			"company": {
+				"type": "string",
+				"defaultValue": "7001"
+			},
+			"business_unit": {
+				"type": "string",
+				"defaultValue": "9001"
+			}
+		},
+		"annotations": []
+	}
+}
