@@ -296,7 +296,7 @@
 									},
 									"business_unit_id": {
 										"value": {
-											"value": "@variables('v_business_unit_id')",
+											"value": "@int(variables('v_business_unit_id'))",
 											"type": "Expression"
 										},
 										"type": "Int64"
