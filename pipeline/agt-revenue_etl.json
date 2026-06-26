@@ -146,6 +146,30 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "set_v_pipeline_name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_pipeline_name",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.pipeline_name",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
