@@ -1137,7 +1137,13 @@
 							"inputs": [
 								{
 									"referenceName": "clean_csv_blob",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"p_filename": {
+											"value": "@variables('v_file_name')",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
