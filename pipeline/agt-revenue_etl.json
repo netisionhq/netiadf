@@ -158,6 +158,30 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "set_v_log_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "init_log_etl",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_log_id",
+					"value": {
+						"value": "@string(activity('init_log_etl').output.firstRow.log_id)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
