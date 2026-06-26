@@ -284,11 +284,17 @@
 								"storedProcedureName": "audit.sp_log_batch_start",
 								"storedProcedureParameters": {
 									"business_unit_id": {
-										"value": "@variables('v_business_unit_id')",
+										"value": {
+											"value": "@pipeline().parameters.business_unit",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"company_id": {
-										"value": "@variables('v_company_id')",
+										"value": {
+											"value": "@pipeline().parameters.company",
+											"type": "Expression"
+										},
 										"type": "Int64"
 									},
 									"log_id": {
