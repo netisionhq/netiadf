@@ -74,6 +74,78 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "init_log_etl",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "set_v_start_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set_v_end_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "set_v_domain",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "suraj_local_sqlsrvr",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "INSERT INTO audit.log_etl\n(\n    pipeline_name,\n    domain,\n    company_id,\n    business_unit_id,\n    start_time,\n    status\n)\nVALUES\n(\n    '@{variables('v_pipeline_name')}',\n    '@{variables('domain')}',\n    @{variables('v_company_id')},\n    @{variables('v_business_unit_id')},\n    GETDATE(),\n    'Started'\n);\n\nSELECT SCOPE_IDENTITY() AS LogID;",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "set_v_domain",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_domain",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.domain",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -106,6 +178,9 @@
 				"type": "String"
 			},
 			"v_end_date": {
+				"type": "String"
+			},
+			"v_domain": {
 				"type": "String"
 			}
 		},
