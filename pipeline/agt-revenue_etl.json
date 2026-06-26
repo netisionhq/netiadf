@@ -259,7 +259,35 @@
 						"value": "@activity('filter_revenue_data_sheet').output.value",
 						"type": "Expression"
 					},
-					"isSequential": true
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "init_batch",
+							"type": "Script",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "INSERT INTO audit.log_batch_ingestion\r\n(\r\n    log_id,\r\n    company_id,\r\n    business_unit_id,\r\n    source_file,\r\n    \r\n    batch_status,\r\n    uploaded_by\r\n)\r\nVALUES\r\n(\r\n    @{variables('v_log_id')},\r\n    @{variables('v_company_id')},\r\n    @{variables('v_business_unit_id')},\r\n    '@{variables('v_file_name')}',\r\n    \r\n    'Started',\r\n    'SYSTEM'\r\n);\r\n\r\nSELECT CAST(SCOPE_IDENTITY() AS BIGINT) AS BatchID;"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					]
 				}
 			}
 		],
