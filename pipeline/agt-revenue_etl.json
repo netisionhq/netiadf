@@ -337,9 +337,11 @@
 						{
 							"name": "load_turbo_data_stg",
 							"type": "Copy",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "init_batch",
+									"activity": "set_v_batch_id",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1155,6 +1157,68 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "set_v_batch_id",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "extract_batch_id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_batch_id",
+								"value": {
+									"value": "@activity('extract_batch_id').output.firstRow.batch_id",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "extract_batch_id",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "init_batch",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat(\n'SELECT MAX(batch_id) AS batch_id\nFROM audit.log_batch_ingestion\nWHERE log_id = ', variables('v_log_id'),\n' AND source_file = ''', variables('v_file_name'), ''''\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "suraj_local_sqlDS_v1",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_table_name": "audit.log_batch_ingestion"
+									}
+								}
+							}
 						}
 					]
 				}
