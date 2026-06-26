@@ -264,8 +264,6 @@
 						{
 							"name": "init_batch",
 							"type": "SqlServerStoredProcedure",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "get_file_name",
@@ -308,17 +306,6 @@
 											"value": "@variables('v_file_name')",
 											"type": "Expression"
 										},
-										"type": "String"
-									},
-									"@sheet_name": {
-										"value": {
-											"value": "SYSTEM",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"@uploaded_by": {
-										"value": "SYSTEM",
 										"type": "String"
 									}
 								}
