@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "Lookup_ETL_Config",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -27,6 +27,51 @@
 					"dataset": {
 						"referenceName": "suraj_local_sqlDS",
 						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "set_v_start_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_start_date",
+					"value": "@activity('Lookup_ETL_Config').output.firstRow.start_date"
+				}
+			},
+			{
+				"name": "set_v_end_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_end_date",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date",
+						"type": "Expression"
 					}
 				}
 			}
@@ -55,6 +100,12 @@
 				"type": "String"
 			},
 			"v_business_unit_id": {
+				"type": "String"
+			},
+			"v_start_date": {
+				"type": "String"
+			},
+			"v_end_date": {
 				"type": "String"
 			}
 		},
