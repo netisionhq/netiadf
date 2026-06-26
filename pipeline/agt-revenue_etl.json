@@ -283,25 +283,25 @@
 							"typeProperties": {
 								"storedProcedureName": "audit.sp_log_batch_start",
 								"storedProcedureParameters": {
-									"@log_id": {
+									"log_id": {
 										"value": "@variables('v_log_id')",
 										"type": "Int64"
 									},
-									"@company_id": {
+									"company_id": {
 										"value": {
 											"value": "@variables('v_company_id')",
 											"type": "Expression"
 										},
 										"type": "Int64"
 									},
-									"@business_unit_id": {
+									"business_unit_id": {
 										"value": {
 											"value": "@variables('v_business_unit_id')",
 											"type": "Expression"
 										},
 										"type": "Int64"
 									},
-									"@source_file": {
+									"source_file": {
 										"value": {
 											"value": "@variables('v_file_name')",
 											"type": "Expression"
