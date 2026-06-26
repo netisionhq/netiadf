@@ -178,7 +178,7 @@
 				"typeProperties": {
 					"variableName": "v_log_id",
 					"value": {
-						"value": "@string(activity('init_log_etl').output.firstRow.log_id)",
+						"value": "@string(activity('init_log_etl').output.resultSets[0].rows[0].LogID)",
 						"type": "Expression"
 					}
 				}
