@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlServerSource",
-						"sqlReaderQuery": "SELECT\n    pipeline_name,\n    domain,\n    company_id,\n    business_unit_id,\n    load_type,\n    start_date,\n    end_date\nFROM config.etl_configuration\nWHERE isdeleted = 0\n  AND is_active = 1\n  AND pipeline_name = 'Revenue Pipeline'\n  AND company_id = @{pipeline().parameters.company_id}\n  AND business_unit_id = @{pipeline().parameters.business_unit_id};",
+						"sqlReaderQuery": {
+							"value": "SELECT\n    pipeline_name,\n    domain,\n    company_id,\n    business_unit_id,\n    load_type,\n    start_date,\n    end_date\nFROM config.etl_configuration\nWHERE isdeleted = 0\n  AND is_active = 1\n  AND pipeline_name = 'Revenue Pipeline'\n  AND company_id = @{pipeline().parameters.company}\n  AND business_unit_id = @{pipeline().parameters.business_unit};",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
