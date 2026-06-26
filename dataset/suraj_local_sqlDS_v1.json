@@ -12,6 +12,10 @@
 		},
 		"annotations": [],
 		"type": "SqlServerTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "stg_turbo_data"
+		}
 	}
 }
