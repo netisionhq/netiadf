@@ -241,6 +241,26 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "loop_blob",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "filter_revenue_data_sheet",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('filter_revenue_data_sheet').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true
+				}
 			}
 		],
 		"parameters": {
