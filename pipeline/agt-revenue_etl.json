@@ -339,7 +339,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "v_file_name",
-								"value": "item().name"
+								"value": "@item().name"
 							}
 						}
 					]
