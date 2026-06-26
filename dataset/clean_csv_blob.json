@@ -15,7 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "turbo_atyab_actfc_2026_ytd_mar_ytg_apr_data.csv",
+				"fileName": {
+					"value": "@dataset().p_filename",
+					"type": "Expression"
+				},
 				"folderPath": "Protein & Frozen/Atyab/Clean Files/Revenue",
 				"container": "agethia-ingestion-data"
 			},
