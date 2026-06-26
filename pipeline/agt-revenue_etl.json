@@ -115,7 +115,7 @@
 						{
 							"type": "Query",
 							"text": {
-								"value": "INSERT INTO audit.log_etl\n(\n    pipeline_name,\n    domain,\n    company_id,\n    business_unit_id,\n    start_time,\n    status\n)\nVALUES\n(\n    '@{variables('v_pipeline_name')}',\n    '@{variables('v_domain')}',\n    @{variables('v_company_id')},\n    @{variables('v_business_unit_id')},\n    GETDATE(),\n    'Started'\n);\n\nSELECT SCOPE_IDENTITY() AS LogID;",
+								"value": "@concat(\n'INSERT INTO audit.log_etl\n(\n    pipeline_name,\n    domain,\n    company_id,\n    business_unit_id,\n    start_time,\n    status\n)\nVALUES\n(''',\nvariables('v_pipeline_name'),\n''',''',\nvariables('v_domain'),\n''',',\nvariables('v_company_id'),\n',',\nvariables('v_business_unit_id'),\n',GETDATE(),''Started'');\n\nSELECT SCOPE_IDENTITY() AS LogID;'\n)",
 								"type": "Expression"
 							}
 						}
