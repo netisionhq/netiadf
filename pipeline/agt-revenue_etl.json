@@ -264,8 +264,6 @@
 						{
 							"name": "init_batch",
 							"type": "SqlServerStoredProcedure",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "get_file_name",
