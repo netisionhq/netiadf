@@ -1177,7 +1177,7 @@
 							"typeProperties": {
 								"variableName": "v_batch_id",
 								"value": {
-									"value": "@activity('extract_batch_id').output.firstRow.batch_id",
+									"value": "@string(activity('extract_batch_id').output.firstRow.batch_id)",
 									"type": "Expression"
 								}
 							}
