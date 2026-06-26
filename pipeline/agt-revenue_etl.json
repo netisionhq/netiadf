@@ -452,7 +452,7 @@
 											"sink": {
 												"name": "description",
 												"type": "String",
-												"physicalType": "varchar"
+												"physicalType": "nvarchar"
 											}
 										},
 										{
