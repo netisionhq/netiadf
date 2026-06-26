@@ -303,13 +303,13 @@
 									},
 									"@sheet_name": {
 										"value": {
-											"value": "''",
+											"value": "null",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"@uploaded_by": {
-										"value": "'SYSTEM'",
+										"value": "SYSTEM",
 										"type": "String"
 									}
 								}
