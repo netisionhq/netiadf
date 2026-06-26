@@ -310,7 +310,7 @@
 									},
 									"@sheet_name": {
 										"value": {
-											"value": "null",
+											"value": "SYSTEM",
 											"type": "Expression"
 										},
 										"type": "String"
