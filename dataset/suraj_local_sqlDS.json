@@ -1,0 +1,12 @@
+{
+	"name": "suraj_local_sqlDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "suraj_local_sqlsrvr",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}

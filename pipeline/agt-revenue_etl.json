@@ -1,6 +1,33 @@
 {
 	"name": "agt-revenue_etl",
 	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select pipeline_name,domain,company_id,business_unit_id,load_type,start_date,end_date \nfrom config.etl_configuration\nwhere isdeleted=0",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "suraj_local_sqlDS",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"company": {
 				"type": "string",
@@ -9,6 +36,23 @@
 			"business_unit": {
 				"type": "string",
 				"defaultValue": "9001"
+			}
+		},
+		"variables": {
+			"v_log_id": {
+				"type": "String"
+			},
+			"v_batch_id": {
+				"type": "String"
+			},
+			"v_pipeline_name": {
+				"type": "String"
+			},
+			"v_company_id": {
+				"type": "String"
+			},
+			"v_business_unit_id": {
+				"type": "String"
 			}
 		},
 		"annotations": []
