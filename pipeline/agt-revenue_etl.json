@@ -1245,7 +1245,7 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "Delete from  stg.stg_turbo_data where [month]='month' ;\nDelete from  stg.stg_turbo_data   where [month] is null and [qtr] is null and [year] is null ;\n\n update stg.stg_turbo_data\n set region = 'UNKNOWN'\n where region  is null ;\n\nUPDATE stg.stg_turbo_data\nSET sales_qty = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, sales_qty)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET gross_sales = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, gross_sales)) < 1E-10;\n\n\nUPDATE stg.stg_turbo_data\nSET normal_discount = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, normal_discount)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET gross_rebates = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, gross_rebates)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET net_rebates = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, net_rebates)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET total_rebates = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, total_rebates)) < 1E-10;\n\n\nUPDATE stg.stg_turbo_data\nSET total_discount = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, total_discount)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET nsv = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, nsv)) < 1E-10;\n\n\nUPDATE stg.stg_turbo_data\nSET rm = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, rm)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET pk = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, pk)) < 1E-10;\n\nUPDATE stg.stg_turbo_data\nSET other_rm = '0'\nWHERE ABS(TRY_CONVERT(FLOAT, other_rm)) < 1E-10;\n\n\nUPDATE stg.stg_turbo_data\nSET\n    sales_qty        = CASE WHEN ABS(TRY_CONVERT(FLOAT,sales_qty))        < 1E-8 THEN '0' ELSE sales_qty END,\n    gross_sales      = CASE WHEN ABS(TRY_CONVERT(FLOAT,gross_sales))      < 1E-8 THEN '0' ELSE gross_sales END,\n    normal_discount  = CASE WHEN ABS(TRY_CONVERT(FLOAT,normal_discount))  < 1E-8 THEN '0' ELSE normal_discount END,\n    gross_rebates    = CASE WHEN ABS(TRY_CONVERT(FLOAT,gross_rebates))    < 1E-8 THEN '0' ELSE gross_rebates END,\n    net_rebates      = CASE WHEN ABS(TRY_CONVERT(FLOAT,net_rebates))      < 1E-8 THEN '0' ELSE net_rebates END,\n    total_rebates    = CASE WHEN ABS(TRY_CONVERT(FLOAT,total_rebates))    < 1E-8 THEN '0' ELSE total_rebates END,\n    total_discount   = CASE WHEN ABS(TRY_CONVERT(FLOAT,total_discount))   < 1E-8 THEN '0' ELSE total_discount END,\n    provision_sales_return = CASE WHEN ABS(TRY_CONVERT(FLOAT,provision_sales_return)) < 1E-8 THEN '0' ELSE provision_sales_return END,\n    foc              = CASE WHEN ABS(TRY_CONVERT(FLOAT,foc))              < 1E-8 THEN '0' ELSE foc END,\n    nsv              = CASE WHEN ABS(TRY_CONVERT(FLOAT,nsv))              < 1E-8 THEN '0' ELSE nsv END;\n"
+										"text": "Delete from  stg.stg_turbo_data where [month]='month' ;\nDelete from  stg.stg_turbo_data   where [month] is null and [qtr] is null and [year] is null ;\n\n update stg.stg_turbo_data\n set region = 'UNKNOWN'\n where region  is null ;\n\nUPDATE stg.stg_turbo_data\nSET\n    sales_qty      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sales_qty),0),6) AS VARCHAR(50)),\n    gross_sales    = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), gross_sales),0),6) AS VARCHAR(50)),\n    normal_discount= CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), normal_discount),0),6) AS VARCHAR(50)),\n    gross_rebates  = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), gross_rebates),0),6) AS VARCHAR(50)),\n    net_rebates    = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), net_rebates),0),6) AS VARCHAR(50)),\n    total_rebates  = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), total_rebates),0),6) AS VARCHAR(50)),\n    total_discount = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), total_discount),0),6) AS VARCHAR(50)),\n    provision_sales_return = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), provision_sales_return),0),6) AS VARCHAR(50)),\n    foc            = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), foc),0),6) AS VARCHAR(50)),\n    nsv            = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), nsv),0),6) AS VARCHAR(50)),\n    rm             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), rm),0),6) AS VARCHAR(50)),\n    pk             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), pk),0),6) AS VARCHAR(50)),\n    other_rm       = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), other_rm),0),6) AS VARCHAR(50)),\n    other          = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), other),0),6) AS VARCHAR(50)),\n    material       = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), material),0),6) AS VARCHAR(50)),\n    cogs_prod      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), cogs_prod),0),6) AS VARCHAR(50)),\n    dl             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), dl),0),6) AS VARCHAR(50)),\n    moh            = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), moh),0),6) AS VARCHAR(50)),\n    sc             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sc),0),6) AS VARCHAR(50)),\n    moh_total      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), moh_total),0),6) AS VARCHAR(50)),\n    gp             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), gp),0),6) AS VARCHAR(50));\n\n\nUPDATE stg.stg_turbo_data\nSET\n    sales_qty        = CASE WHEN ABS(TRY_CONVERT(FLOAT,sales_qty))        < 1E-8 THEN '0' ELSE sales_qty END,\n    gross_sales      = CASE WHEN ABS(TRY_CONVERT(FLOAT,gross_sales))      < 1E-8 THEN '0' ELSE gross_sales END,\n    normal_discount  = CASE WHEN ABS(TRY_CONVERT(FLOAT,normal_discount))  < 1E-8 THEN '0' ELSE normal_discount END,\n    gross_rebates    = CASE WHEN ABS(TRY_CONVERT(FLOAT,gross_rebates))    < 1E-8 THEN '0' ELSE gross_rebates END,\n    net_rebates      = CASE WHEN ABS(TRY_CONVERT(FLOAT,net_rebates))      < 1E-8 THEN '0' ELSE net_rebates END,\n    total_rebates    = CASE WHEN ABS(TRY_CONVERT(FLOAT,total_rebates))    < 1E-8 THEN '0' ELSE total_rebates END,\n    total_discount   = CASE WHEN ABS(TRY_CONVERT(FLOAT,total_discount))   < 1E-8 THEN '0' ELSE total_discount END,\n    provision_sales_return = CASE WHEN ABS(TRY_CONVERT(FLOAT,provision_sales_return)) < 1E-8 THEN '0' ELSE provision_sales_return END,\n    foc              = CASE WHEN ABS(TRY_CONVERT(FLOAT,foc))              < 1E-8 THEN '0' ELSE foc END,\n    nsv              = CASE WHEN ABS(TRY_CONVERT(FLOAT,nsv))              < 1E-8 THEN '0' ELSE nsv END;\n"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
@@ -1285,6 +1285,42 @@
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "load_dimension",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "run_validation",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "dim.sp_load_dimensions",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
