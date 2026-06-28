@@ -1322,6 +1322,67 @@
 								"referenceName": "suraj_local_sqlsrvr",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "load_fact_revenue",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "load_dimension",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "fact.sp_load_fact_revenue",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"business_unit_id": {
+										"value": {
+											"value": "@variables('v_business_unit_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"company_id": {
+										"value": {
+											"value": "@variables('v_company_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"currency_id": {
+										"value": "30001",
+										"type": "Int64"
+									},
+									"log_id": {
+										"value": {
+											"value": "@variables('v_log_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
