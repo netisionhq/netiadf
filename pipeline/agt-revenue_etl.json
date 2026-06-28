@@ -1389,24 +1389,6 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "load_turbo_data_stg",
-									"dependencyConditions": [
-										"Failed"
-									]
-								},
-								{
-									"activity": "run_validation",
-									"dependencyConditions": [
-										"Failed"
-									]
-								},
-								{
-									"activity": "load_dimension",
-									"dependencyConditions": [
-										"Failed"
-									]
-								},
-								{
 									"activity": "load_fact_revenue",
 									"dependencyConditions": [
 										"Failed"
@@ -1436,6 +1418,123 @@
 										"value": "@variables('v_file_name')",
 										"type": "Expression"
 									},
+									"p_activity_name": "Activity_load_fact_revenue",
+									"p_error_message": {
+										"value": "@variables('v_error_message')",
+										"type": "Expression"
+									},
+									"p_pipeline_name": {
+										"value": "@variables('v_pipeline_name')",
+										"type": "Expression"
+									},
+									"p_business_unit": {
+										"value": "@variables('v_business_unit_id')",
+										"type": "Expression"
+									},
+									"p_domain": {
+										"value": "@variables('v_domain')",
+										"type": "Expression"
+									},
+									"p_company_name": {
+										"value": "@variables('v_company_id')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "send_failure_notification_batch_dimension",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "load_dimension",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "agt_etl_failure",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_log_id": {
+										"value": "@variables('v_log_id')",
+										"type": "Expression"
+									},
+									"p_batch_id": {
+										"value": "@variables('v_batch_id')",
+										"type": "Expression"
+									},
+									"p_file_name": {
+										"value": "@variables('v_file_name')",
+										"type": "Expression"
+									},
+									"p_activity_name": "Activity_load_dimension",
+									"p_error_message": {
+										"value": "@variables('v_error_message')",
+										"type": "Expression"
+									},
+									"p_pipeline_name": {
+										"value": "@variables('v_pipeline_name')",
+										"type": "Expression"
+									},
+									"p_business_unit": {
+										"value": "@variables('v_business_unit_id')",
+										"type": "Expression"
+									},
+									"p_domain": {
+										"value": "@variables('v_domain')",
+										"type": "Expression"
+									},
+									"p_company_name": {
+										"value": "@variables('v_company_id')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "send_failure_notification_batch_stagging_load",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "load_turbo_data_stg",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "agt_etl_failure",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_log_id": {
+										"value": "@variables('v_log_id')",
+										"type": "Expression"
+									},
+									"p_batch_id": {
+										"value": "@variables('v_batch_id')",
+										"type": "Expression"
+									},
+									"p_file_name": {
+										"value": "@variables('v_file_name')",
+										"type": "Expression"
+									},
+									"p_activity_name": "Load_data_to_Stagging",
 									"p_error_message": {
 										"value": "@variables('v_error_message')",
 										"type": "Expression"
