@@ -1692,7 +1692,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "POST",
-					"url": "https://prod-17.eastus2.logic.azure.com:443/workflows/8113b0ed04c342b2b75fed71a81753a9/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=am0C5K571IGUUMzeIAyi2OkPTu0aeqNxR8rjdoAwA2g"
+					"url": "https://prod-17.eastus2.logic.azure.com:443/workflows/8113b0ed04c342b2b75fed71a81753a9/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=am0C5K571IGUUMzeIAyi2OkPTu0aeqNxR8rjdoAwA2g",
+					"body": {
+						"to": "suraj@company.com",
+						"subject": "Revenue ETL Pipeline Failed",
+						"body": "<html><body><h3>Revenue ETL Pipeline Failed</h3><table border='1' cellpadding='5' cellspacing='0'><tr><td><b>Pipeline</b></td><td>@{variables('v_pipeline_name')}</td></tr><tr><td><b>Company</b></td><td>@{pipeline().parameters.company}</td></tr><tr><td><b>Business Unit</b></td><td>@{pipeline().parameters.business_unit}</td></tr><tr><td><b>Batch ID</b></td><td>@{variables('v_batch_id')}</td></tr><tr><td><b>Log ID</b></td><td>@{variables('v_log_id')}</td></tr><tr><td><b>Source File</b></td><td>@{variables('v_file_name')}</td></tr><tr><td><b>Error</b></td><td>@{variables('v_error_msg')}</td></tr><tr><td><b>Execution Time</b></td><td>@{utcNow()}</td></tr></table></body></html>"
+					}
 				}
 			}
 		],
