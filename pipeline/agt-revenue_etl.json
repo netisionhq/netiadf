@@ -1670,6 +1670,30 @@
 					"referenceName": "suraj_local_sqlsrvr",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "send_fail_notification",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "mark_log_etl_failed",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-17.eastus2.logic.azure.com:443/workflows/8113b0ed04c342b2b75fed71a81753a9/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=am0C5K571IGUUMzeIAyi2OkPTu0aeqNxR8rjdoAwA2g"
+				}
 			}
 		],
 		"parameters": {
