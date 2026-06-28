@@ -1354,14 +1354,14 @@
 									},
 									"business_unit_id": {
 										"value": {
-											"value": "@variables('v_business_unit_id')",
+											"value": "@pipeline().parameters.business_unit",
 											"type": "Expression"
 										},
 										"type": "Int64"
 									},
 									"company_id": {
 										"value": {
-											"value": "@variables('v_company_id')",
+											"value": "@pipeline().parameters.company",
 											"type": "Expression"
 										},
 										"type": "Int64"
