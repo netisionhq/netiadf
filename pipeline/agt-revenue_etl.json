@@ -1458,6 +1458,9 @@
 			},
 			"v_file_name": {
 				"type": "String"
+			},
+			"v_error_message": {
+				"type": "String"
 			}
 		},
 		"annotations": []
