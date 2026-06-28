@@ -19,14 +19,14 @@
 					"storedProcedureParameters": {
 						"batch_id": {
 							"value": {
-								"value": "@variables('v_batch_id')",
+								"value": "@pipeline().parameters.p_batch_id",
 								"type": "Expression"
 							},
 							"type": "Int64"
 						},
 						"remarks": {
 							"value": {
-								"value": "@concat(\n    activity('load_turbo_data_stg').name,\n    ' : ',\n    activity('load_turbo_data_stg').error.message\n)",
+								"value": "@concat(\n    pipeline().parameters.p_activity_name,\n    ' : ',\n   pipeline().parameters.p_file_name\n)",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -62,14 +62,14 @@
 					"storedProcedureParameters": {
 						"log_id": {
 							"value": {
-								"value": "@variables('v_log_id')",
+								"value": "@pipeline().parameters.p_log_id",
 								"type": "Expression"
 							},
 							"type": "Int64"
 						},
 						"remarks": {
 							"value": {
-								"value": "@variables('v_error_message')",
+								"value": "@pipeline().parameters.p_error_message",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -104,7 +104,7 @@
 					"method": "POST",
 					"url": "https://prod-17.eastus2.logic.azure.com:443/workflows/8113b0ed04c342b2b75fed71a81753a9/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=am0C5K571IGUUMzeIAyi2OkPTu0aeqNxR8rjdoAwA2g",
 					"body": {
-						"value": "{\n    \"to\": \"suraj@netision.com\",\n    \"notificationType\": \"FAILED\",\n    \"subject\": \"Revenue ETL Pipeline Failed\",\n    \"pipelineName\": \"@{variables('v_pipeline_name')}\",\n    \"company\": \"@{pipeline().parameters.company}\",\n    \"businessUnit\": \"@{pipeline().parameters.business_unit}\",\n    \"domain\": \"@{variables('v_domain')}\",\n    \"logId\": @{variables('v_log_id')},\n    \"batchId\": @{variables('v_batch_id')},\n    \"sourceFile\": \"@{variables('v_file_name')}\",\n    \"status\": \"FAILED\",\n    \"executionTime\": \"@{utcNow()}\",\n    \"message\": \"Revenue ETL pipeline execution failed.\",\n    \"errorMessage\": \"@{variables('v_error_message')}\"\n}",
+						"value": "{\n    \"to\": \"suraj@netision.com\",\n    \"notificationType\": \"FAILED\",\n    \"subject\": \"Revenue ETL Pipeline Failed\",\n    \"pipelineName\": \"pipeline().parameters.p_pipeline_name\",\n    \"company\": \"pipeline().parameters.p_company_name\",\n    \"businessUnit\": \"pipeline().parameters.p_business_unit\",\n    \"domain\": \"pipeline().parameters.p_domain\",\n    \"logId\": pipeline().parameters.p_log_id,\n    \"batchId\": pipeline().parameters.p_batch_id,\n    \"sourceFile\": \"pipeline().parameters.p_file_name\",\n    \"status\": \"FAILED\",\n    \"executionTime\": \"@{utcNow()}\",\n    \"message\": \"Revenue ETL pipeline execution failed.\",\n    \"errorMessage\": \"pipeline().parameters.p_error_message\"\n}",
 						"type": "Expression"
 					}
 				}
@@ -124,6 +124,18 @@
 				"type": "string"
 			},
 			"p_error_message": {
+				"type": "string"
+			},
+			"p_pipeline_name": {
+				"type": "string"
+			},
+			"p_business_unit": {
+				"type": "string"
+			},
+			"p_domain": {
+				"type": "string"
+			},
+			"p_company_name": {
 				"type": "string"
 			}
 		},
