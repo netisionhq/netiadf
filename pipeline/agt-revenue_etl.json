@@ -1385,37 +1385,13 @@
 							}
 						},
 						{
-							"name": "set_v_error_msg",
-							"type": "SetVariable",
+							"name": "mark_batch_failed",
+							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
 									"activity": "load_turbo_data_stg",
 									"dependencyConditions": [
 										"Failed"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "v_error_message",
-								"value": {
-									"value": "@activity('load_turbo_data_stg').error.message",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "mark_log_failed",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "set_v_error_msg",
-									"dependencyConditions": [
-										"Succeeded"
 									]
 								}
 							],
@@ -1439,7 +1415,136 @@
 									},
 									"remarks": {
 										"value": {
-											"value": "@variables('v_error_message')",
+											"value": "@concat(\n    activity('load_turbo_data_stg').name,\n    ' : ',\n    activity('load_turbo_data_stg').error.message\n)",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "mark_batch_failed_withvaliation",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "run_validation",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "audit.sp_log_batch_failed",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"remarks": {
+										"value": {
+											"value": "@concat(\n    activity('run_validation').name,\n    ' : ',\n    activity('run_validation').error.message\n)",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "mark_batch_failed_load_dimension",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "load_dimension",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "audit.sp_log_batch_failed",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"remarks": {
+										"value": {
+											"value": "@concat(\n    activity('load_dimension').name,\n    ' : ',\n    activity('load_dimension').error.message\n)",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "mark_batch_failed_loadfact",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "load_fact_revenue",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "audit.sp_log_batch_failed",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"remarks": {
+										"value": {
+											"value": "@concat(\n    activity('load_fact_revenue').name,\n    ' : ',\n    activity('load_fact_revenue').error.message\n)",
 											"type": "Expression"
 										},
 										"type": "String"
