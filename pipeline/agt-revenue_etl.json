@@ -1664,7 +1664,7 @@
 							"value": "@variables('v_file_name')",
 							"type": "Expression"
 						},
-						"p_activity_name": "File Load",
+						"p_activity_name": "Activity_File_Load",
 						"p_error_message": {
 							"value": "@variables('v_error_message')",
 							"type": "Expression"
