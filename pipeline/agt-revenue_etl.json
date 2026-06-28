@@ -35,7 +35,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup_ETL_Config",
+						"activity": "set_v_business_unit_id",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1613,6 +1613,54 @@
 					"url": "https://prod-17.eastus2.logic.azure.com:443/workflows/8113b0ed04c342b2b75fed71a81753a9/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=am0C5K571IGUUMzeIAyi2OkPTu0aeqNxR8rjdoAwA2g",
 					"body": {
 						"value": "{\n    \"to\": \"suraj@netision.com\",\n    \"notificationType\": \"SUCCESS\",\n    \"subject\": \"Revenue ETL Pipeline SUCCESS\",\n    \"pipelineName\": \"variables('v_pipeline_name')\",\n    \"company\": \"variables('v_company_id')\",\n    \"businessUnit\": \"variables('v_business_unit_id')\",\n    \"domain\": \"variables('v_domain')\",\n    \"logId\": \"variables('v_log_id')\",\n    \"batchId\": \"\",\n    \"sourceFile\": \"\",\n    \"status\": \"SUCCESS\",\n    \"executionTime\": \"@{utcNow()}\",\n    \"message\": \"Revenue ETL pipeline execution succeeded.\",\n    \"errorMessage\": \"\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_v_company_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_start_date",
+					"value": {
+						"value": "@pipeline().parameters.company",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_v_business_unit_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_v_company_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_start_date",
+					"value": {
+						"value": "@pipeline().parameters.business_unit",
 						"type": "Expression"
 					}
 				}
