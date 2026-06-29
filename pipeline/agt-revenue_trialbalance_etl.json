@@ -390,7 +390,7 @@
 												"physicalType": "String"
 											},
 											"sink": {
-												"name": "source_filename",
+												"name": "filename",
 												"type": "String",
 												"physicalType": "varchar"
 											}
@@ -402,7 +402,7 @@
 												"physicalType": "String"
 											},
 											"sink": {
-												"name": "source_sheet",
+												"name": "sheetname",
 												"type": "String",
 												"physicalType": "varchar"
 											}
