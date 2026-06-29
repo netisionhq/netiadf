@@ -1436,8 +1436,6 @@
 						{
 							"name": "load_history_table",
 							"type": "SqlServerStoredProcedure",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "run_validation",
@@ -1465,11 +1463,11 @@
 										"type": "Int64"
 									},
 									"stg_table": {
-										"value": "stg.stg_turbo_data",
+										"value": "stg.stg_turboGearbox",
 										"type": "String"
 									},
 									"target_table": {
-										"value": "hist.revenue_turbodata_history",
+										"value": "hist.revenue_turboGearbox_history",
 										"type": "String"
 									}
 								}
