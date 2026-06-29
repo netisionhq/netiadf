@@ -1482,7 +1482,7 @@
 										"value": "@variables('v_file_name')",
 										"type": "Expression"
 									},
-									"p_activity_name": "Activity_load_dimension",
+									"p_activity_name": "Activity_load_history_table",
 									"p_error_message": {
 										"value": "@variables('v_error_message')",
 										"type": "Expression"
@@ -1569,7 +1569,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "load_fact_revenue",
+									"activity": "load_history_table",
 									"dependencyConditions": [
 										"Succeeded"
 									]
