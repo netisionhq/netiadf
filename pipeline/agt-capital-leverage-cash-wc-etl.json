@@ -220,29 +220,6 @@
 				}
 			},
 			{
-				"name": "filter_revenue_data_sheet",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "get_blob_list",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('get_blob_list').output.childItems",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@and(\n    contains(toUpper(item().name), 'working_capital'),\n    not(startsWith(item().name, '~$'))\n)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
 				"name": "loop_blob",
 				"type": "ForEach",
 				"dependsOn": [
@@ -1094,7 +1071,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "filter_revenue_data_sheet",
+						"activity": "get_blob_list",
 						"dependencyConditions": [
 							"Succeeded"
 						]
