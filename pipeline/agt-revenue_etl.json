@@ -1387,14 +1387,7 @@
 						{
 							"name": "send_failure_notification_batch_pipeline",
 							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "load_fact_revenue",
-									"dependencyConditions": [
-										"Failed"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"secureInput": false
 							},
@@ -1556,6 +1549,42 @@
 										"type": "Expression"
 									}
 								}
+							}
+						},
+						{
+							"name": "mark_batch_complete",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "load_fact_revenue",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[audit].[sp_log_batch_complete]",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
