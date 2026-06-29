@@ -235,7 +235,7 @@
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@and(\n    contains(toUpper(item().name), 'DATA'),\n    not(startsWith(item().name, '~$'))\n)",
+						"value": "@and(\n    contains(toUpper(item().name), 'working_capital'),\n    not(startsWith(item().name, '~$'))\n)",
 						"type": "Expression"
 					}
 				}
