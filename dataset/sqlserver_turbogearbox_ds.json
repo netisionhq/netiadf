@@ -1,0 +1,205 @@
+{
+	"name": "sqlserver_turbogearbox_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "suraj_local_sqlsrvr",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "source_filename",
+				"type": "varchar"
+			},
+			{
+				"name": "source_sheet",
+				"type": "varchar"
+			},
+			{
+				"name": "date",
+				"type": "varchar"
+			},
+			{
+				"name": "account",
+				"type": "varchar"
+			},
+			{
+				"name": "description",
+				"type": "varchar"
+			},
+			{
+				"name": "x",
+				"type": "varchar"
+			},
+			{
+				"name": "account2",
+				"type": "varchar"
+			},
+			{
+				"name": "beginning_balance",
+				"type": "varchar"
+			},
+			{
+				"name": "activity",
+				"type": "varchar"
+			},
+			{
+				"name": "ending_balance",
+				"type": "varchar"
+			},
+			{
+				"name": "month",
+				"type": "varchar"
+			},
+			{
+				"name": "qtr",
+				"type": "varchar"
+			},
+			{
+				"name": "year",
+				"type": "varchar"
+			},
+			{
+				"name": "cc",
+				"type": "varchar"
+			},
+			{
+				"name": "cc_ar",
+				"type": "varchar"
+			},
+			{
+				"name": "cc_name",
+				"type": "varchar"
+			},
+			{
+				"name": "adq_cc",
+				"type": "varchar"
+			},
+			{
+				"name": "p_and_l_line",
+				"type": "varchar"
+			},
+			{
+				"name": "bs_pl",
+				"type": "varchar"
+			},
+			{
+				"name": "adq_acc",
+				"type": "varchar"
+			},
+			{
+				"name": "adq_acc_name",
+				"type": "varchar"
+			},
+			{
+				"name": "category",
+				"type": "varchar"
+			},
+			{
+				"name": "sub_group",
+				"type": "varchar"
+			},
+			{
+				"name": "group",
+				"type": "varchar"
+			},
+			{
+				"name": "main",
+				"type": "varchar"
+			},
+			{
+				"name": "adq_acc_bs",
+				"type": "varchar"
+			},
+			{
+				"name": "adq_acc_name_bs",
+				"type": "varchar"
+			},
+			{
+				"name": "category_bs",
+				"type": "varchar"
+			},
+			{
+				"name": "sub_group_bs",
+				"type": "varchar"
+			},
+			{
+				"name": "group_bs",
+				"type": "varchar"
+			},
+			{
+				"name": "main_bs",
+				"type": "varchar"
+			},
+			{
+				"name": "year_month",
+				"type": "varchar"
+			},
+			{
+				"name": "report",
+				"type": "varchar"
+			},
+			{
+				"name": "aed_k",
+				"type": "varchar"
+			},
+			{
+				"name": "year_qtr",
+				"type": "varchar"
+			},
+			{
+				"name": "ebitda",
+				"type": "varchar"
+			},
+			{
+				"name": "column1",
+				"type": "varchar"
+			},
+			{
+				"name": "factory",
+				"type": "varchar"
+			},
+			{
+				"name": "bu",
+				"type": "varchar"
+			},
+			{
+				"name": "ohc",
+				"type": "varchar"
+			},
+			{
+				"name": "turbo_acc",
+				"type": "varchar"
+			},
+			{
+				"name": "turbo_map",
+				"type": "varchar"
+			},
+			{
+				"name": "column2",
+				"type": "varchar"
+			},
+			{
+				"name": "scenario",
+				"type": "varchar"
+			},
+			{
+				"name": "cc2",
+				"type": "varchar"
+			},
+			{
+				"name": "cc_ar3",
+				"type": "varchar"
+			},
+			{
+				"name": "ytd_ytg",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "stg_turboGearbox"
+		}
+	}
+}

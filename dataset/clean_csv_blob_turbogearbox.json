@@ -1,0 +1,213 @@
+{
+	"name": "clean_csv_blob_turbogearbox",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "turbo_atyab_actfc_2026_ytd_mar_ytg_apr_gearbox.csv",
+				"folderPath": "Protein & Frozen/Atyab/Clean Files/Revenue",
+				"container": "agethia-ingestion-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "source_filename",
+				"type": "String"
+			},
+			{
+				"name": "source_sheet",
+				"type": "String"
+			},
+			{
+				"name": "date",
+				"type": "String"
+			},
+			{
+				"name": "account",
+				"type": "String"
+			},
+			{
+				"name": "description",
+				"type": "String"
+			},
+			{
+				"name": "x",
+				"type": "String"
+			},
+			{
+				"name": "account2",
+				"type": "String"
+			},
+			{
+				"name": "beginning_balance",
+				"type": "String"
+			},
+			{
+				"name": "activity",
+				"type": "String"
+			},
+			{
+				"name": "ending_balance",
+				"type": "String"
+			},
+			{
+				"name": "month",
+				"type": "String"
+			},
+			{
+				"name": "qtr",
+				"type": "String"
+			},
+			{
+				"name": "year",
+				"type": "String"
+			},
+			{
+				"name": "cc",
+				"type": "String"
+			},
+			{
+				"name": "cc_ar",
+				"type": "String"
+			},
+			{
+				"name": "cc_name",
+				"type": "String"
+			},
+			{
+				"name": "adq_cc",
+				"type": "String"
+			},
+			{
+				"name": "p_and_l_line",
+				"type": "String"
+			},
+			{
+				"name": "bs_pl",
+				"type": "String"
+			},
+			{
+				"name": "adq_acc",
+				"type": "String"
+			},
+			{
+				"name": "adq_acc_name",
+				"type": "String"
+			},
+			{
+				"name": "category",
+				"type": "String"
+			},
+			{
+				"name": "sub_group",
+				"type": "String"
+			},
+			{
+				"name": "group",
+				"type": "String"
+			},
+			{
+				"name": "main",
+				"type": "String"
+			},
+			{
+				"name": "adq_acc_bs",
+				"type": "String"
+			},
+			{
+				"name": "adq_acc_name_bs",
+				"type": "String"
+			},
+			{
+				"name": "category_bs",
+				"type": "String"
+			},
+			{
+				"name": "sub_group_bs",
+				"type": "String"
+			},
+			{
+				"name": "group_bs",
+				"type": "String"
+			},
+			{
+				"name": "main_bs",
+				"type": "String"
+			},
+			{
+				"name": "year_month",
+				"type": "String"
+			},
+			{
+				"name": "report",
+				"type": "String"
+			},
+			{
+				"name": "aed_k",
+				"type": "String"
+			},
+			{
+				"name": "year_qtr",
+				"type": "String"
+			},
+			{
+				"name": "ebitda",
+				"type": "String"
+			},
+			{
+				"name": "column1",
+				"type": "String"
+			},
+			{
+				"name": "factory",
+				"type": "String"
+			},
+			{
+				"name": "bu",
+				"type": "String"
+			},
+			{
+				"name": "ohc",
+				"type": "String"
+			},
+			{
+				"name": "turbo_acc",
+				"type": "String"
+			},
+			{
+				"name": "turbo_map",
+				"type": "String"
+			},
+			{
+				"name": "column2",
+				"type": "String"
+			},
+			{
+				"name": "scenario",
+				"type": "String"
+			},
+			{
+				"name": "cc2",
+				"type": "String"
+			},
+			{
+				"name": "cc_ar3",
+				"type": "String"
+			},
+			{
+				"name": "ytd_ytg",
+				"type": "String"
+			}
+		]
+	}
+}
