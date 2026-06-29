@@ -1406,7 +1406,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[audit].[sp_log_batch_complete]",
+								"storedProcedureName": "[audit].[sp_log_batch_complete_v1]",
 								"storedProcedureParameters": {
 									"batch_id": {
 										"value": {
@@ -1414,6 +1414,10 @@
 											"type": "Expression"
 										},
 										"type": "Int64"
+									},
+									"stg_table": {
+										"value": "stg.stg_turboGearbox",
+										"type": "String"
 									}
 								}
 							},
