@@ -1486,7 +1486,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "Truncate table stg.stg_turbo_data;"
+							"text": "Truncate table stg.stg_turboGearbox;"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
