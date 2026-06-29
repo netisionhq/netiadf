@@ -1,0 +1,94 @@
+{
+	"name": "clean_csv_workingcaptial_blob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "netiadfblobLS",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"p_filename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "working_capital_fcff_act_apr_2026_template.csv",
+				"folderPath": "Protein & Frozen/Atyab/Clean Files/Capital , Leverage & cash",
+				"container": "agethia-ingestion-data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "company",
+				"type": "String"
+			},
+			{
+				"name": "business_unit",
+				"type": "String"
+			},
+			{
+				"name": "domain_name",
+				"type": "String"
+			},
+			{
+				"name": "source_name",
+				"type": "String"
+			},
+			{
+				"name": "metric_group",
+				"type": "String"
+			},
+			{
+				"name": "metric_name",
+				"type": "String"
+			},
+			{
+				"name": "metric_type",
+				"type": "String"
+			},
+			{
+				"name": "scenario",
+				"type": "String"
+			},
+			{
+				"name": "period_name",
+				"type": "String"
+			},
+			{
+				"name": "period_year",
+				"type": "String"
+			},
+			{
+				"name": "period_type",
+				"type": "String"
+			},
+			{
+				"name": "unit_of_measure",
+				"type": "String"
+			},
+			{
+				"name": "measure_value",
+				"type": "String"
+			},
+			{
+				"name": "source_file",
+				"type": "String"
+			},
+			{
+				"name": "sheet_name",
+				"type": "String"
+			},
+			{
+				"name": "load_datetime",
+				"type": "String"
+			}
+		]
+	}
+}
