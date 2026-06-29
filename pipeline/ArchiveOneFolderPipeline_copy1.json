@@ -1,13 +1,15 @@
 {
 	"name": "ArchiveOneFolderPipeline_copy1",
 	"properties": {
-		"description": "Pipeline that triggers Azure Function App",
+		"description": "Test pipeline for archive function only. Calls archive_files Azure Function to move raw files to Archive folder with date suffix.",
 		"activities": [
 			{
-				"name": "CallAzureFunction",
+				"name": "Run_Archive",
+				"description": "Archives raw files to Archive folder with YYYYMMDD_HHMMSS date suffix and deletes from raw_files.",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [],
 				"policy": {
+					"timeout": "00:30:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -17,8 +19,11 @@
 				"typeProperties": {
 					"functionName": "archive_files",
 					"body": {
-						"value": "{\n    \"base_folder\": \"@{pipeline().parameters.BaseFolder}\",\n    \"category_folder\": \"@{pipeline().parameters.CategoryFolder}\",\n    \"folder_name\": \"@{pipeline().parameters.FolderName}\"\n}",
+						"value": "{\n    \"base_folder\": \"@{pipeline().parameters.BaseFolder}\",\n    \"category_folder\": \"@{pipeline().parameters.CategoryFolder}\",\n    \"folder_name\": \"@{pipeline().parameters.FolderName}\",\n    \"pipeline_run_time\": \"@{pipeline().parameters.PipelineRunTime}\"\n}",
 						"type": "Expression"
+					},
+					"headers": {
+						"Content-Type": "application/json"
 					},
 					"method": "POST"
 				},
@@ -26,19 +31,88 @@
 					"referenceName": "AzureFunctionarchive",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Check_Archive_Status",
+				"description": "Fails ADF run if any files failed to archive",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Run_Archive",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Run_Archive').output.summary.failed, 0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Fail_On_Archive_Errors",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "@concat('ARCHIVE FAILED: ', string(activity('Run_Archive').output.summary.failed), ' file(s) failed. ', string(activity('Run_Archive').output.summary.archived), ' archived. Run at: ', activity('Run_Archive').output.run_at)",
+									"type": "Expression"
+								},
+								"errorCode": "ARCHIVE_FAILED"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Log_Archive_Success",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "archive_status",
+								"value": {
+									"value": "@concat('ARCHIVE SUCCESS: ', string(activity('Run_Archive').output.summary.archived), ' files archived. Run at: ', activity('Run_Archive').output.run_at)",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
 			}
 		],
+		"concurrency": 1,
 		"parameters": {
+			"BaseFolder": {
+				"type": "string",
+				"defaultValue": "Protein & Frozen"
+			},
+			"CategoryFolder": {
+				"type": "string",
+				"defaultValue": "Atyab"
+			},
 			"FolderName": {
 				"type": "string"
 			},
-			"BaseFolder": {
-				"type": "string"
-			},
-			"CategoryFolder": {
+			"PipelineRunTime": {
 				"type": "string"
 			}
 		},
-		"annotations": []
+		"variables": {
+			"archive_status": {
+				"type": "String"
+			}
+		},
+		"annotations": [
+			"agethia",
+			"archive",
+			"test"
+		]
 	}
 }
