@@ -1136,7 +1136,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "clean_csv_blob",
+									"referenceName": "clean_csv_workingcaptial_blob",
 									"type": "DatasetReference",
 									"parameters": {
 										"p_filename": {
