@@ -958,7 +958,13 @@
 							"inputs": [
 								{
 									"referenceName": "clean_csv_blob_turbogearbox",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"p_filename": {
+											"value": "@variables('v_file_name')",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
@@ -1033,6 +1039,8 @@
 						{
 							"name": "clean_refine_stg_table",
 							"type": "Script",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_turbo_data_stg",
@@ -1066,6 +1074,8 @@
 						{
 							"name": "run_validation",
 							"type": "Script",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "clean_refine_stg_table",
@@ -1263,6 +1273,8 @@
 						{
 							"name": "send_failure_notification_batch_dimension",
 							"type": "ExecutePipeline",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_history_table",
@@ -1379,6 +1391,8 @@
 						{
 							"name": "mark_batch_complete",
 							"type": "SqlServerStoredProcedure",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_history_table",
@@ -1415,6 +1429,8 @@
 						{
 							"name": "load_history_table",
 							"type": "SqlServerStoredProcedure",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "run_validation",
