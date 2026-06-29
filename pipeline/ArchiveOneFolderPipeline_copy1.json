@@ -1,0 +1,44 @@
+{
+	"name": "ArchiveOneFolderPipeline_copy1",
+	"properties": {
+		"description": "Pipeline that triggers Azure Function App",
+		"activities": [
+			{
+				"name": "CallAzureFunction",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "archive_files",
+					"body": {
+						"value": "{\n    \"base_folder\": \"@{pipeline().parameters.BaseFolder}\",\n    \"category_folder\": \"@{pipeline().parameters.CategoryFolder}\",\n    \"folder_name\": \"@{pipeline().parameters.FolderName}\"\n}",
+						"type": "Expression"
+					},
+					"method": "POST"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureFunctionarchive",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"FolderName": {
+				"type": "string"
+			},
+			"BaseFolder": {
+				"type": "string"
+			},
+			"CategoryFolder": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}
