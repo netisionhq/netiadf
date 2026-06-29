@@ -1074,7 +1074,7 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "UPDATE stg.stg_turbo_data\nSET\n    beginning_balance    = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), beginning_balance),0),6) AS VARCHAR(50)),\n    activity             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), activity),0),6) AS VARCHAR(50)),\n    ending_balance       = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), ending_balance),0),6) AS VARCHAR(50)),   \n    aed_k                = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), ending_balance),0),6) AS VARCHAR(50));\n\n\nUPDATE stg.stg_turbo_data\nSET\n    beginning_balance    = CASE WHEN ABS(TRY_CONVERT(FLOAT,beginning_balance))        < 1E-8 THEN '0' ELSE beginning_balance END,\n    activity             = CASE WHEN ABS(TRY_CONVERT(FLOAT,activity))        < 1E-8 THEN '0' ELSE activity END,\n    ending_balance       = CASE WHEN ABS(TRY_CONVERT(FLOAT,ending_balance))        < 1E-8 THEN '0' ELSE ending_balance END,\n    aed_k                = CASE WHEN ABS(TRY_CONVERT(FLOAT,aed_k))        < 1E-8 THEN '0' ELSE aed_k END;\n\n\n\n"
+										"text": "UPDATE stg.stg_turboGearbox\nSET\n    beginning_balance    = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), beginning_balance),0),6) AS VARCHAR(50)),\n    activity             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), activity),0),6) AS VARCHAR(50)),\n    ending_balance       = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), ending_balance),0),6) AS VARCHAR(50)),   \n    aed_k                = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), ending_balance),0),6) AS VARCHAR(50));\n\n\nUPDATE stg.stg_turboGearbox\nSET\n    beginning_balance    = CASE WHEN ABS(TRY_CONVERT(FLOAT,beginning_balance))        < 1E-8 THEN '0' ELSE beginning_balance END,\n    activity             = CASE WHEN ABS(TRY_CONVERT(FLOAT,activity))        < 1E-8 THEN '0' ELSE activity END,\n    ending_balance       = CASE WHEN ABS(TRY_CONVERT(FLOAT,ending_balance))        < 1E-8 THEN '0' ELSE ending_balance END,\n    aed_k                = CASE WHEN ABS(TRY_CONVERT(FLOAT,aed_k))        < 1E-8 THEN '0' ELSE aed_k END;\n\n\n\n"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
@@ -1108,7 +1108,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "EXEC audit.sp_run_validations\n     @batch_id = @{variables('v_batch_id')},\n     @table_name = 'stg.stg_turbo_data';",
+											"value": "EXEC audit.sp_run_validations\n     @batch_id = @{variables('v_batch_id')},\n     @table_name = 'stg.stg_turboGearbox';",
 											"type": "Expression"
 										}
 									}
