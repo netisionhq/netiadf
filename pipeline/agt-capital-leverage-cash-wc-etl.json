@@ -1,0 +1,1899 @@
+{
+	"name": "agt-capital-leverage-cash-wc-etl",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup_ETL_Config",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "SELECT\n    pipeline_name,\n    domain,\n    company_id,\n    business_unit_id,\n    load_type,\n    start_date,\n    end_date\nFROM config.etl_configuration\nWHERE isdeleted = 0\n  AND is_active = 1\n  AND pipeline_name = 'Capital_Leverage_Cash - WorkingCapital Pipeline'\n  AND company_id = @{pipeline().parameters.company}\n  AND business_unit_id = @{pipeline().parameters.business_unit};",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "suraj_local_sqlDS",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "set_v_start_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_v_business_unit_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_start_date",
+					"value": "@activity('Lookup_ETL_Config').output.firstRow.start_date"
+				}
+			},
+			{
+				"name": "set_v_end_date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_v_start_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_end_date",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.end_date",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "init_log_etl",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "set_v_pipeline_name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "suraj_local_sqlsrvr",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "@concat(\n'EXEC audit.sp_log_etl_start\n @pipeline_name=''', variables('v_pipeline_name'),\n''',\n @domain=''', variables('v_domain'),\n''',\n @company_id=', pipeline().parameters.company,\n',\n @business_unit_id=', pipeline().parameters.business_unit,\n';')",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "set_v_domain",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_v_end_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_domain",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.domain",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_v_pipeline_name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_v_domain",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_pipeline_name",
+					"value": {
+						"value": "@activity('Lookup_ETL_Config').output.firstRow.pipeline_name",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_v_log_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "init_log_etl",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_log_id",
+					"value": {
+						"value": "@string(activity('init_log_etl').output.resultSets[0].rows[0].LogID)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "get_blob_list",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "set_v_log_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "csv_bloblist",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "filter_revenue_data_sheet",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "get_blob_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_blob_list').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@and(\n    contains(toUpper(item().name), 'DATA'),\n    not(startsWith(item().name, '~$'))\n)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "loop_blob",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "clean_stg_table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('filter_revenue_data_sheet').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "init_batch",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "get_file_name",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "audit.sp_log_batch_start",
+								"storedProcedureParameters": {
+									"business_unit_id": {
+										"value": {
+											"value": "@pipeline().parameters.business_unit",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"company_id": {
+										"value": {
+											"value": "@pipeline().parameters.company",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"log_id": {
+										"value": "@variables('v_log_id')",
+										"type": "Int64"
+									},
+									"sheet_name": {
+										"value": null,
+										"type": "String"
+									},
+									"source_file": {
+										"value": "@variables('v_file_name')",
+										"type": "String"
+									},
+									"uploaded_by": {
+										"value": null,
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "get_file_name",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_file_name",
+								"value": "@item().name"
+							}
+						},
+						{
+							"name": "load_turbo_data_stg",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "set_v_batch_id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"additionalColumns": [
+										{
+											"name": "batch_id",
+											"value": {
+												"value": "@variables('v_batch_id')",
+												"type": "Expression"
+											}
+										}
+									],
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "month",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "month",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "qtr",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "qtr",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "year",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "year",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "date",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "date",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "code",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "code",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "desc",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "description",
+												"type": "String",
+												"physicalType": "nvarchar"
+											}
+										},
+										{
+											"source": {
+												"name": "channel",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "channel",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "region",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "region",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_qty",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_qty",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "gross_sales",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "gross_sales",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "normal_discount",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "normal_discount",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "brand",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "brand",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "category",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "category",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sub_category",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sub_category",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "channel_group",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "channel_group",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_category",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_category",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "factory",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "factory",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "brand_group",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "brand_group",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "qty_ton",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "qty_ton",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "gross_rebates",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "gross_rebates",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "net_rebates",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "net_rebates",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "total_rebates",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "total_rebates",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "total_discount",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "total_discount",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "provision_sales_return",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "provision_sales_return",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "foc",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "foc",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "nsv",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "nsv",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "rm",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "rm",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "pk",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "pk",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "other_rm",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "other_rm",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "other",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "other",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "material",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "material",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "cogs_prod",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "cogs_prod",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "dl",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "dl",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "moh",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "moh",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sc",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sc",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "moh_total",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "moh_total",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "gp",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "gp",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sales",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "distribution",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "distribution",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "g_and_a",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "g_a",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ho_allocation",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ho_allocation",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "r_and_d",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "r_d",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "export",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "export",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "a_and_p",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "a_p",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_promotion",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_promotion",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "deferred_tax",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "deferred_tax",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "income_tax",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "income_tax",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "interest",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "interest",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "provision",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "provision",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "other_gain",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "other_gain",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sales_bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sales_bouns",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "g_and_a_bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "g_a_bouns",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "r_and_d_bonus",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "r_d_bonus",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "export_bonus",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "export_bonus",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "distribution_bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "distribution_bouns",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "dl_bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "dl_bouns",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "sc_bouns",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sc_bouns",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "market_ic",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "market_ic",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "ytd_ytg",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ytd_ytg",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "batch_id",
+												"type": "String"
+											},
+											"sink": {
+												"name": "batch_id",
+												"type": "Int64",
+												"physicalType": "bigint"
+											}
+										},
+										{
+											"source": {
+												"name": "source_filename",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "filename",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "source_sheet",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "sheetname",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										}
+									],
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "clean_csv_blob",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_filename": {
+											"value": "@variables('v_file_name')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "suraj_local_sqlDS_v1",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_table_name": "stg.stg_turbo_data"
+									}
+								}
+							]
+						},
+						{
+							"name": "set_v_batch_id",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "extract_batch_id",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "v_batch_id",
+								"value": {
+									"value": "@string(activity('extract_batch_id').output.firstRow.batch_id)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "extract_batch_id",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "init_batch",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderQuery": {
+										"value": "@concat(\n'SELECT MAX(batch_id) AS batch_id\nFROM audit.log_batch_ingestion\nWHERE log_id = ', variables('v_log_id'),\n' AND source_file = ''', variables('v_file_name'), ''''\n)",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "suraj_local_sqlDS_v1",
+									"type": "DatasetReference",
+									"parameters": {
+										"p_table_name": "audit.log_batch_ingestion"
+									}
+								}
+							}
+						},
+						{
+							"name": "clean_refine_stg_table",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "load_turbo_data_stg",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "Delete from  stg.stg_turbo_data where [month]='month' ;\nDelete from  stg.stg_turbo_data   where [month] is null and [qtr] is null and [year] is null ;\n\n update stg.stg_turbo_data\n set region = 'UNKNOWN'\n where region  is null ;\n\nUPDATE stg.stg_turbo_data\nSET\n    sales_qty      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sales_qty),0),6) AS VARCHAR(50)),\n    gross_sales    = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), gross_sales),0),6) AS VARCHAR(50)),\n    normal_discount= CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), normal_discount),0),6) AS VARCHAR(50)),\n    gross_rebates  = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), gross_rebates),0),6) AS VARCHAR(50)),\n    net_rebates    = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), net_rebates),0),6) AS VARCHAR(50)),\n    total_rebates  = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), total_rebates),0),6) AS VARCHAR(50)),\n    total_discount = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), total_discount),0),6) AS VARCHAR(50)),\n    provision_sales_return = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), provision_sales_return),0),6) AS VARCHAR(50)),\n    foc            = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), foc),0),6) AS VARCHAR(50)),\n    nsv            = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), nsv),0),6) AS VARCHAR(50)),\n    rm             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), rm),0),6) AS VARCHAR(50)),\n    pk             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), pk),0),6) AS VARCHAR(50)),\n    other_rm       = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), other_rm),0),6) AS VARCHAR(50)),\n    other          = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), other),0),6) AS VARCHAR(50)),\n    material       = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), material),0),6) AS VARCHAR(50)),\n    cogs_prod      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), cogs_prod),0),6) AS VARCHAR(50)),\n    dl             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), dl),0),6) AS VARCHAR(50)),\n    moh            = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), moh),0),6) AS VARCHAR(50)),\n    sc             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sc),0),6) AS VARCHAR(50)),\n    moh_total      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), moh_total),0),6) AS VARCHAR(50)),\n    gp             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), gp),0),6) AS VARCHAR(50)),\n    sales          = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sales),0),6) AS VARCHAR(50)),\n    distribution   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), distribution),0),6) AS VARCHAR(50)),\n    g_a             = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), g_a),0),6) AS VARCHAR(50)),\n    ho_allocation   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), ho_allocation),0),6) AS VARCHAR(50)),\n    r_d   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), r_d),0),6) AS VARCHAR(50)),\n    export   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), export),0),6) AS VARCHAR(50)),\n    a_p   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), a_p),0),6) AS VARCHAR(50)),\n    sales_promotion   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sales_promotion),0),6) AS VARCHAR(50)),\n    deferred_tax   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), deferred_tax),0),6) AS VARCHAR(50)),\n    income_tax   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), income_tax),0),6) AS VARCHAR(50)),\n    interest   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), interest),0),6) AS VARCHAR(50)),\n    provision   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), provision),0),6) AS VARCHAR(50)),\n    other_gain   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), other_gain),0),6) AS VARCHAR(50)),\n    sales_bouns   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sales_bouns),0),6) AS VARCHAR(50)),\n    g_a_bouns   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), g_a_bouns),0),6) AS VARCHAR(50)),\n    r_d_bonus   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), r_d_bonus),0),6) AS VARCHAR(50)),\n    export_bonus   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), export_bonus),0),6) AS VARCHAR(50)),\n    distribution_bouns   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), distribution_bouns),0),6) AS VARCHAR(50)),\n    dl_bouns   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), dl_bouns),0),6) AS VARCHAR(50)),\n    sc_bouns   = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), sc_bouns),0),6) AS VARCHAR(50)),\n    qty_ton        = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), qty_ton),0),6) AS VARCHAR(50));\n\n\nUPDATE stg.stg_turbo_data\nSET\n    sales_qty        = CASE WHEN ABS(TRY_CONVERT(FLOAT,sales_qty))        < 1E-8 THEN '0' ELSE sales_qty END,\n    gross_sales      = CASE WHEN ABS(TRY_CONVERT(FLOAT,gross_sales))      < 1E-8 THEN '0' ELSE gross_sales END,\n    normal_discount  = CASE WHEN ABS(TRY_CONVERT(FLOAT,normal_discount))  < 1E-8 THEN '0' ELSE normal_discount END,\n    gross_rebates    = CASE WHEN ABS(TRY_CONVERT(FLOAT,gross_rebates))    < 1E-8 THEN '0' ELSE gross_rebates END,\n    net_rebates      = CASE WHEN ABS(TRY_CONVERT(FLOAT,net_rebates))      < 1E-8 THEN '0' ELSE net_rebates END,\n    total_rebates    = CASE WHEN ABS(TRY_CONVERT(FLOAT,total_rebates))    < 1E-8 THEN '0' ELSE total_rebates END,\n    total_discount   = CASE WHEN ABS(TRY_CONVERT(FLOAT,total_discount))   < 1E-8 THEN '0' ELSE total_discount END,\n    provision_sales_return = CASE WHEN ABS(TRY_CONVERT(FLOAT,provision_sales_return)) < 1E-8 THEN '0' ELSE provision_sales_return END,\n    foc              = CASE WHEN ABS(TRY_CONVERT(FLOAT,foc))              < 1E-8 THEN '0' ELSE foc END,\n    nsv              = CASE WHEN ABS(TRY_CONVERT(FLOAT,nsv))              < 1E-8 THEN '0' ELSE nsv END,\n\n\n\trm             = CASE WHEN ABS(TRY_CONVERT(FLOAT,rm))        < 1E-8 THEN '0' ELSE rm END,\n    pk             = CASE WHEN ABS(TRY_CONVERT(FLOAT,pk))        < 1E-8 THEN '0' ELSE pk END,\n    other_rm       = CASE WHEN ABS(TRY_CONVERT(FLOAT,other_rm))        < 1E-8 THEN '0' ELSE other_rm END,\n    other          = CASE WHEN ABS(TRY_CONVERT(FLOAT,other))        < 1E-8 THEN '0' ELSE other END,\n    material       = CASE WHEN ABS(TRY_CONVERT(FLOAT,material))        < 1E-8 THEN '0' ELSE material END,\n    cogs_prod      = CASE WHEN ABS(TRY_CONVERT(FLOAT,cogs_prod))        < 1E-8 THEN '0' ELSE cogs_prod END,\n    dl             = CASE WHEN ABS(TRY_CONVERT(FLOAT,dl))        < 1E-8 THEN '0' ELSE dl END,\n    moh            = CASE WHEN ABS(TRY_CONVERT(FLOAT,moh))        < 1E-8 THEN '0' ELSE moh END,\n    sc             = CASE WHEN ABS(TRY_CONVERT(FLOAT,sc))        < 1E-8 THEN '0' ELSE sc END,\n    moh_total      = CASE WHEN ABS(TRY_CONVERT(FLOAT,moh_total))        < 1E-8 THEN '0' ELSE moh_total END,\n    gp             = CASE WHEN ABS(TRY_CONVERT(FLOAT,gp))        < 1E-8 THEN '0' ELSE gp END,\n    sales          = CASE WHEN ABS(TRY_CONVERT(FLOAT,sales))        < 1E-8 THEN '0' ELSE sales END,\n    distribution   = CASE WHEN ABS(TRY_CONVERT(FLOAT,distribution))        < 1E-8 THEN '0' ELSE distribution END,\n    g_a             = CASE WHEN ABS(TRY_CONVERT(FLOAT,g_a))        < 1E-8 THEN '0' ELSE g_a END,\n    ho_allocation   = CASE WHEN ABS(TRY_CONVERT(FLOAT,ho_allocation))        < 1E-8 THEN '0' ELSE ho_allocation END,\n    r_d   = CASE WHEN ABS(TRY_CONVERT(FLOAT,r_d))        < 1E-8 THEN '0' ELSE r_d END,\n    export   = CASE WHEN ABS(TRY_CONVERT(FLOAT,export))        < 1E-8 THEN '0' ELSE export END,\n    a_p   =  CASE WHEN ABS(TRY_CONVERT(FLOAT,a_p))        < 1E-8 THEN '0' ELSE a_p END,\n    sales_promotion   =  CASE WHEN ABS(TRY_CONVERT(FLOAT,sales_promotion))        < 1E-8 THEN '0' ELSE sales_promotion END,\n    deferred_tax   = CASE WHEN ABS(TRY_CONVERT(FLOAT,deferred_tax))        < 1E-8 THEN '0' ELSE deferred_tax END,\n    income_tax   = CASE WHEN ABS(TRY_CONVERT(FLOAT,income_tax))        < 1E-8 THEN '0' ELSE income_tax END,\n    interest   =  CASE WHEN ABS(TRY_CONVERT(FLOAT,interest))        < 1E-8 THEN '0' ELSE interest END,\n    provision   = CASE WHEN ABS(TRY_CONVERT(FLOAT,provision))        < 1E-8 THEN '0' ELSE provision END,\n    other_gain   = CASE WHEN ABS(TRY_CONVERT(FLOAT,other_gain))        < 1E-8 THEN '0' ELSE other_gain END,\n    sales_bouns   = CASE WHEN ABS(TRY_CONVERT(FLOAT,sales_bouns))        < 1E-8 THEN '0' ELSE sales_bouns END,\n    g_a_bouns   = CASE WHEN ABS(TRY_CONVERT(FLOAT,g_a_bouns))        < 1E-8 THEN '0' ELSE g_a_bouns END,\n    r_d_bonus   = CASE WHEN ABS(TRY_CONVERT(FLOAT,r_d_bonus))        < 1E-8 THEN '0' ELSE r_d_bonus END,\n    export_bonus   = CASE WHEN ABS(TRY_CONVERT(FLOAT,export_bonus))        < 1E-8 THEN '0' ELSE export_bonus END,\n    distribution_bouns   =  CASE WHEN ABS(TRY_CONVERT(FLOAT,distribution_bouns))        < 1E-8 THEN '0' ELSE distribution_bouns END,\n    dl_bouns   = CASE WHEN ABS(TRY_CONVERT(FLOAT,dl_bouns))        < 1E-8 THEN '0' ELSE dl_bouns END,\n    sc_bouns   = CASE WHEN ABS(TRY_CONVERT(FLOAT,sc_bouns))        < 1E-8 THEN '0' ELSE sc_bouns END,\n    qty_ton        =  CASE WHEN ABS(TRY_CONVERT(FLOAT,qty_ton))        < 1E-8 THEN '0' ELSE qty_ton END;\n\n\n\n"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "run_validation",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "clean_refine_stg_table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "EXEC audit.sp_run_validations\n     @batch_id = @{variables('v_batch_id')},\n     @table_name = 'stg.stg_turbo_data';",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						},
+						{
+							"name": "load_dimension",
+							"type": "SqlServerStoredProcedure",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
+							"dependsOn": [
+								{
+									"activity": "load_history_table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "dim.sp_load_dimensions",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "load_fact_revenue",
+							"type": "SqlServerStoredProcedure",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
+							"dependsOn": [
+								{
+									"activity": "load_dimension",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "fact.sp_load_fact_revenue",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"business_unit_id": {
+										"value": {
+											"value": "@pipeline().parameters.business_unit",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"company_id": {
+										"value": {
+											"value": "@pipeline().parameters.company",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"currency_id": {
+										"value": "30001",
+										"type": "Int64"
+									},
+									"log_id": {
+										"value": {
+											"value": "@variables('v_log_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "send_failure_notification_batch_pipeline",
+							"type": "ExecutePipeline",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
+							"dependsOn": [
+								{
+									"activity": "load_fact_revenue",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "agt_etl_failure",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_log_id": {
+										"value": "@variables('v_log_id')",
+										"type": "Expression"
+									},
+									"p_batch_id": {
+										"value": "@variables('v_batch_id')",
+										"type": "Expression"
+									},
+									"p_file_name": {
+										"value": "@variables('v_file_name')",
+										"type": "Expression"
+									},
+									"p_activity_name": "Activity_load_fact_revenue",
+									"p_error_message": {
+										"value": "@variables('v_error_message')",
+										"type": "Expression"
+									},
+									"p_pipeline_name": {
+										"value": "@variables('v_pipeline_name')",
+										"type": "Expression"
+									},
+									"p_business_unit": {
+										"value": "@variables('v_business_unit_id')",
+										"type": "Expression"
+									},
+									"p_domain": {
+										"value": "@variables('v_domain')",
+										"type": "Expression"
+									},
+									"p_company_name": {
+										"value": "@variables('v_company_id')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "send_failure_notification_batch_dimension",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "load_history_table",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "agt_etl_failure",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_log_id": {
+										"value": "@variables('v_log_id')",
+										"type": "Expression"
+									},
+									"p_batch_id": {
+										"value": "@variables('v_batch_id')",
+										"type": "Expression"
+									},
+									"p_file_name": {
+										"value": "@variables('v_file_name')",
+										"type": "Expression"
+									},
+									"p_activity_name": "Activity_load_history_table",
+									"p_error_message": {
+										"value": "@variables('v_error_message')",
+										"type": "Expression"
+									},
+									"p_pipeline_name": {
+										"value": "@variables('v_pipeline_name')",
+										"type": "Expression"
+									},
+									"p_business_unit": {
+										"value": "@variables('v_business_unit_id')",
+										"type": "Expression"
+									},
+									"p_domain": {
+										"value": "@variables('v_domain')",
+										"type": "Expression"
+									},
+									"p_company_name": {
+										"value": "@variables('v_company_id')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "send_failure_notification_batch_stagging_load",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "load_turbo_data_stg",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "agt_etl_failure",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"p_log_id": {
+										"value": "@variables('v_log_id')",
+										"type": "Expression"
+									},
+									"p_batch_id": {
+										"value": "@variables('v_batch_id')",
+										"type": "Expression"
+									},
+									"p_file_name": {
+										"value": "@variables('v_file_name')",
+										"type": "Expression"
+									},
+									"p_activity_name": "Load_data_to_Stagging",
+									"p_error_message": {
+										"value": "@variables('v_error_message')",
+										"type": "Expression"
+									},
+									"p_pipeline_name": {
+										"value": "@variables('v_pipeline_name')",
+										"type": "Expression"
+									},
+									"p_business_unit": {
+										"value": "@variables('v_business_unit_id')",
+										"type": "Expression"
+									},
+									"p_domain": {
+										"value": "@variables('v_domain')",
+										"type": "Expression"
+									},
+									"p_company_name": {
+										"value": "@variables('v_company_id')",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "mark_batch_complete",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "load_history_table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[audit].[sp_log_batch_complete]",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "load_history_table",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "run_validation",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "hist.sp_move_to_history",
+								"storedProcedureParameters": {
+									"batch_id": {
+										"value": {
+											"value": "@variables('v_batch_id')",
+											"type": "Expression"
+										},
+										"type": "Int64"
+									},
+									"stg_table": {
+										"value": "stg.stg_turbo_data",
+										"type": "String"
+									},
+									"target_table": {
+										"value": "hist.revenue_turbodata_history",
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "clean_stg_table",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "filter_revenue_data_sheet",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "suraj_local_sqlsrvr",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "Truncate table stg.stg_turbo_data;"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "mark_etl_success",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "loop_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "audit.sp_log_etl_complete",
+					"storedProcedureParameters": {
+						"log_id": {
+							"value": {
+								"value": "@variables('v_log_id')",
+								"type": "Expression"
+							},
+							"type": "Int64"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "suraj_local_sqlsrvr",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "send_failure_notification_pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "loop_blob",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "agt_etl_failure",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"p_log_id": {
+							"value": "@variables('v_log_id')",
+							"type": "Expression"
+						},
+						"p_batch_id": {
+							"value": "@variables('v_batch_id')",
+							"type": "Expression"
+						},
+						"p_file_name": {
+							"value": "@variables('v_file_name')",
+							"type": "Expression"
+						},
+						"p_activity_name": "Activity_File_Load",
+						"p_error_message": {
+							"value": "@variables('v_error_message')",
+							"type": "Expression"
+						},
+						"p_pipeline_name": {
+							"value": "@variables('v_pipeline_name')",
+							"type": "Expression"
+						},
+						"p_business_unit": {
+							"value": "@variables('v_business_unit_id')",
+							"type": "Expression"
+						},
+						"p_domain": {
+							"value": "@variables('v_domain')",
+							"type": "Expression"
+						},
+						"p_company_name": {
+							"value": "@variables('v_company_id')",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "send_success_notification",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "mark_etl_success",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-17.eastus2.logic.azure.com:443/workflows/8113b0ed04c342b2b75fed71a81753a9/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=am0C5K571IGUUMzeIAyi2OkPTu0aeqNxR8rjdoAwA2g",
+					"body": {
+						"value": "{\n    \"to\": \"suraj@netision.com\",\n    \"notificationType\": \"SUCCESS\",\n    \"subject\": \"Revenue ETL Pipeline SUCCESS\",\n    \"pipelineName\": \"@{variables('v_pipeline_name')}\",\n    \"company\": \"@{variables('v_company_id')}\",\n    \"businessUnit\": \"@{variables('v_business_unit_id')}\",\n    \"domain\": \"@{variables('v_domain')}\",\n    \"logId\": \"@{variables('v_log_id')}\",\n    \"batchId\": \"\",\n    \"sourceFile\": \"\",\n    \"status\": \"SUCCESS\",\n    \"executionTime\": \"@{utcNow()}\",\n    \"message\": \"Revenue DATA ETL pipeline execution succeeded.\",\n    \"errorMessage\": \"\"\n}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_v_company_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup_ETL_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_start_date",
+					"value": {
+						"value": "@pipeline().parameters.company",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "set_v_business_unit_id",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "set_v_company_id",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "v_start_date",
+					"value": {
+						"value": "@pipeline().parameters.business_unit",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"company": {
+				"type": "string",
+				"defaultValue": "7001"
+			},
+			"business_unit": {
+				"type": "string",
+				"defaultValue": "9001"
+			}
+		},
+		"variables": {
+			"v_log_id": {
+				"type": "String"
+			},
+			"v_batch_id": {
+				"type": "String"
+			},
+			"v_pipeline_name": {
+				"type": "String",
+				"defaultValue": "REVENUE - DATA pipeline ETL"
+			},
+			"v_company_id": {
+				"type": "String"
+			},
+			"v_business_unit_id": {
+				"type": "String"
+			},
+			"v_start_date": {
+				"type": "String"
+			},
+			"v_end_date": {
+				"type": "String"
+			},
+			"v_domain": {
+				"type": "String"
+			},
+			"v_file_name": {
+				"type": "String"
+			},
+			"v_error_message": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
