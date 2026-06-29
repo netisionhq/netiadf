@@ -1819,7 +1819,8 @@
 				"type": "String"
 			},
 			"v_pipeline_name": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "REVENUE - DATA pipeline ETL"
 			},
 			"v_company_id": {
 				"type": "String"
