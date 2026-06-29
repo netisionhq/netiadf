@@ -204,12 +204,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "csv_bloblist",
-						"type": "DatasetReference"
+						"referenceName": "clean_csv_workingcaptial_blob",
+						"type": "DatasetReference",
+						"parameters": {
+							"p_filename": "@variables('v_file_name')"
+						}
 					},
-					"fieldList": [
-						"childItems"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"enablePartitionDiscovery": false
