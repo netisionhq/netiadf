@@ -15,7 +15,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "working_capital_fcff_act_apr_2026_template.csv",
+				"fileName": "@dataset().p_filename",
 				"folderPath": "Protein & Frozen/Atyab/Clean Files/Capital , Leverage & cash",
 				"container": "agethia-ingestion-data"
 			},
