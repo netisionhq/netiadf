@@ -1290,6 +1290,8 @@
 						{
 							"name": "load_dimension",
 							"type": "SqlServerStoredProcedure",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_history_table",
@@ -1326,6 +1328,8 @@
 						{
 							"name": "load_fact_revenue",
 							"type": "SqlServerStoredProcedure",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_dimension",
@@ -1387,6 +1391,8 @@
 						{
 							"name": "send_failure_notification_batch_pipeline",
 							"type": "ExecutePipeline",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_fact_revenue",
@@ -1447,7 +1453,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "load_dimension",
+									"activity": "load_history_table",
 									"dependencyConditions": [
 										"Failed"
 									]
