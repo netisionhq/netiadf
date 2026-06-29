@@ -1398,8 +1398,6 @@
 						{
 							"name": "mark_batch_complete",
 							"type": "SqlServerStoredProcedure",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "load_history_table",
