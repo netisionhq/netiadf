@@ -737,14 +737,7 @@
 							"type": "SqlServerStoredProcedure",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
-							"dependsOn": [
-								{
-									"activity": "load_history_table",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -1029,7 +1022,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[audit].[sp_log_batch_complete]",
+								"storedProcedureName": "[audit].[sp_log_batch_complete_v1]",
 								"storedProcedureParameters": {
 									"batch_id": {
 										"value": {
@@ -1037,6 +1030,10 @@
 											"type": "Expression"
 										},
 										"type": "Int64"
+									},
+									"stg_table": {
+										"value": "stg.stg_workingcapital",
+										"type": "String"
 									}
 								}
 							},
