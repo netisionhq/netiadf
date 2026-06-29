@@ -204,11 +204,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "clean_csv_workingcaptial_blob",
-						"type": "DatasetReference",
-						"parameters": {
-							"p_filename": "@variables('v_file_name')"
-						}
+						"referenceName": "csv_workingcapital_blob",
+						"type": "DatasetReference"
 					},
 					"fieldList": [],
 					"storeSettings": {
