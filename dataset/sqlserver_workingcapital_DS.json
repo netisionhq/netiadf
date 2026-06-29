@@ -1,0 +1,81 @@
+{
+	"name": "sqlserver_workingcapital_DS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "suraj_local_sqlsrvr",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "company",
+				"type": "nvarchar"
+			},
+			{
+				"name": "business_unit",
+				"type": "nvarchar"
+			},
+			{
+				"name": "domain_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "metric_group",
+				"type": "nvarchar"
+			},
+			{
+				"name": "metric_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "metric_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "scenario",
+				"type": "nvarchar"
+			},
+			{
+				"name": "period_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "period_year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "period_type",
+				"type": "nvarchar"
+			},
+			{
+				"name": "unit_of_measure",
+				"type": "nvarchar"
+			},
+			{
+				"name": "measure_value",
+				"type": "nvarchar"
+			},
+			{
+				"name": "source_file",
+				"type": "nvarchar"
+			},
+			{
+				"name": "sheet_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "load_datetime",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "stg_workingcapital"
+		}
+	}
+}
