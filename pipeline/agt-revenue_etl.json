@@ -1387,7 +1387,14 @@
 						{
 							"name": "send_failure_notification_batch_pipeline",
 							"type": "ExecutePipeline",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "load_fact_revenue",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
 							"policy": {
 								"secureInput": false
 							},
