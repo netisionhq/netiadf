@@ -1071,7 +1071,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "get_blob_list",
+						"activity": "filter_revenue_data_sheet",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -1265,6 +1265,29 @@
 					"variableName": "v_start_date",
 					"value": {
 						"value": "@pipeline().parameters.business_unit",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "filter_revenue_data_sheet",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "get_blob_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('get_blob_list').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@and(\n    and(\n        equals(item().type, 'File'),\n        contains(item().name, 'working')\n    ),\n    not(startsWith(item().name, '~$'))\n)",
 						"type": "Expression"
 					}
 				}
