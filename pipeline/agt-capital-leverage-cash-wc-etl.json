@@ -868,7 +868,7 @@
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
-									"activity": "load_history_table",
+									"activity": "load_to_history_table",
 									"dependencyConditions": [
 										"Failed"
 									]
@@ -984,7 +984,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "load_history_table",
+									"activity": "load_to_history_table",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -1022,14 +1022,9 @@
 						{
 							"name": "load_history_table",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "run_validation",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
+							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -1061,6 +1056,39 @@
 							"linkedServiceName": {
 								"referenceName": "suraj_local_sqlsrvr",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "load_to_history_table",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "run_validation",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "suraj_local_sqlsrvr",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "\r\nupdate hist.capital_leverage_cash_working_capital_history\r\nset is_deleted=1,\r\ndeleted_at=getutcdate(),\r\ndeleted_by=SUSER_SNAME()\r\nwhere is_deleted=0;\r\n\r\n insert into hist.capital_leverage_cash_working_capital_history\r\n (\r\n company,        \r\n business_unit,  \r\n domain_name,    \r\n source_name,    \r\n metric_group,   \r\n metric_name,    \r\n metric_type,    \r\n scenario,       \r\n period_name,    \r\n period_year,    \r\n period_type,    \r\n unit_of_measure,\r\n measure_value,  \r\n row_number,\r\n validation_status,   \r\n validation_remarks,  \r\n created_at,          \r\n batch_id,            \r\n filename,            \r\n sheetname\r\n )\r\n select \r\n  company,        \r\n business_unit,  \r\n domain_name,    \r\n source_name,    \r\n metric_group,   \r\n metric_name,    \r\n metric_type,    \r\n scenario,       \r\n period_name,    \r\n period_year,    \r\n period_type,    \r\n unit_of_measure,\r\n measure_value,  \r\n row_number,\r\n validation_status,   \r\n validation_remarks,  \r\n created_at,          \r\n batch_id,            \r\n filename,            \r\n sheetname\r\n from stg.stg_workingcapital\r\n where validation_status='VALID'\r\n"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
