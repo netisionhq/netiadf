@@ -1312,7 +1312,7 @@
 			},
 			"v_pipeline_name": {
 				"type": "String",
-				"defaultValue": "REVENUE - DATA pipeline ETL"
+				"defaultValue": "Capital Leverage Cash - DATA pipeline ETL"
 			},
 			"v_company_id": {
 				"type": "String"
