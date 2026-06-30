@@ -667,7 +667,7 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "UPDATE stg.stg_workingcapital\nSET\n    measure_value      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), measure_value),0),6) AS VARCHAR(50));\n\nUPDATE stg.stg_turbo_data\nSET\n    measure_value        = CASE WHEN ABS(TRY_CONVERT(FLOAT,measure_value))        < 1E-8 THEN '0' ELSE measure_value END;"
+										"text": "\n UPDATE stg.stg_workingcapital\nSET\n    measure_value      = CAST(ROUND(ISNULL(TRY_CONVERT(DECIMAL(38,12), measure_value),0),6) AS VARCHAR(50));\n\nUPDATE stg.stg_workingcapital\nSET\n    measure_value        = CASE WHEN ABS(TRY_CONVERT(FLOAT,measure_value)) < 1E-8 THEN '0' ELSE measure_value END;\n"
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
