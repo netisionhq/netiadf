@@ -28,7 +28,7 @@
 					"method": "POST"
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureFunctionclient",
+					"referenceName": "AzureFunction2",
 					"type": "LinkedServiceReference"
 				}
 			},
