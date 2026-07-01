@@ -91,7 +91,7 @@
 		"parameters": {
 			"FolderName": {
 				"type": "string",
-				"defaultValue": "revenue"
+				"defaultValue": "innovation"
 			},
 			"BaseFolder": {
 				"type": "string",
