@@ -90,13 +90,16 @@
 		"concurrency": 1,
 		"parameters": {
 			"FolderName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "innovation"
 			},
 			"BaseFolder": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "protein_&_frozen"
 			},
 			"CategoryFolder": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Atyab"
 			}
 		},
 		"variables": {
