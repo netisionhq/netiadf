@@ -91,7 +91,7 @@
 		"parameters": {
 			"FolderName": {
 				"type": "string",
-				"defaultValue": "capex"
+				"defaultValue": "customers_partners"
 			},
 			"BaseFolder": {
 				"type": "string",
