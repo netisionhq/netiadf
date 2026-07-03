@@ -91,7 +91,7 @@
 		"parameters": {
 			"FolderName": {
 				"type": "string",
-				"defaultValue": "innovation"
+				"defaultValue": "capex"
 			},
 			"BaseFolder": {
 				"type": "string",
