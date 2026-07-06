@@ -91,7 +91,7 @@
 		"parameters": {
 			"BaseFolder": {
 				"type": "string",
-				"defaultValue": "Protein & Frozen"
+				"defaultValue": "protein_and_frozen"
 			},
 			"CategoryFolder": {
 				"type": "string",
