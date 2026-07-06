@@ -90,18 +90,19 @@
 		"parameters": {
 			"FolderName": {
 				"type": "string",
-				"defaultValue": "capital_leverage_and_cash"
+				"defaultValue": "revenue"
 			},
 			"BaseFolder": {
 				"type": "string",
-				"defaultValue": "protein_&_frozen"
+				"defaultValue": "protein_and_frozen"
 			},
 			"CategoryFolder": {
 				"type": "string",
 				"defaultValue": "Atyab"
 			},
 			"FilePrefix": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "turbo_atyab_2023"
 			}
 		},
 		"variables": {
