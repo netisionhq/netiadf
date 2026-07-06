@@ -99,10 +99,6 @@
 			"CategoryFolder": {
 				"type": "string",
 				"defaultValue": "Atyab"
-			},
-			"FilePrefix": {
-				"type": "string",
-				"defaultValue": "turbo_atyab_fy_2023"
 			}
 		},
 		"variables": {
