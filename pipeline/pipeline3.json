@@ -1,0 +1,103 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"description": "Triggers the OneDrive to Blob sync Azure Function. Pulls new files from the client's OneDrive folder structure and uploads them to raw_files, skipping files already synced.",
+		"activities": [
+			{
+				"name": "Run_OneDrive_To_Blob_Sync",
+				"description": "Calls the Azure Function which lists OneDrive subfolders, downloads new files, and uploads them to Blob raw_files",
+				"type": "AzureFunctionActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "01:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"functionName": "run_onedrive_sync",
+					"body": {
+						"value": "{}",
+						"type": "Expression"
+					},
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"method": "POST"
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureOnedriveBlob",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Check_Sync_Status",
+				"description": "Reads the Function JSON response - fails ADF run if any files failed syncing",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Run_OneDrive_To_Blob_Sync",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(activity('Run_OneDrive_To_Blob_Sync').output.summary.failed, 0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Fail_On_Errors",
+							"type": "Fail",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"message": {
+									"value": "@concat('FAILED: ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.failed), ' file(s) failed. ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.success), ' succeeded, ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.skipped), ' skipped. Run at: ', activity('Run_OneDrive_To_Blob_Sync').output.run_at)",
+									"type": "Expression"
+								},
+								"errorCode": "ONEDRIVE_SYNC_FAILED"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Log_Success",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "sync_status",
+								"value": {
+									"value": "@concat('SUCCESS: ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.success), ' files synced, ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.skipped), ' already up to date. Run at: ', activity('Run_OneDrive_To_Blob_Sync').output.run_at)",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"concurrency": 1,
+		"variables": {
+			"sync_status": {
+				"type": "String"
+			}
+		},
+		"annotations": [
+			"agethia",
+			"onedrive",
+			"ingestion",
+			"onedrive-to-blob"
+		]
+	}
+}
