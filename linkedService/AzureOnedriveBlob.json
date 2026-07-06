@@ -1,0 +1,16 @@
+{
+	"name": "AzureOnedriveBlob",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureFunction",
+		"typeProperties": {
+			"functionAppUrl": "https://agthia-onedrive-blob-hdfhcqdhh2gjevcd.eastus2-01.azurewebsites.net",
+			"authentication": "Anonymous",
+			"functionKey": {
+				"type": "SecureString",
+				"value": "**********"
+			}
+		}
+	}
+}
