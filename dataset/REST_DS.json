@@ -1,0 +1,12 @@
+{
+	"name": "REST_DS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_GraphAPI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
