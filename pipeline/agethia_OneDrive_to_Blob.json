@@ -1,11 +1,11 @@
 {
-	"name": "pipeline3",
+	"name": "agethia_OneDrive_to_Blob",
 	"properties": {
-		"description": "Triggers the OneDrive to Blob sync Azure Function. Pulls new files from the client's OneDrive folder structure and uploads them to raw_files, skipping files already synced.",
+		"description": "Triggers the OneDrive to Blob sync Azure Function for a single subfolder. Lists files in that OneDrive subfolder, skips already-synced files, uploads new ones to raw_files.",
 		"activities": [
 			{
 				"name": "Run_OneDrive_To_Blob_Sync",
-				"description": "Calls the Azure Function which lists OneDrive subfolders, downloads new files, and uploads them to Blob raw_files",
+				"description": "Calls the Azure Function which lists a OneDrive subfolder's files and uploads new ones to Blob raw_files",
 				"type": "AzureFunctionActivity",
 				"dependsOn": [],
 				"policy": {
@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"functionName": "run_onedrive_sync",
 					"body": {
-						"value": "{}",
+						"value": "{\n    \"subfolder\": \"@{pipeline().parameters.Subfolder}\"\n}",
 						"type": "Expression"
 					},
 					"headers": {
@@ -58,7 +58,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"message": {
-									"value": "@concat('FAILED: ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.failed), ' file(s) failed. ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.success), ' succeeded, ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.skipped), ' skipped. Run at: ', activity('Run_OneDrive_To_Blob_Sync').output.run_at)",
+									"value": "@concat('FAILED: ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.failed), ' file(s) failed in ', pipeline().parameters.Subfolder, '. ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.success), ' succeeded, ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.skipped), ' skipped. Run at: ', activity('Run_OneDrive_To_Blob_Sync').output.run_at)",
 									"type": "Expression"
 								},
 								"errorCode": "ONEDRIVE_SYNC_FAILED"
@@ -78,7 +78,7 @@
 							"typeProperties": {
 								"variableName": "sync_status",
 								"value": {
-									"value": "@concat('SUCCESS: ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.success), ' files synced, ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.skipped), ' already up to date. Run at: ', activity('Run_OneDrive_To_Blob_Sync').output.run_at)",
+									"value": "@concat('SUCCESS: ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.success), ' files synced in ', pipeline().parameters.Subfolder, ', ', string(activity('Run_OneDrive_To_Blob_Sync').output.summary.skipped), ' already up to date. Run at: ', activity('Run_OneDrive_To_Blob_Sync').output.run_at)",
 									"type": "Expression"
 								}
 							}
@@ -88,6 +88,11 @@
 			}
 		],
 		"concurrency": 1,
+		"parameters": {
+			"Subfolder": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"sync_status": {
 				"type": "String"
