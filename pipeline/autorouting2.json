@@ -19,7 +19,7 @@
 				"typeProperties": {
 					"functionName": "run_pipeline",
 					"body": {
-						"value": "{\n    \"base_folder\": \"@{pipeline().parameters.BaseFolder}\",\n    \"category_folder\": \"@{pipeline().parameters.CategoryFolder}\",\n    \"folder_name\": \"@{pipeline().parameters.FolderName}\",\n}",
+						"value": "{\n    \"base_folder\": \"@{pipeline().parameters.BaseFolder}\",\n    \"category_folder\": \"@{pipeline().parameters.CategoryFolder}\",\n    \"folder_name\": \"@{pipeline().parameters.FolderName}\"\n}",
 						"type": "Expression"
 					},
 					"headers": {
@@ -90,7 +90,7 @@
 		"parameters": {
 			"FolderName": {
 				"type": "string",
-				"defaultValue": "innovation"
+				"defaultValue": "ageing"
 			},
 			"BaseFolder": {
 				"type": "string",
