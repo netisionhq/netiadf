@@ -89,8 +89,7 @@
 		],
 		"parameters": {
 			"FolderName": {
-				"type": "string",
-				"defaultValue": "ageing"
+				"type": "string"
 			},
 			"BaseFolder": {
 				"type": "string",
