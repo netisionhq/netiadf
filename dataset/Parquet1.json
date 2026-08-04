@@ -5,6 +5,14 @@
 			"referenceName": "netiadfblob_new",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"pFolderPath": {
+				"type": "string"
+			},
+			"pFileName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
