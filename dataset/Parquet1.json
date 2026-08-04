@@ -7,10 +7,12 @@
 		},
 		"parameters": {
 			"pFolderPath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "misc/revenue_turbodata_history/Year=2026/Month=01"
 			},
 			"pFileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "revenue_turbodata_history.parquet"
 			}
 		},
 		"annotations": [],
