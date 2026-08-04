@@ -37,6 +37,884 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "history_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "history_id",
+									"type": "Int64",
+									"physicalType": "INT_64"
+								}
+							},
+							{
+								"source": {
+									"name": "month",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "month",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "qtr",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "qtr",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "year",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "year",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "date",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "date",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "code",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "code",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "nvarchar"
+								},
+								"sink": {
+									"name": "description",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "channel",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "channel",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "region",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "region",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sales_qty",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sales_qty",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "gross_sales",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "gross_sales",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "normal_discount",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "normal_discount",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "brand",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "brand",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "category",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "category",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sub_category",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sub_category",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "channel_group",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "channel_group",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sales_category",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sales_category",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "factory",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "factory",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "brand_group",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "brand_group",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "qty_ton",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "qty_ton",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "gross_rebates",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "gross_rebates",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "net_rebates",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "net_rebates",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "total_rebates",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "total_rebates",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "total_discount",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "total_discount",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "provision_sales_return",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "provision_sales_return",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "foc",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "foc",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "nsv",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "nsv",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "rm",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "rm",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "pk",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "pk",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "other_rm",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "other_rm",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "other",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "other",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "material",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "material",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "cogs_prod",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "cogs_prod",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "dl",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "dl",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "moh",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "moh",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sc",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sc",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "moh_total",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "moh_total",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "gp",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "gp",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sales",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sales",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "distribution",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "distribution",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "g_a",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "g_a",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "ho_allocation",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ho_allocation",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "r_d",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "r_d",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "export",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "export",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "a_p",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "a_p",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sales_promotion",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sales_promotion",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "deferred_tax",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "deferred_tax",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "income_tax",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "income_tax",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "interest",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "interest",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "provision",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "provision",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "other_gain",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "other_gain",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sales_bouns",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sales_bouns",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "g_a_bouns",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "g_a_bouns",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "r_d_bonus",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "r_d_bonus",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "export_bonus",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "export_bonus",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "distribution_bouns",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "distribution_bouns",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "dl_bouns",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "dl_bouns",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sc_bouns",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sc_bouns",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "market_ic",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "market_ic",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "ytd_ytg",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "ytd_ytg",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "row_number",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "row_number",
+									"type": "Int64",
+									"physicalType": "INT_64"
+								}
+							},
+							{
+								"source": {
+									"name": "validation_status",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "validation_status",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "validation_remarks",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "validation_remarks",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "DateTime",
+									"physicalType": "INT_96"
+								}
+							},
+							{
+								"source": {
+									"name": "batch_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "batch_id",
+									"type": "Int64",
+									"physicalType": "INT_64"
+								}
+							},
+							{
+								"source": {
+									"name": "filename",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "filename",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "sheetname",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "sheetname",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "is_deleted",
+									"type": "Boolean",
+									"physicalType": "bit"
+								},
+								"sink": {
+									"name": "is_deleted",
+									"type": "Boolean",
+									"physicalType": "BOOLEAN"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "deleted_at",
+									"type": "DateTime",
+									"physicalType": "INT_96"
+								}
+							},
+							{
+								"source": {
+									"name": "deleted_by",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "deleted_by",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "data_year",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "data_year",
+									"type": "Int32",
+									"physicalType": "INT_32"
+								}
+							},
+							{
+								"source": {
+									"name": "loaded_at",
+									"type": "DateTime",
+									"physicalType": "datetime2"
+								},
+								"sink": {
+									"name": "loaded_at",
+									"type": "DateTime",
+									"physicalType": "INT_96"
+								}
+							},
+							{
+								"source": {
+									"name": "loaded_by",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "loaded_by",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
