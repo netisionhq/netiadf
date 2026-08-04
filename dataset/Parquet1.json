@@ -20,7 +20,14 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "misc",
+				"fileName": {
+					"value": "@dataset().pFileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().pFolderPath",
+					"type": "Expression"
+				},
 				"container": "agethia-ingestion-data"
 			},
 			"compressionCodec": "snappy"
