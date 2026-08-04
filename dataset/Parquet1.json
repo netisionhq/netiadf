@@ -2,7 +2,7 @@
 	"name": "Parquet1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "netiadfblobLS",
+			"referenceName": "netiadfblob_new",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "inputdata",
-				"container": "samplefile"
+				"folderPath": "misc",
+				"container": "agethia-ingestion-data"
 			},
 			"compressionCodec": "snappy"
 		},
