@@ -27,7 +27,7 @@
 					"sink": {
 						"type": "ParquetSink",
 						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings",
+							"type": "AzureBlobFSWriteSettings",
 							"copyBehavior": "FlattenHierarchy"
 						},
 						"formatSettings": {
@@ -933,8 +933,8 @@
 						"referenceName": "Parquet1",
 						"type": "DatasetReference",
 						"parameters": {
-							"pFolderPath": "@dataset().pFolderPath",
-							"pFileName": "@dataset().pFileName"
+							"pFolderPath": "misc/revenue_turbodata_history/Year=2026/Qtr=01",
+							"pFileName": "revenue_turbodata_history.parquet"
 						}
 					}
 				]
