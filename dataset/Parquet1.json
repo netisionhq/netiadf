@@ -2,7 +2,7 @@
 	"name": "Parquet1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "netiadfblob_new",
+			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
@@ -19,7 +19,7 @@
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
+				"type": "AzureBlobFSLocation",
 				"fileName": {
 					"value": "@dataset().pFileName",
 					"type": "Expression"
@@ -28,7 +28,7 @@
 					"value": "@dataset().pFolderPath",
 					"type": "Expression"
 				},
-				"container": "agethia-ingestion-data"
+				"fileSystem": "agethia-ingestion-data"
 			},
 			"compressionCodec": "snappy"
 		},
