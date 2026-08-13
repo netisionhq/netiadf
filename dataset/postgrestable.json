@@ -7,6 +7,9 @@
 		},
 		"annotations": [],
 		"type": "OdbcTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"tableName": "public.employee"
+		}
 	}
 }
