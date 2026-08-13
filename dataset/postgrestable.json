@@ -1,0 +1,12 @@
+{
+	"name": "postgrestable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedservicepostgres",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "OdbcTable",
+		"schema": []
+	}
+}
