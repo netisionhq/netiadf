@@ -56,6 +56,65 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "csv to postgres",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "excel to csv",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "OdbcSink",
+						"writeBatchSize": 0,
+						"preCopyScript": "CREATE TABLE IF NOT EXISTS public.employee (\n    Emp_id INTEGER,\n    Name VARCHAR(100),\n    Department VARCHAR(100),\n    City VARCHAR(50),\n    salary NUMERIC(10,2),\n    Joining_date DATE\n);"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "csvfile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "postgrestable",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"annotations": []
