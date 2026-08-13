@@ -8,9 +8,9 @@
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
-			"sheetName": "Employees",
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "excelfile",
 				"fileSystem": "source"
 			},
 			"firstRowAsHeader": true
