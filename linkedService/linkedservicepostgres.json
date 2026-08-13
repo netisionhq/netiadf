@@ -1,0 +1,21 @@
+{
+	"name": "linkedservicepostgres",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Odbc",
+		"typeProperties": {
+			"connectionString": {
+				"type": "SecureString",
+				"value": "**********"
+			},
+			"authenticationType": "Basic",
+			"userName": "postgres",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmMmQyNGNjMi0wZjM0LTQ3MzktYjRlNi1jMDNjMDliNWI0MGMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "hardikIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
